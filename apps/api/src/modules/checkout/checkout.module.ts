@@ -1,4 +1,4 @@
-import { Body, Controller, Module, Post } from "@nestjs/common";
+import { Body, Controller, Get, Module, Param, Post } from "@nestjs/common";
 import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
 
 import { DemoStoreService } from "../../common/demo-store.service";
@@ -22,6 +22,11 @@ class CreateCheckoutSessionDto {
 @Controller("checkout")
 class CheckoutController {
   constructor(private readonly demoStore: DemoStoreService) {}
+
+  @Get("offers/:offerId")
+  getOffer(@Param("offerId") offerId: string) {
+    return this.demoStore.getCheckoutOffer(offerId);
+  }
 
   @Post("sessions")
   createSession(@Body() body: CreateCheckoutSessionDto) {

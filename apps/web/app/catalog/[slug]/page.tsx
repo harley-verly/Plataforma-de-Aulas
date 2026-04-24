@@ -33,7 +33,7 @@ export default async function CourseDetailPage({
           <h2>{course.summary}</h2>
           <p>{course.transformation}</p>
           <div className="hero-actions">
-            <ButtonLink href="/login">Entrar para comprar</ButtonLink>
+            <ButtonLink href={`/checkout/${course.offers[0]?.id}?course=${course.slug}`}>Ir para checkout</ButtonLink>
           </div>
         </SurfaceCard>
 
@@ -61,6 +61,7 @@ export default async function CourseDetailPage({
               <h3>{offer.title}</h3>
               <p>{offer.description}</p>
               <p className="offer-price">{offer.priceLabel}</p>
+              <ButtonLink href={`/checkout/${offer.id}?course=${course.slug}`}>Abrir checkout</ButtonLink>
             </SurfaceCard>
           ))}
         </div>

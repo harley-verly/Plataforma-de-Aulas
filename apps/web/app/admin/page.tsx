@@ -1,9 +1,12 @@
-import { demoAdminQueue } from "@plataforma/contracts";
-import { Pill, SectionHeading, SurfaceCard } from "@plataforma/ui";
+import { SectionHeading } from "@plataforma/ui";
 
+import { AdminApprovalConsole } from "../../components/admin-approval-console";
 import { SiteShell } from "../../components/site-shell";
+import { getAdminApprovals, getAdminOverview } from "../../lib/platform-api";
 
-export default function AdminPage() {
+export default async function AdminPage() {
+  const [overview, approvals] = await Promise.all([getAdminOverview(), getAdminApprovals()]);
+
   return (
     <SiteShell
       title="Admin"
@@ -15,16 +18,7 @@ export default function AdminPage() {
           title="Fila de aprovacao e observabilidade"
           description="A administracao do produto concentra aprovacoes, saude operacional e leitura das trilhas financeiras."
         />
-        <div className="queue-grid">
-          {demoAdminQueue.map((item) => (
-            <SurfaceCard key={item.id}>
-              <Pill>{item.kind}</Pill>
-              <h3>{item.displayName}</h3>
-              <p className="muted-label">estado atual: {item.state}</p>
-              <p>{item.note}</p>
-            </SurfaceCard>
-          ))}
-        </div>
+        <AdminApprovalConsole initialApprovals={approvals} overview={overview} />
       </section>
     </SiteShell>
   );

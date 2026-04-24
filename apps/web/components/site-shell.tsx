@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 import { platformConfig } from "@plataforma/config";
-import { ButtonLink } from "@plataforma/ui";
+
+import { SessionIndicator } from "./session-indicator";
 
 export function SiteShell({
   title,
@@ -28,7 +29,7 @@ export function SiteShell({
             </Link>
           ))}
         </nav>
-        <ButtonLink href="/login">Entrar</ButtonLink>
+        <SessionIndicator />
       </header>
 
       <main className="main-content">

@@ -1,8 +1,12 @@
-import { SectionHeading, SurfaceCard } from "@plataforma/ui";
+import { SectionHeading } from "@plataforma/ui";
 
+import { AffiliateConsole } from "../../components/affiliate-console";
 import { SiteShell } from "../../components/site-shell";
+import { getAffiliateOverview } from "../../lib/platform-api";
 
-export default function AffiliatePage() {
+export default async function AffiliatePage() {
+  const overview = await getAffiliateOverview();
+
   return (
     <SiteShell
       title="Affiliate"
@@ -14,20 +18,7 @@ export default function AffiliatePage() {
           title="Governanca antes de escala"
           description="A fundacao do produto ja considera aprovacao, links por campanha e trilha financeira preparada para split."
         />
-        <div className="feature-grid">
-          <SurfaceCard>
-            <h3>Entrada com aprovacao</h3>
-            <p>Afiliados entram por auto cadastro, mas so operam apos validacao administrativa.</p>
-          </SurfaceCard>
-          <SurfaceCard>
-            <h3>Links e atribuicao</h3>
-            <p>Estrutura pronta para identificar cliques, origem da venda e comissao correspondente.</p>
-          </SurfaceCard>
-          <SurfaceCard>
-            <h3>Extrato operacional</h3>
-            <p>Comissao segue modo sandbox-first, com previsao de liquidacao real quando a conta final entrar.</p>
-          </SurfaceCard>
-        </div>
+        <AffiliateConsole overview={overview} />
       </section>
     </SiteShell>
   );

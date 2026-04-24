@@ -360,13 +360,241 @@ a {
   gap: 0.75rem;
 }
 
+.split-grid,
+.control-grid,
+.checkout-meta-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.split-grid,
+.checkout-meta-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.control-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-shell,
+.auth-shell,
+.checkout-shell,
+.result-block,
+.lesson-panel-copy,
+.lesson-panel-actions {
+  display: grid;
+  gap: 1rem;
+}
+
+.session-chip {
+  display: grid;
+  gap: 0.45rem;
+  justify-items: end;
+}
+
+.session-chip-meta,
+.session-chip-actions,
+.segmented-control {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.session-chip-meta span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.segmented-control {
+  padding: 0.35rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+}
+
+.segment-button,
+.primary-button,
+.secondary-button,
+.text-button {
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  transition: transform 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
+}
+
+.segment-button,
+.secondary-button {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+}
+
+.segment-button {
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+}
+
+.segment-button-active {
+  background: rgba(243, 185, 95, 0.18);
+  border-color: rgba(243, 185, 95, 0.35);
+}
+
+.primary-button,
+.secondary-button {
+  min-height: 3rem;
+  padding: 0.85rem 1.2rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.primary-button {
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: #1a1003;
+}
+
+.text-button {
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+}
+
+.segment-button:hover,
+.primary-button:hover,
+.secondary-button:hover,
+.text-button:hover {
+  transform: translateY(-1px);
+}
+
+.segment-button:disabled,
+.primary-button:disabled,
+.secondary-button:disabled,
+.text-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.92rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+  background: rgba(3, 10, 20, 0.82);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: rgba(167, 179, 202, 0.7);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: rgba(97, 213, 194, 0.48);
+  box-shadow: 0 0 0 4px rgba(97, 213, 194, 0.12);
+}
+
+.inline-card {
+  display: grid;
+  gap: 0.65rem;
+  padding: 1rem;
+  border-radius: 1.1rem;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pill-accent {
+  background: rgba(243, 185, 95, 0.16);
+  border-color: rgba(243, 185, 95, 0.28);
+}
+
+.status-banner {
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+}
+
+.status-banner-success {
+  background: rgba(97, 213, 194, 0.12);
+  border-color: rgba(97, 213, 194, 0.28);
+}
+
+.status-banner-error {
+  background: rgba(255, 120, 120, 0.12);
+  border-color: rgba(255, 120, 120, 0.28);
+}
+
+.action-row-tight {
+  justify-content: space-between;
+}
+
+.checkout-shell-primary {
+  background:
+    linear-gradient(130deg, rgba(243, 185, 95, 0.14), transparent 36%),
+    linear-gradient(180deg, rgba(21, 35, 62, 0.95), rgba(8, 17, 31, 0.95));
+}
+
+.lesson-panel {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1.3fr auto;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.lesson-panel-actions {
+  align-content: center;
+}
+
+.progress-meter {
+  position: relative;
+  height: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--secondary), var(--accent));
+}
+
+.embed-frame {
+  width: 100%;
+  min-height: 360px;
+  border: 0;
+  background: #02060d;
+}
+
 @media (max-width: 960px) {
   .hero-grid,
   .card-grid,
   .feature-grid,
   .queue-grid,
   .quote-grid,
-  .data-strip {
+  .data-strip,
+  .split-grid,
+  .control-grid,
+  .checkout-meta-grid,
+  .lesson-panel {
     grid-template-columns: 1fr;
   }
 
@@ -381,5 +609,9 @@ a {
 
   .page-hero h1 {
     line-height: 1.02;
+  }
+
+  .session-chip {
+    justify-items: stretch;
   }
 }

@@ -1,9 +1,9 @@
-import { routeByRole } from "@plataforma/config";
-import { Pill, SectionHeading, SurfaceCard } from "@plataforma/ui";
+import { Suspense } from "react";
 
+import { SectionHeading } from "@plataforma/ui";
+
+import { AuthPanel } from "../../components/auth-panel";
 import { SiteShell } from "../../components/site-shell";
-
-const roleCards = Object.entries(routeByRole);
 
 export default function LoginPage() {
   return (
@@ -17,15 +17,9 @@ export default function LoginPage() {
           title="Entradas previstas nesta fundacao"
           description="O backend aceita cadastro e login em modo demonstracao para cada perfil principal da operacao."
         />
-        <div className="feature-grid">
-          {roleCards.map(([role, route]) => (
-            <SurfaceCard key={role}>
-              <Pill>{role}</Pill>
-              <h3>{route}</h3>
-              <p>Rota de aterrissagem prevista para o papel `{role}`.</p>
-            </SurfaceCard>
-          ))}
-        </div>
+        <Suspense fallback={<div className="status-banner status-banner-success">Carregando autenticacao do staging...</div>}>
+          <AuthPanel />
+        </Suspense>
       </section>
     </SiteShell>
   );

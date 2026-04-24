@@ -281,6 +281,32 @@ export class DemoStoreService {
     };
   }
 
+  getCheckoutOffer(offerId: string) {
+    const course = this.courses.find((item) => item.offers.some((offer) => offer.id === offerId));
+    if (!course) {
+      throw new NotFoundException(`Oferta '${offerId}' nao encontrada`);
+    }
+
+    const offer = course.offers.find((item) => item.id === offerId);
+    if (!offer) {
+      throw new NotFoundException(`Oferta '${offerId}' nao encontrada`);
+    }
+
+    return {
+      course: {
+        id: course.id,
+        slug: course.slug,
+        title: course.title,
+        subtitle: course.subtitle,
+        summary: course.summary,
+        thumbnailUrl: course.thumbnailUrl,
+        producerName: course.producerName,
+        audience: course.audience
+      },
+      offer
+    };
+  }
+
   register(input: { fullName: string; email: string; role: Role }) {
     return {
       message: "Cadastro recebido em modo sandbox-first",

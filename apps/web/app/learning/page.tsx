@@ -1,17 +1,15 @@
-import { demoCourses } from "@plataforma/contracts";
 import { ButtonLink, Pill, SectionHeading, SurfaceCard } from "@plataforma/ui";
 
 import { SiteShell } from "../../components/site-shell";
+import { getCatalogCourses, getLearningOverview } from "../../lib/platform-api";
 
-export default function LearningOverviewPage() {
-  const currentCourse = demoCourses[0];
+export default async function LearningOverviewPage() {
+  const [overview, courses] = await Promise.all([getLearningOverview(), getCatalogCourses()]);
+  const currentCourse = overview.enrolledCourses[0];
 
   if (!currentCourse) {
     return (
-      <SiteShell
-        title="Learning"
-        subtitle="Nao ha cursos configurados nesta base de demonstracao."
-      >
+      <SiteShell title="Learning" subtitle="Nao ha cursos configurados nesta base de demonstracao.">
         <section className="content-section" />
       </SiteShell>
     );
@@ -26,7 +24,11 @@ export default function LearningOverviewPage() {
         <SurfaceCard className="hero-panel hero-panel-primary">
           <p className="section-eyebrow">retomada de progresso</p>
           <h2>{currentCourse.title}</h2>
-          <p>{currentCourse.subtitle}</p>
+          <p>
+            {currentCourse.nextLesson
+              ? `Proxima aula sugerida: ${currentCourse.nextLesson}`
+              : "Sua trilha ja esta pronta para retomada."}
+          </p>
           <div className="hero-actions">
             <ButtonLink href={`/learning/${currentCourse.slug}`}>Continuar curso</ButtonLink>
           </div>
@@ -35,9 +37,9 @@ export default function LearningOverviewPage() {
         <SurfaceCard className="hero-panel">
           <p className="section-eyebrow">status do aluno</p>
           <ul className="check-list">
-            <li>progresso consolidado por aula e modulo</li>
+            <li>progresso consolidado atual: {currentCourse.completionPct}%</li>
             <li>drip e previews respeitados por configuracao</li>
-            <li>espaco para materiais, certificados e reoferta</li>
+            <li>certificados prontos: {overview.certificatesReady}</li>
           </ul>
         </SurfaceCard>
       </section>
@@ -49,17 +51,22 @@ export default function LearningOverviewPage() {
           description="Cada bloco abaixo representa como o aluno enxerga sua carteira de aprendizagem."
         />
         <div className="feature-grid">
-          {demoCourses.map((course, index) => (
-            <SurfaceCard key={course.id}>
-              <div className="course-card-meta">
-                <Pill>{index === 0 ? "matriculado" : "sugerido"}</Pill>
-                <Pill>{course.modules.length} modulos</Pill>
-              </div>
-              <h3>{course.title}</h3>
-              <p>{course.summary}</p>
-              <ButtonLink href={`/learning/${course.slug}`}>Abrir trilha</ButtonLink>
-            </SurfaceCard>
-          ))}
+          {courses.map((course, index) => {
+            const enrolledCourse = overview.enrolledCourses.find((item) => item.slug === course.slug);
+
+            return (
+              <SurfaceCard key={course.id}>
+                <div className="course-card-meta">
+                  <Pill>{enrolledCourse ? "matriculado" : index === 0 ? "matriculado" : "sugerido"}</Pill>
+                  <Pill>{course.offers.length} ofertas</Pill>
+                </div>
+                <h3>{course.title}</h3>
+                <p>{course.summary}</p>
+                {enrolledCourse ? <p className="muted-label">progresso atual: {enrolledCourse.completionPct}%</p> : null}
+                <ButtonLink href={`/learning/${course.slug}`}>Abrir trilha</ButtonLink>
+              </SurfaceCard>
+            );
+          })}
         </div>
       </section>
     </SiteShell>

@@ -1,12 +1,7 @@
 import Link from "next/link";
 
 import { platformConfig } from "@plataforma/config";
-import {
-  demoAdminQueue,
-  demoCourses,
-  demoHomeMetrics,
-  demoTestimonials
-} from "@plataforma/contracts";
+import { demoAdminQueue, demoCourses, demoHomeMetrics, demoTestimonials } from "@plataforma/contracts";
 import { ButtonLink, DataStrip, Pill, SectionHeading, SurfaceCard } from "@plataforma/ui";
 
 import { CourseCard } from "../components/course-card";
@@ -23,8 +18,8 @@ export default function HomePage() {
           <p className="section-eyebrow">catalogo + checkout + learning</p>
           <h2>Uma experiencia unica, sem cara de ferramenta remendada.</h2>
           <p>
-            O objetivo deste produto e concentrar descoberta, oferta, compra, entrega,
-            afiliacao e administracao em um software proprietario com acabamento premium.
+            O objetivo deste produto e concentrar descoberta, oferta, compra, entrega, afiliacao e administracao em um
+            software proprietario com acabamento premium.
           </p>
           <div className="hero-actions">
             <ButtonLink href="/catalog">Explorar catalogo</ButtonLink>
@@ -119,9 +114,9 @@ export default function HomePage() {
         <div className="quote-grid">
           {demoTestimonials.map((testimonial) => (
             <SurfaceCard key={testimonial.name}>
-              <p className="quote">“{testimonial.quote}”</p>
+              <p className="quote">"{testimonial.quote}"</p>
               <p className="muted-label">
-                {testimonial.name} · {testimonial.role}
+                {testimonial.name} - {testimonial.role}
               </p>
             </SurfaceCard>
           ))}

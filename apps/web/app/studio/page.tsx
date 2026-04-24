@@ -1,8 +1,12 @@
-import { SectionHeading, SurfaceCard } from "@plataforma/ui";
+import { SectionHeading } from "@plataforma/ui";
 
+import { StudioConsole } from "../../components/studio-console";
 import { SiteShell } from "../../components/site-shell";
+import { getStudioOverview } from "../../lib/platform-api";
 
-export default function StudioPage() {
+export default async function StudioPage() {
+  const overview = await getStudioOverview();
+
   return (
     <SiteShell
       title="Studio"
@@ -14,20 +18,7 @@ export default function StudioPage() {
           title="Esteira de operacao"
           description="O studio foi desenhado para receber pedidos de entrada, cursos em rascunho e leitura consolidada da operacao."
         />
-        <div className="feature-grid">
-          <SurfaceCard>
-            <h3>Onboarding controlado</h3>
-            <p>Auto cadastro com aprovacao administrativa e preparacao de conta de repasse.</p>
-          </SurfaceCard>
-          <SurfaceCard>
-            <h3>Publicacao por rascunho</h3>
-            <p>Curso nasce em draft, recebe oferta e passa por fila antes de abrir para venda.</p>
-          </SurfaceCard>
-          <SurfaceCard>
-            <h3>Leitura comercial</h3>
-            <p>KPIs prontos para conectar vendas, afiliados e performance de ofertas.</p>
-          </SurfaceCard>
-        </div>
+        <StudioConsole overview={overview} />
       </section>
     </SiteShell>
   );

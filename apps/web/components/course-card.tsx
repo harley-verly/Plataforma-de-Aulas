@@ -22,9 +22,14 @@ export function CourseCard({ course }: { course: CourseItem }) {
             </div>
           ))}
         </div>
-        <Link className="ghost-link" href={`/catalog/${course.slug}`}>
-          Ver detalhes
-        </Link>
+        <div className="action-row action-row-tight">
+          <Link className="ghost-link" href={`/catalog/${course.slug}`}>
+            Ver detalhes
+          </Link>
+          <Link className="button-link" href={`/checkout/${course.offers[0]?.id}?course=${course.slug}`}>
+            Ir para checkout
+          </Link>
+        </div>
       </div>
     </SurfaceCard>
   );
