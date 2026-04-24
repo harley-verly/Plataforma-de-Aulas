@@ -1,6 +1,7 @@
 import type { PlatformRole } from "@plataforma/contracts";
 
 export const DEMO_SESSION_KEY = "plataforma-demo-session";
+export const DEMO_SESSION_COOKIE = "plataforma-demo-access";
 export const DEMO_SESSION_EVENT = "plataforma-demo-session-changed";
 
 export interface DemoSession {
@@ -10,6 +11,64 @@ export interface DemoSession {
   fullName?: string;
   token?: string;
   statusLabel?: string;
+}
+
+export function parseDemoSession(rawValue: string | null | undefined) {
+  if (!rawValue) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(rawValue) as DemoSession;
+  } catch {
+    return null;
+  }
+}
+
+export function serializeDemoSession(session: DemoSession) {
+  return encodeURIComponent(JSON.stringify(session));
+}
+
+function getCookieValue(name: string) {
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  const cookieEntry = document.cookie
+    .split("; ")
+    .find((item) => item.startsWith(`${name}=`));
+
+  if (!cookieEntry) {
+    return null;
+  }
+
+  return cookieEntry.slice(name.length + 1);
+}
+
+function readDemoSessionCookie() {
+  const rawCookie = getCookieValue(DEMO_SESSION_COOKIE);
+  if (!rawCookie) {
+    return null;
+  }
+
+  return parseDemoSession(decodeURIComponent(rawCookie));
+}
+
+function writeDemoSessionCookie(session: DemoSession) {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  const secureFlag = window.location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${DEMO_SESSION_COOKIE}=${serializeDemoSession(session)}; Path=/; Max-Age=604800; SameSite=Lax${secureFlag}`;
+}
+
+function clearDemoSessionCookie() {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  document.cookie = `${DEMO_SESSION_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`;
 }
 
 function emitSessionChanged() {
@@ -27,15 +86,16 @@ export function readDemoSession() {
 
   const rawValue = window.localStorage.getItem(DEMO_SESSION_KEY);
   if (!rawValue) {
-    return null;
+    return readDemoSessionCookie();
   }
 
-  try {
-    return JSON.parse(rawValue) as DemoSession;
-  } catch {
+  const session = parseDemoSession(rawValue);
+  if (!session) {
     window.localStorage.removeItem(DEMO_SESSION_KEY);
-    return null;
+    return readDemoSessionCookie();
   }
+
+  return session;
 }
 
 export function writeDemoSession(session: DemoSession) {
@@ -44,6 +104,7 @@ export function writeDemoSession(session: DemoSession) {
   }
 
   window.localStorage.setItem(DEMO_SESSION_KEY, JSON.stringify(session));
+  writeDemoSessionCookie(session);
   emitSessionChanged();
 }
 
@@ -53,5 +114,6 @@ export function clearDemoSession() {
   }
 
   window.localStorage.removeItem(DEMO_SESSION_KEY);
+  clearDemoSessionCookie();
   emitSessionChanged();
 }

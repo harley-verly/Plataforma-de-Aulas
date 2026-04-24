@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 
+import { routeByRole } from "@plataforma/config";
 import type { PlatformRole } from "@plataforma/contracts";
 import { Pill, SurfaceCard } from "@plataforma/ui";
 
@@ -32,6 +33,26 @@ function getErrorMessage(payload: unknown, fallback: string) {
   }
 
   return fallback;
+}
+
+function isRouteAllowedForRole(role: PlatformRole, pathname: string) {
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+    return role === "super_admin" || role === "platform_admin" || role === "support";
+  }
+
+  if (pathname === "/studio" || pathname.startsWith("/studio/")) {
+    return role === "super_admin" || role === "platform_admin" || role === "producer";
+  }
+
+  if (pathname === "/affiliate" || pathname.startsWith("/affiliate/")) {
+    return role === "super_admin" || role === "platform_admin" || role === "affiliate";
+  }
+
+  if (pathname === "/learning" || pathname.startsWith("/learning/")) {
+    return role === "super_admin" || role === "platform_admin" || role === "support" || role === "student";
+  }
+
+  return true;
 }
 
 export function AuthPanel() {
@@ -101,26 +122,34 @@ export function AuthPanel() {
                 }
 
                 if (mode === "login" && "session" in data) {
+                  const homeRoute = routeByRole[data.session.role];
+                  const targetRoute =
+                    redirectTarget && isRouteAllowedForRole(data.session.role, redirectTarget) ? redirectTarget : homeRoute;
+
                   writeDemoSession({
                     email: data.session.email,
                     role: data.session.role,
-                    nextRoute: redirectTarget ?? data.session.nextRoute,
+                    nextRoute: homeRoute,
                     token: data.session.token,
                     statusLabel: "login ativo"
                   });
-                  router.push(redirectTarget ?? data.session.nextRoute);
+                  router.push(targetRoute);
                   return;
                 }
 
                 if (mode === "register" && "user" in data) {
+                  const homeRoute = routeByRole[data.user.role];
+                  const targetRoute =
+                    redirectTarget && isRouteAllowedForRole(data.user.role, redirectTarget) ? redirectTarget : homeRoute;
+
                   writeDemoSession({
                     email: data.user.email,
                     role: data.user.role,
-                    nextRoute: redirectTarget ?? data.nextRoute,
+                    nextRoute: homeRoute,
                     fullName: data.user.fullName,
                     statusLabel: "cadastro sandbox"
                   });
-                  router.push(redirectTarget ?? data.nextRoute);
+                  router.push(targetRoute);
                   return;
                 }
 
