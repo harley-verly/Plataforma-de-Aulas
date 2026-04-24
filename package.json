@@ -4,12 +4,12 @@
   "version": "0.1.0",
   "packageManager": "pnpm@10.33.0",
   "scripts": {
-    "build": "pnpm run build:packages && pnpm --filter @plataforma/api build && pnpm --filter @plataforma/web build",
-    "build:packages": "pnpm --filter @plataforma/contracts build && pnpm --filter @plataforma/config build && pnpm --filter @plataforma/ui build",
-    "dev": "pnpm -r --parallel --filter @plataforma/contracts --filter @plataforma/config --filter @plataforma/ui --filter @plataforma/api --filter @plataforma/web dev",
-    "typecheck": "pnpm run build:packages && pnpm --filter @plataforma/api typecheck && pnpm --filter @plataforma/web typecheck",
-    "prisma:generate": "pnpm exec prisma generate",
-    "prisma:format": "pnpm exec prisma format"
+    "build": "node scripts/run-workspace-sequence.mjs build",
+    "build:packages": "node scripts/run-workspace-sequence.mjs build:packages",
+    "dev": "node scripts/run-pnpm.mjs -r --parallel --filter @plataforma/contracts --filter @plataforma/config --filter @plataforma/ui --filter @plataforma/api --filter @plataforma/web dev",
+    "typecheck": "node scripts/run-workspace-sequence.mjs typecheck",
+    "prisma:generate": "prisma generate",
+    "prisma:format": "prisma format"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3"

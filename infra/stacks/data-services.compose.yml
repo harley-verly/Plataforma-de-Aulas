@@ -44,7 +44,7 @@ services:
 
 networks:
   plataforma-internal:
-    name: plataforma-internal
+    external: true
 
 volumes:
   postgres_data:

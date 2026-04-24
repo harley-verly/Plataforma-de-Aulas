@@ -1,0 +1,56 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/plataforma_de_aulas
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:4000/api
+      CORS_ORIGIN: http://localhost:3000
+      MINIO_ENDPOINT: localhost
+      MINIO_PORT: "9000"
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+      MINIO_BUCKET: plataforma-aulas-assets
+      ASAAS_ENV: sandbox
+      PANDA_DEFAULT_ALLOWED_DOMAIN: aulas.abasolucoesetecnologia.com.br
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm prisma:generate
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build shared packages
+        run: pnpm run build:packages
+
+      - name: Build API
+        run: pnpm --filter @plataforma/api build
+
+      - name: Build web
+        run: pnpm --filter @plataforma/web build
