@@ -7,14 +7,15 @@ import { SiteShell } from "../../components/site-shell";
 export default function CatalogPage() {
   return (
     <SiteShell
+      eyebrow="vitrine editorial"
       title="Catalogo premium"
-      subtitle="Uma vitrine preparada para descoberta, prova de valor e transicao natural para checkout."
+      subtitle="Uma vitrine preparada para descoberta, prova de valor e transicao natural para checkout, agora com atmosfera visual mais forte."
     >
       <section className="content-section">
         <SectionHeading
           eyebrow="cursos"
           title="Ofertas estruturadas para venda e entrega"
-          description="O catalogo combina narrativa clara, prova de valor e preparacao para checkout avulso ou recorrente."
+          description="O catalogo combina narrativa clara, destaque visual e preparacao para checkout avulso ou recorrente."
         />
         <div className="card-grid">
           {demoCourses.map((course) => (

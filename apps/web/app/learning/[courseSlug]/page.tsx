@@ -19,12 +19,16 @@ export default async function LearningCoursePage({
   }
 
   return (
-    <SiteShell title={course.title} subtitle="Consumo guiado com video, materiais e progresso por aula.">
+    <SiteShell
+      eyebrow="conteudo do curso"
+      title={course.title}
+      subtitle="Consumo guiado com video em destaque, biblioteca lateral e progresso por aula."
+    >
       <section className="content-section">
         <SectionHeading
-          eyebrow="progresso"
+          eyebrow="ritmo da trilha"
           title="Mapa de consumo"
-          description="A jornada do aluno combina preview, drip controlado e materiais associados a cada aula."
+          description="A jornada do aluno combina retomada, progresso visivel, video central e uma navegacao lateral mais parecida com uma area de membros premium."
         />
         <LearningCourseConsole initialCourse={course} />
       </section>

@@ -9,7 +9,7 @@ export default async function LearningOverviewPage() {
 
   if (!currentCourse) {
     return (
-      <SiteShell title="Learning" subtitle="Nao ha cursos configurados nesta base de demonstracao.">
+      <SiteShell eyebrow="area do aluno" title="Learning" subtitle="Nao ha cursos configurados nesta base de demonstracao.">
         <section className="content-section" />
       </SiteShell>
     );
@@ -17,45 +17,70 @@ export default async function LearningOverviewPage() {
 
   return (
     <SiteShell
+      eyebrow="area do aluno"
       title="Learning"
-      subtitle="Uma area do aluno pensada para consumo continuo, clareza de progresso e retomada sem atrito."
+      subtitle="Uma biblioteca com destaque editorial, retomada clara e clima de academia premium para continuar consumindo aulas."
     >
-      <section className="hero-grid">
-        <SurfaceCard className="hero-panel hero-panel-primary">
-          <p className="section-eyebrow">retomada de progresso</p>
+      <section className="member-stage">
+        <SurfaceCard className="member-stage-main">
+          <p className="section-eyebrow">retomar agora</p>
           <h2>{currentCourse.title}</h2>
           <p>
             {currentCourse.nextLesson
-              ? `Proxima aula sugerida: ${currentCourse.nextLesson}`
+              ? `A proxima aula sugerida nesta trilha e ${currentCourse.nextLesson}.`
               : "Sua trilha ja esta pronta para retomada."}
           </p>
           <div className="hero-actions">
             <ButtonLink href={`/learning/${currentCourse.slug}`}>Continuar curso</ButtonLink>
+            <ButtonLink href="/catalog">Ver catalogo</ButtonLink>
+          </div>
+          <div className="story-facts">
+            <div className="story-fact">
+              <span className="story-fact-label">progresso atual</span>
+              <strong>{currentCourse.completionPct}%</strong>
+            </div>
+            <div className="story-fact">
+              <span className="story-fact-label">certificados prontos</span>
+              <strong>{overview.certificatesReady}</strong>
+            </div>
+            <div className="story-fact">
+              <span className="story-fact-label">status do ritmo</span>
+              <strong>{currentCourse.nextLesson ? "retomada recomendada" : "trilha em dia"}</strong>
+            </div>
           </div>
         </SurfaceCard>
 
-        <SurfaceCard className="hero-panel">
-          <p className="section-eyebrow">status do aluno</p>
-          <ul className="check-list">
-            <li>progresso consolidado atual: {currentCourse.completionPct}%</li>
-            <li>drip e previews respeitados por configuracao</li>
-            <li>certificados prontos: {overview.certificatesReady}</li>
-          </ul>
+        <SurfaceCard className="member-stage-side">
+          <p className="section-eyebrow">carteira do aluno</p>
+          <div className="story-list">
+            <div className="story-list-item">
+              <span>curso em foco</span>
+              <strong>{currentCourse.title}</strong>
+            </div>
+            <div className="story-list-item">
+              <span>drip e previews</span>
+              <strong>ativos por configuracao</strong>
+            </div>
+            <div className="story-list-item">
+              <span>certificados</span>
+              <strong>{overview.certificatesReady} prontos</strong>
+            </div>
+          </div>
         </SurfaceCard>
       </section>
 
       <section className="content-section">
         <SectionHeading
-          eyebrow="minha trilha"
-          title="Cursos ativos"
-          description="Cada bloco abaixo representa como o aluno enxerga sua carteira de aprendizagem."
+          eyebrow="minha biblioteca"
+          title="Cursos ativos e trilhas sugeridas"
+          description="Cada bloco abaixo representa como o aluno enxerga a carteira de aprendizagem dentro de uma area de membros mais editorial."
         />
         <div className="feature-grid">
           {courses.map((course, index) => {
             const enrolledCourse = overview.enrolledCourses.find((item) => item.slug === course.slug);
 
             return (
-              <SurfaceCard key={course.id}>
+              <SurfaceCard key={course.id} className="feature-card">
                 <div className="course-card-meta">
                   <Pill>{enrolledCourse ? "matriculado" : index === 0 ? "matriculado" : "sugerido"}</Pill>
                   <Pill>{course.offers.length} ofertas</Pill>

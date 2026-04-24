@@ -44,7 +44,7 @@ export function AdminApprovalConsole({
 
       <div className="queue-grid">
         {approvals.map((item) => (
-          <SurfaceCard key={item.id}>
+          <SurfaceCard key={item.id} className="queue-card approval-card">
             <div className="course-card-meta">
               <Pill>{item.kind}</Pill>
               <Pill>{item.state}</Pill>

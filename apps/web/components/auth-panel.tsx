@@ -70,8 +70,17 @@ export function AuthPanel() {
   const redirectTarget = redirectParam?.startsWith("/") ? redirectParam : null;
 
   return (
-    <div className="split-grid">
-      <SurfaceCard className="auth-shell">
+    <div className="auth-demo-layout">
+      <SurfaceCard className="auth-shell auth-shell-primary">
+        <div className="auth-shell-copy">
+          <p className="section-eyebrow">entrada principal</p>
+          <h2>{mode === "login" ? "Bem-vindo de volta" : "Crie uma conta de demonstracao"}</h2>
+          <p>
+            O fluxo registra uma sessao local de demonstracao e redireciona automaticamente para a area correta do
+            perfil selecionado.
+          </p>
+        </div>
+
         <div className="segmented-control" role="tablist" aria-label="Modo de autenticacao">
           <button
             className={mode === "login" ? "segment-button segment-button-active" : "segment-button"}
@@ -183,17 +192,16 @@ export function AuthPanel() {
               <span>Senha</span>
               <input onChange={(event) => setPassword(event.target.value)} required type="password" value={password} />
             </label>
+          </div>
 
-            <label className="field">
-              <span>Papel inicial</span>
-              <select onChange={(event) => setRole(event.target.value as PlatformRole)} value={role}>
-                {roleOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
+          <div className="inline-card">
+            <div className="course-card-meta">
+              <Pill>{role}</Pill>
+              <Pill className="pill-accent">{roleOptions.find((option) => option.value === role)?.label}</Pill>
+            </div>
+            <p className="muted-label">
+              Perfil ativo para o proximo acesso: {roleOptions.find((option) => option.value === role)?.hint}
+            </p>
           </div>
 
           {feedback ? (
@@ -207,24 +215,29 @@ export function AuthPanel() {
               {isPending ? "Processando..." : mode === "login" ? "Entrar no staging" : "Criar conta sandbox"}
             </button>
             <p className="muted-label">
-              O fluxo grava uma sessao local de demonstracao e redireciona para a area correspondente.
+              O acesso anonimo nao abre admin, studio, affiliate ou learning sem sessao valida.
             </p>
           </div>
         </form>
       </SurfaceCard>
 
-      <SurfaceCard className="auth-shell">
+      <SurfaceCard className="auth-shell auth-shell-secondary">
         <p className="section-eyebrow">perfis de entrada</p>
-        <div className="module-stack">
+        <div className="auth-role-grid">
           {roleOptions.map((option) => (
-            <div key={option.value} className="inline-card">
+            <button
+              key={option.value}
+              className={option.value === role ? "role-option role-option-active" : "role-option"}
+              onClick={() => setRole(option.value)}
+              type="button"
+            >
               <div className="course-card-meta">
                 <Pill>{option.value}</Pill>
                 {option.value === role ? <Pill className="pill-accent">selecionado</Pill> : null}
               </div>
-              <h3>{option.label}</h3>
-              <p>{option.hint}</p>
-            </div>
+              <strong>{option.label}</strong>
+              <span>{option.hint}</span>
+            </button>
           ))}
         </div>
       </SurfaceCard>

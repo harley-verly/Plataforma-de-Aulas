@@ -5,10 +5,12 @@ import { platformConfig } from "@plataforma/config";
 import { SessionIndicator } from "./session-indicator";
 
 export function SiteShell({
+  eyebrow = "staging premium",
   title,
   subtitle,
   children
 }: {
+  eyebrow?: string;
   title: string;
   subtitle: string;
   children: React.ReactNode;
@@ -34,7 +36,7 @@ export function SiteShell({
 
       <main className="main-content">
         <section className="page-hero">
-          <p className="section-eyebrow">staging proprietario</p>
+          <p className="section-eyebrow">{eyebrow}</p>
           <h1>{title}</h1>
           <p>{subtitle}</p>
         </section>

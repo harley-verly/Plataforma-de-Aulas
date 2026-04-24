@@ -6,14 +6,28 @@ import { Pill, SurfaceCard } from "@plataforma/ui";
 export function CourseCard({ course }: { course: CourseItem }) {
   return (
     <SurfaceCard className="course-card">
-      <img alt={course.title} className="course-card-image" src={course.thumbnailUrl} />
-      <div className="course-card-body">
+      <div
+        className="course-card-visual"
+        style={{
+          backgroundImage: `linear-gradient(180deg, rgba(6, 6, 6, 0.08), rgba(6, 6, 6, 0.86)), url(${course.thumbnailUrl})`
+        }}
+      >
         <div className="course-card-meta">
+          <Pill>{course.category}</Pill>
           <Pill>{course.producerName}</Pill>
-          <Pill>{course.audience}</Pill>
         </div>
-        <h3>{course.title}</h3>
+        <div className="course-card-copy">
+          <p className="course-card-kicker">{course.audience}</p>
+          <h3>{course.title}</h3>
+          <p>{course.subtitle}</p>
+        </div>
+      </div>
+      <div className="course-card-body">
         <p>{course.summary}</p>
+        <div className="inline-card">
+          <p className="muted-label">Transformacao prometida</p>
+          <p className="course-card-transformation">{course.transformation}</p>
+        </div>
         <div className="course-card-offers">
           {course.offers.map((offer) => (
             <div key={offer.id} className="mini-offer">
