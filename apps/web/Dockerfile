@@ -11,6 +11,7 @@ COPY package.json pnpm-workspace.yaml tsconfig.base.json ./
 COPY apps ./apps
 COPY packages ./packages
 COPY prisma ./prisma
+COPY scripts ./scripts
 
 RUN pnpm install --no-frozen-lockfile
 RUN pnpm run build:packages
