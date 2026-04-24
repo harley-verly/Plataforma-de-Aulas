@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { ButtonLink, Pill, SurfaceCard } from "@plataforma/ui";
 
 import { MemberApplicationsPanel } from "../../components/member-applications-panel";
@@ -24,13 +26,35 @@ export default async function LearningOverviewPage() {
 
   return (
     <MemberShell
-      bannerImage={courses[0]?.thumbnailUrl}
+      bannerImage="/references/harley-bio-dourada-2.png"
       currentSection="learning"
-      eyebrow="introducao e boas vindas"
+      eyebrow="lancamento"
       title="Minha area de cursos"
-      subtitle="Biblioteca interna, retomada de aulas e solicitacoes de acesso em um layout inspirado na sua plataforma WordPress."
+      subtitle="Leia o corpo, conecte-se com a alma e acompanhe seus cursos em um ambiente inspirado diretamente na sua plataforma WordPress."
     >
       <section className="member-page-section">
+        <div className="academy-info-card">
+          <div className="academy-info-card-logo">
+            <Image src="/references/logo-sem-fundo-192.png" alt="Instituto Metaterapia" width={120} height={120} />
+          </div>
+          <div className="academy-info-card-copy">
+            <p>Use esse conteudo sem moderacao, desde que use para propagacao do Reino de Deus na Terra.</p>
+            <strong>Tenha responsabilidade!</strong>
+          </div>
+          <div className="academy-social-list">
+            <span className="academy-social-bubble">IG</span>
+            <span className="academy-social-bubble">YT</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="member-page-section">
+        <div className="member-section-heading academy-section-heading">
+          <span className="member-card-kicker">introducao e boas vindas</span>
+          <h2>Comece por aqui para entender como funciona a plataforma.</h2>
+          <p>Biblioteca interna, retomada de aulas e liberacoes internas em um layout muito mais proximo da sua referencia.</p>
+        </div>
+
         <div className="member-dashboard-grid">
           <SurfaceCard className="member-highlight-card">
             <span className="member-card-kicker">continue de onde parou</span>
@@ -66,7 +90,7 @@ export default async function LearningOverviewPage() {
       </section>
 
       <section className="member-page-section">
-        <div className="member-section-heading">
+        <div className="member-section-heading academy-section-heading">
           <span className="member-card-kicker">minha biblioteca</span>
           <h2>Cursos ativos e trilhas recomendadas</h2>
         </div>

@@ -8,49 +8,31 @@ import { SiteShell } from "../../components/site-shell";
 export default function CatalogPage() {
   return (
     <SiteShell>
-      <section className="hero hero-compact">
-        <div className="hero-copy">
-          <span className="eyebrow">catalogo oficial</span>
-          <h1>Descoberta comercial no mesmo padrao da landing externa.</h1>
-          <p className="hero-text">
-            Aqui o visitante enxerga o portfolio da plataforma com narrativa, oferta e transicao limpa para checkout e
-            acesso.
-          </p>
-          <div className="hero-actions">
-            <Link href="/login" className="primary-action workspace-link">
-              Entrar
-            </Link>
-            <Link href="/" className="secondary-action workspace-link">
-              Voltar para a home
-            </Link>
-          </div>
+      <section className="marketing-page-hero">
+        <span className="marketing-kicker">catalogo oficial</span>
+        <h1>
+          Cursos, trilhas e ofertas em uma
+          <span> vitrine premium</span>
+        </h1>
+        <p>
+          A area externa do catalogo segue a mesma identidade da landing principal: contraste forte, centro de atencao
+          bem definido e CTA limpo para oferta e checkout.
+        </p>
+        <div className="marketing-hero-actions marketing-hero-actions-left">
+          <Link href="/login" className="primary-action workspace-link">
+            Entrar
+          </Link>
+          <Link href="/" className="secondary-action workspace-link">
+            Voltar para home
+          </Link>
         </div>
-
-        <aside className="hero-panel">
-          <div className="stack-panel compact-stack-panel">
-            <span className="eyebrow">curadoria</span>
-            <h3>Catalogo de prova</h3>
-            <p>Cursos preparados para demonstrar compra avulsa, recorrencia, video e area de membros.</p>
-          </div>
-        </aside>
       </section>
 
-      <section className="content-grid">
-        <div className="content-column">
-          <div className="section-heading">
-            <span className="eyebrow">cursos</span>
-            <h2>Ofertas estruturadas para venda e entrega.</h2>
-            <p className="section-copy">
-              Cada card foi reposicionado para a linguagem comercial externa, mas ja aponta para uma area interna mais
-              robusta.
-            </p>
-          </div>
-
-          <div className="card-grid">
-            {demoCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
+      <section className="marketing-course-section">
+        <div className="card-grid">
+          {demoCourses.map((course) => (
+            <CourseCard key={course.id} course={course} />
+          ))}
         </div>
       </section>
     </SiteShell>

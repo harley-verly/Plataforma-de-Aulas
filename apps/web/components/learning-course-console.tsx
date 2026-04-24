@@ -66,11 +66,11 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
   };
 
   return (
-    <div className="module-stack internal-course-shell">
+    <div className="module-stack academy-course-shell">
       {feedback ? <div className="status-banner status-banner-success">{feedback}</div> : null}
 
-      <div className="lesson-command-bar">
-        <div className="lesson-command-meta">
+      <div className="lesson-command-bar academy-lesson-command-bar">
+        <div className="lesson-command-meta academy-lesson-command-meta">
           <span>Seu progresso: {completedLessons} de {totalLessons} aulas</span>
           <strong>({overallProgress}%)</strong>
         </div>
@@ -86,22 +86,22 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
         ) : null}
       </div>
 
-      <div className="lesson-workspace">
-        <section className="lesson-main-stage">
-          <div className="lesson-stage-top">
-            <div className="lesson-stage-copy">
+      <div className="lesson-workspace academy-lesson-workspace">
+        <section className="lesson-main-stage academy-lesson-main-stage">
+          <div className="lesson-stage-top academy-lesson-stage-top">
+            <div className="lesson-stage-copy academy-lesson-stage-copy">
               <p className="section-eyebrow">aula ativa</p>
               <h2>{activeLesson?.title ?? course.title}</h2>
               <p>{activeLesson?.summary ?? course.subtitle}</p>
             </div>
-            <div className="lesson-stage-summary">
+            <div className="lesson-stage-summary academy-lesson-stage-summary">
               <Pill>{activeLesson?.videoProvider ?? "video"}</Pill>
               <Pill>{activeLesson ? `${Math.round(activeLesson.durationSec / 60)} min` : "0 min"}</Pill>
               <Pill>{activeLesson?.isPreview ? "preview" : "aula liberada"}</Pill>
             </div>
           </div>
 
-          <div className="video-frame lesson-video-frame">
+          <div className="video-frame lesson-video-frame academy-video-frame">
             {activeLesson ? (
               <iframe
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -118,7 +118,7 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
             )}
           </div>
 
-          <div className="lesson-panel-tabs">
+          <div className="lesson-panel-tabs academy-lesson-tabs">
             <button
               className={activeTab === "overview" ? "lesson-tab-button lesson-tab-button-active" : "lesson-tab-button"}
               onClick={() => setActiveTab("overview")}
@@ -136,8 +136,8 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
           </div>
 
           {activeTab === "overview" ? (
-            <div className="lesson-support-grid">
-              <SurfaceCard className="inline-card">
+            <div className="lesson-support-grid academy-lesson-support-grid">
+              <SurfaceCard className="inline-card academy-support-card">
                 <p className="muted-label">Resumo da trilha</p>
                 <div className="course-card-meta">
                   <Pill>{completedLessons}/{totalLessons} concluidas</Pill>
@@ -149,7 +149,7 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
                 <p className="muted-label">Seu progresso geral fica visivel antes mesmo de abrir o menu lateral.</p>
               </SurfaceCard>
 
-              <SurfaceCard className="inline-card">
+              <SurfaceCard className="inline-card academy-support-card">
                 <p className="muted-label">Sobre a aula</p>
                 <ul className="check-list">
                   <li>externalVideoId: {activeLesson?.externalVideoId ?? "-"}</li>
@@ -160,7 +160,7 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
               </SurfaceCard>
             </div>
           ) : (
-            <SurfaceCard className="inline-card lesson-comments-card">
+            <SurfaceCard className="inline-card lesson-comments-card academy-support-card">
               <p className="muted-label">Comentarios da aula</p>
               <p>
                 Este bloco representa a extensao natural da area interna para duvidas, conversa e suporte do aluno sem
@@ -170,17 +170,17 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
           )}
         </section>
 
-        <aside className="lesson-sidebar">
-          <div className="lesson-sidebar-header">
+        <aside className="lesson-sidebar academy-lesson-sidebar">
+          <div className="lesson-sidebar-header academy-lesson-sidebar-header">
             <p className="section-eyebrow">conteudo do curso</p>
             <h3>{course.title}</h3>
             <p className="muted-label">Biblioteca lateral com modulos, tempo estimado e marcacao rapida de progresso.</p>
           </div>
 
-          <div className="lesson-sidebar-body">
+          <div className="lesson-sidebar-body academy-lesson-sidebar-body">
             {course.modules.map((module) => (
-              <div key={module.id} className="lesson-sidebar-section">
-                <div className="lesson-sidebar-title">
+              <div key={module.id} className="lesson-sidebar-section academy-module-section">
+                <div className="lesson-sidebar-title academy-module-title">
                   <strong>{module.title}</strong>
                   <span>{module.description}</span>
                 </div>
@@ -191,10 +191,14 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
                     return (
                       <div
                         key={lesson.id}
-                        className={lesson.id === activeLessonId ? "lesson-nav-card lesson-nav-card-active" : "lesson-nav-card"}
+                        className={
+                          lesson.id === activeLessonId
+                            ? "lesson-nav-card lesson-nav-card-active academy-lesson-nav-card"
+                            : "lesson-nav-card academy-lesson-nav-card"
+                        }
                       >
                         <button
-                          className="lesson-nav-main"
+                          className="lesson-nav-main academy-lesson-nav-main"
                           onClick={() => setActiveLessonId(lesson.id)}
                           type="button"
                         >

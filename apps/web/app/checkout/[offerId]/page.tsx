@@ -18,26 +18,19 @@ export default async function CheckoutPage({
 
   return (
     <SiteShell>
-      <section className="hero hero-compact">
-        <div className="hero-copy">
-          <span className="eyebrow">checkout</span>
-          <h1>Sessao comercial pronta para a demonstracao.</h1>
-          <p className="hero-text">
-            Fluxo externo da plataforma com criacao de sessao, atribuicao opcional de afiliado e encaminhamento para a
-            area interna do aluno.
-          </p>
-        </div>
-
-        <aside className="hero-panel">
-          <div className="stack-panel compact-stack-panel">
-            <span className="eyebrow">modo atual</span>
-            <h3>Sandbox-first</h3>
-            <p>Preparado para Asaas, split e observabilidade sem expor a operacao para o cliente.</p>
-          </div>
-        </aside>
+      <section className="marketing-page-hero marketing-page-hero-narrow">
+        <span className="marketing-kicker">checkout</span>
+        <h1>
+          Sessao comercial pronta para
+          <span> demonstracao</span>
+        </h1>
+        <p>
+          Fluxo externo da plataforma com criacao de sessao, atribuicao opcional de afiliado e encaminhamento para a
+          area interna do aluno.
+        </p>
       </section>
 
-      <section className="content-grid">
+      <section className="marketing-checkout-section">
         <CheckoutDemoPanel course={checkoutOffer.course} offer={checkoutOffer.offer} />
       </section>
     </SiteShell>

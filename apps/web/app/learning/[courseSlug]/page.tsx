@@ -18,11 +18,11 @@ export default async function LearningCoursePage({
 
   return (
     <MemberShell
-      bannerImage={course.thumbnailUrl}
+      bannerImage="/references/harley-bio-dourada-2.png"
       currentSection="learning"
       eyebrow="conteudo do curso"
       title={course.title}
-      subtitle="Consumo guiado com video em destaque, progresso visivel e navegacao lateral no mesmo clima da referencia WordPress."
+      subtitle="Consumo guiado com video em destaque, progresso visivel e navegacao lateral em um layout inspirado diretamente na sua plataforma WordPress."
     >
       <section className="member-page-section">
         <LearningCourseConsole initialCourse={course} />

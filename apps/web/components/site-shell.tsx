@@ -9,32 +9,32 @@ export function SiteShell({
 }) {
   return (
     <div className="public-app-shell">
-      <div className="portal-shell">
-        <header className="shell-topbar">
-          <Link href="/" className="product-lockup public-brand-lockup">
-            <div className="product-mark">
+      <div className="marketing-backdrop-glow" />
+      <div className="portal-shell marketing-shell">
+        <header className="shell-topbar marketing-header">
+          <Link href="/" className="product-lockup public-brand-lockup marketing-brand-lockup">
+            <div className="product-mark marketing-brand-mark">
               <span className="member-brand-dot" />
             </div>
-            <div className="topbar-copy">
-              <span className="eyebrow">plataforma proprietaria</span>
+            <div className="topbar-copy marketing-brand-copy">
               <strong>Plataforma de Aulas</strong>
-              <p>Catalogo, checkout e area do aluno em uma experiencia unica.</p>
             </div>
           </Link>
 
-          <nav className="public-nav-links" aria-label="Navegacao externa">
-            <Link href="/">Inicio</Link>
+          <nav className="public-nav-links marketing-nav-links" aria-label="Navegacao externa">
+            <Link href="/#funcionalidades">Funcionalidades</Link>
             <Link href="/catalog">Catalogo</Link>
-            <Link href="/#estrutura">Estrutura</Link>
-            <Link href="/#experiencia">Experiencia</Link>
+            <Link href="/#produtores">Produtores</Link>
+            <Link href="/#planos">Planos</Link>
+            <Link href="/#faq">FAQ</Link>
           </nav>
 
-          <div className="public-session-slot">
+          <div className="public-session-slot marketing-session-slot">
             <SessionIndicator />
           </div>
         </header>
 
-        <main>{children}</main>
+        <main className="marketing-main">{children}</main>
       </div>
     </div>
   );

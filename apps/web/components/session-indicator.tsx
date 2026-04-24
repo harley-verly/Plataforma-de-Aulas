@@ -34,21 +34,28 @@ export function SessionIndicator() {
   }, []);
 
   if (!session) {
-    return <ButtonLink href="/login">Entrar</ButtonLink>;
+    return (
+      <div className="marketing-session-actions">
+        <Link className="marketing-header-link" href="/login">
+          Entrar
+        </Link>
+        <ButtonLink href="/login?mode=register">Criar conta</ButtonLink>
+      </div>
+    );
   }
 
   return (
-    <div className="public-session-card">
-      <div className="public-session-copy">
-        <span className="muted-label">sessao ativa</span>
-        <strong>{getDisplayName(session)}</strong>
-      </div>
+    <div className="marketing-session-actions marketing-session-actions-active">
+      <div className="marketing-user-chip">{getDisplayName(session)}</div>
       <div className="public-session-actions">
-        <Link className="secondary-action workspace-link" href={session.nextRoute}>
+        <Link className="marketing-header-link" href={session.nextRoute}>
           Minha area
         </Link>
+        <Link className="button-link" href={session.nextRoute}>
+          Continuar
+        </Link>
         <button
-          className="text-button"
+          className="marketing-header-link marketing-header-button"
           onClick={() => {
             clearDemoSession();
           }}

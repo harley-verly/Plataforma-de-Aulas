@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import type { PlatformRole } from "@plataforma/contracts";
@@ -58,30 +59,34 @@ export async function MemberShell({
   const session = await getServerDemoSession();
   const navigation = buildMemberNavigation(session?.role);
   const displayName = getDisplayName(session?.fullName, session?.email);
+  const heroImage = bannerImage ?? "/references/harley-bio-dourada-2.png";
 
   return (
-    <div className="member-app-shell">
-      <header className="member-app-header">
-        <div className="member-app-header-left">
-          <Link href="/learning" className="member-brand">
-            <span className="member-brand-dot" />
-            <div className="member-brand-copy">
-              <span className="member-brand-kicker">area de membros</span>
+    <div className="member-app-shell academy-member-shell">
+      <header className="member-app-header academy-member-header">
+        <div className="member-app-header-left academy-member-header-left">
+          <Link href="/learning" className="member-brand academy-member-brand">
+            <Image src="/references/logo-sem-fundo-192.png" alt="Instituto Metaterapia" width={44} height={44} />
+            <div className="member-brand-copy academy-member-brand-copy">
               <strong>Plataforma de Aulas</strong>
             </div>
           </Link>
 
-          <nav className="member-app-nav" aria-label="Navegacao interna">
+          <nav className="member-app-nav academy-member-nav" aria-label="Navegacao interna">
             {navigation.map((item) =>
               item.href.startsWith("mailto:") ? (
-                <a key={item.key} className="member-nav-link" href={item.href}>
+                <a key={item.key} className="member-nav-link academy-member-nav-link" href={item.href}>
                   {item.label}
                 </a>
               ) : (
                 <Link
                   key={item.key}
                   href={item.href}
-                  className={item.key === currentSection ? "member-nav-link member-nav-link-active" : "member-nav-link"}
+                  className={
+                    item.key === currentSection
+                      ? "member-nav-link academy-member-nav-link member-nav-link-active"
+                      : "member-nav-link academy-member-nav-link"
+                  }
                 >
                   {item.label}
                 </Link>
@@ -90,31 +95,41 @@ export async function MemberShell({
           </nav>
         </div>
 
-        <div className="member-app-header-right">
-          <div className="member-welcome-chip">Bem vindo(a) {displayName}</div>
+        <div className="member-app-header-right academy-member-header-right">
+          <div className="member-welcome-chip academy-member-welcome-chip">Bem vindo(a) {displayName}</div>
           <MemberSignOutButton />
         </div>
       </header>
 
-      <main className="member-app-main">
+      <main className="member-app-main academy-member-main">
         <section
-          className="member-hero-banner"
-          style={
-            bannerImage
-              ? {
-                  backgroundImage: `linear-gradient(90deg, rgba(5, 5, 5, 0.86) 0%, rgba(5, 5, 5, 0.54) 42%, rgba(5, 5, 5, 0.78) 100%), url(${bannerImage})`
-                }
-              : undefined
-          }
+          className="member-hero-banner academy-member-hero"
+          style={{
+            backgroundImage: `linear-gradient(90deg, rgba(6, 6, 6, 0.88) 0%, rgba(6, 6, 6, 0.58) 38%, rgba(6, 6, 6, 0.88) 100%), url(${heroImage})`
+          }}
         >
-          <div className="member-hero-content">
-            <span className="member-hero-kicker">{eyebrow}</span>
+          <div className="academy-member-hero-noise" />
+          <div className="member-hero-content academy-member-hero-content">
+            <span className="member-hero-kicker academy-member-pill">{eyebrow}</span>
             <h1>{title}</h1>
             <p>{subtitle}</p>
           </div>
+
+          <div className="academy-member-hero-side">
+            <div className="academy-member-hero-name">{displayName}</div>
+            <div className="academy-member-logo-frame">
+              <Image
+                src="/references/logo-deitado-lobus.png"
+                alt="Instituto Metaterapia"
+                width={360}
+                height={96}
+                className="academy-member-logo-image"
+              />
+            </div>
+          </div>
         </section>
 
-        <div className="member-app-content">{children}</div>
+        <div className="member-app-content academy-member-content">{children}</div>
       </main>
     </div>
   );

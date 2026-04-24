@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 import { routeByRole } from "@plataforma/config";
 import type { PlatformRole } from "@plataforma/contracts";
@@ -58,47 +58,31 @@ export function AuthPanel() {
 
   const redirectParam = searchParams.get("redirect");
   const redirectTarget = redirectParam?.startsWith("/") ? redirectParam : null;
+  const requestedMode = searchParams.get("mode");
+
+  useEffect(() => {
+    if (requestedMode === "register") {
+      setMode("register");
+      return;
+    }
+
+    if (requestedMode === "login") {
+      setMode("login");
+    }
+  }, [requestedMode]);
 
   return (
-    <div className="auth-shell auth-shell-course">
-      <section className="auth-hero">
-        <Link href="/" className="auth-brand">
-          <div className="auth-brand-mark">
-            <span className="member-brand-dot" />
-          </div>
-          <div>
-            <span className="eyebrow">plataforma oficial</span>
-            <strong>Plataforma de Aulas</strong>
-            <p>Experiencia proprietaria para descoberta, compra e consumo de aulas.</p>
-          </div>
-        </Link>
-
-        <div className="auth-copy-card auth-copy-card-course">
-          <span className="eyebrow">acesso central</span>
-          <h1>Uma unica entrada para aluno, produtor, afiliado e operacao interna.</h1>
-          <p>
-            O cadastro publico nasce como conta de aluno. Solicitacoes para afiliacao e publicacao de cursos acontecem
-            somente por dentro da area logada, do jeito certo para uma plataforma real.
-          </p>
-          <div className="auth-pill-row">
-            <span className="scope-pill">area do aluno</span>
-            <span className="scope-pill">solicitacoes internas</span>
-            <span className="scope-pill">acesso administrativo controlado</span>
-          </div>
-          <div className="auth-guidance-card">
-            <strong>Regra de acesso da demo</strong>
-            <p>
-              Ninguem escolhe papel sensivel nesta tela. Perfis administrativos usam credenciais internas, e afiliado
-              ou produtor pedem liberacao depois do login.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="auth-panel">
-        <div className="card-topline">
-          <strong>{mode === "login" ? "Entrar na plataforma" : "Criar conta de aluno"}</strong>
-          <span>{mode === "login" ? "Sessao oficial" : "Cadastro inicial"}</span>
+    <div className="academy-login-shell">
+      <section className="academy-login-pane">
+        <div className="academy-login-brand">
+          <Image
+            src="/references/logo-deitado-lobus.png"
+            alt="Instituto Metaterapia"
+            width={280}
+            height={74}
+            className="academy-brand-logo"
+            priority
+          />
         </div>
 
         {feedback ? (
@@ -109,7 +93,7 @@ export function AuthPanel() {
         ) : null}
 
         <form
-          className="form-grid auth-form"
+          className="academy-auth-form"
           onSubmit={(event) => {
             event.preventDefault();
 
@@ -167,7 +151,6 @@ export function AuthPanel() {
                     statusLabel: "cadastro concluido"
                   });
                   router.push(targetRoute);
-                  return;
                 }
               } catch {
                 setFeedback({
@@ -179,69 +162,69 @@ export function AuthPanel() {
           }}
         >
           {mode === "register" ? (
-            <label className="field-label">
-              <span>Nome completo</span>
-              <input
-                className="field-input"
-                onChange={(event) => setFullName(event.target.value)}
-                placeholder="Seu nome completo"
-                required
-                value={fullName}
-              />
-            </label>
-          ) : null}
+            <>
+              <label className="academy-field">
+                <span>Nome completo</span>
+                <input onChange={(event) => setFullName(event.target.value)} required value={fullName} />
+              </label>
+              <label className="academy-field">
+                <span>E-mail</span>
+                <input onChange={(event) => setEmail(event.target.value)} required type="email" value={email} />
+              </label>
+              <label className="academy-field">
+                <span>Senha</span>
+                <input onChange={(event) => setPassword(event.target.value)} required type="password" value={password} />
+              </label>
 
-          <label className="field-label">
-            <span>E-mail</span>
-            <input
-              className="field-input"
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="voce@empresa.com"
-              required
-              type="email"
-              value={email}
-            />
-          </label>
+              <button className="academy-primary-button" disabled={isPending} type="submit">
+                {isPending ? "Criando conta..." : "Criar conta"}
+              </button>
 
-          <label className="field-label">
-            <span>Senha</span>
-            <input
-              className="field-input"
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Digite sua senha"
-              required
-              type="password"
-              value={password}
-            />
-          </label>
+              <div className="academy-auth-assist">
+                <h2>Conta inicial de aluno</h2>
+                <p>Afiliacao e produtor sao pedidos internos, depois do login, dentro da propria plataforma.</p>
+                <button className="academy-secondary-button" onClick={() => setMode("login")} type="button">
+                  Ja tenho conta
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <label className="academy-field">
+                <span>E-mail</span>
+                <input onChange={(event) => setEmail(event.target.value)} required type="email" value={email} />
+              </label>
+              <label className="academy-field">
+                <span>Senha</span>
+                <input onChange={(event) => setPassword(event.target.value)} required type="password" value={password} />
+              </label>
 
-          <div className="auth-form-note">
-            <strong>Como funciona a liberacao interna</strong>
-            <p>
-              Depois do primeiro acesso, o proprio usuario pode solicitar entrada no programa de afiliados ou no fluxo
-              de produtor de forma interna, sem burlar governanca.
-            </p>
-          </div>
+              <label className="academy-remember-row">
+                <input type="checkbox" />
+                <span>Remember Me</span>
+              </label>
 
-          <div className="action-row">
-            <button className="primary-action" disabled={isPending} type="submit">
-              {isPending
-                ? mode === "login"
-                  ? "Entrando..."
-                  : "Criando conta..."
-                : mode === "login"
-                  ? "Entrar"
-                  : "Criar conta"}
-            </button>
-            <button
-              className="secondary-action workspace-link"
-              onClick={() => setMode((current) => (current === "login" ? "register" : "login"))}
-              type="button"
-            >
-              {mode === "login" ? "Criar conta" : "Ja tenho conta"}
-            </button>
-          </div>
+              <button className="academy-primary-button" disabled={isPending} type="submit">
+                {isPending ? "Entrando..." : "Entrar"}
+              </button>
+
+              <div className="academy-auth-assist">
+                <h2>Ainda nao tem uma senha?</h2>
+                <p>Clique no botao abaixo para criar seu acesso inicial de aluno ou atualizar sua entrada na demo.</p>
+                <button className="academy-secondary-button" onClick={() => setMode("register")} type="button">
+                  Criar ou alterar acesso
+                </button>
+              </div>
+            </>
+          )}
         </form>
+      </section>
+
+      <section className="academy-login-visual">
+        <div className="academy-login-credit">
+          <p>Feito por Harley Aragao - L.O.Bus para voce</p>
+          <strong>© 2026 - Todos os direitos reservados</strong>
+        </div>
       </section>
     </div>
   );
