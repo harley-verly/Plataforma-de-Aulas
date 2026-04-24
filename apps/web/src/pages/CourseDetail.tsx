@@ -1,45 +1,25 @@
-import { useQuery } from "@tanstack/react-query";
-import { Clock, GraduationCap, MonitorPlay } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
-
-import { GoldButton } from "@/components/site/GoldButton";
-import { SectionLabel } from "@/components/site/SectionLabel";
+import { useParams, Link } from "react-router-dom";
+import { Clock, Users, MonitorPlay, Download } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { getCourseDetails } from "@/lib/platform-api";
-
-function formatDuration(totalDurationSec: number) {
-  const totalMinutes = Math.max(1, Math.round(totalDurationSec / 60));
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  if (!hours) {
-    return `${minutes} min`;
-  }
-
-  if (!minutes) {
-    return `${hours}h`;
-  }
-
-  return `${hours}h ${minutes}min`;
-}
+import { SectionLabel } from "@/components/site/SectionLabel";
+import { GoldButton } from "@/components/site/GoldButton";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { courses } from "@/data/portal";
 
 const CourseDetail = () => {
   const { slug } = useParams();
-  const { data: course } = useQuery({
-    queryKey: ["catalog-course", slug],
-    queryFn: () => getCourseDetails(slug ?? ""),
-    enabled: Boolean(slug)
-  });
-
+  const course = courses.find((c) => c.slug === slug);
   if (!course) {
     return (
       <SiteLayout>
         <div className="container-editorial py-32 text-center">
-          <h1 className="font-serif text-4xl text-paper">Curso nao encontrado</h1>
-          <Link to="/catalog" className="mt-6 inline-block editorial-link">
-            Voltar para o catalogo
-          </Link>
+          <h1 className="font-serif text-4xl text-paper">Curso não encontrado</h1>
+          <Link to="/cursos" className="mt-6 inline-block editorial-link">Voltar para cursos</Link>
         </div>
       </SiteLayout>
     );
@@ -47,81 +27,78 @@ const CourseDetail = () => {
 
   return (
     <SiteLayout>
-      <section className="container-editorial pb-12 pt-12 md:pt-20">
+      <section className="container-editorial pt-12 pb-12 md:pt-20">
         <SectionLabel number="03">Curso</SectionLabel>
         <div className="mt-8 grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <h1 className="font-serif text-5xl leading-[1] text-paper md:text-7xl text-balance">{course.title}</h1>
-            <p className="mt-8 font-serif text-2xl leading-snug text-paper-soft md:text-3xl">{course.subtitle}</p>
-            <p className="mt-6 text-base leading-relaxed text-paper-soft">{course.summary}</p>
+            <h1 className="font-serif text-5xl leading-[1] text-paper md:text-7xl text-balance">
+              {course.title}
+            </h1>
+            <p className="mt-8 font-serif text-2xl leading-snug text-paper-soft md:text-3xl">
+              {course.excerpt}
+            </p>
+            <p className="mt-6 text-base leading-relaxed text-paper-soft">{course.description}</p>
 
             <div className="mt-10 grid grid-cols-3 gap-px overflow-hidden border border-ink-line bg-ink-line">
               {[
-                { icon: Clock, label: "Duracao", value: formatDuration(course.totalDurationSec) },
-                { icon: MonitorPlay, label: "Modulos", value: `${course.modules.length}` },
-                { icon: GraduationCap, label: "Aulas", value: `${course.lessonCount}` }
-              ].map((item) => (
-                <div key={item.label} className="bg-ink-soft p-6">
-                  <item.icon className="h-4 w-4 text-gold" />
-                  <p className="mt-3 text-[10px] uppercase tracking-[0.3em] text-paper-muted">{item.label}</p>
-                  <p className="mt-1 font-serif text-2xl text-paper">{item.value}</p>
+                { icon: Clock, label: "Carga", value: course.workload },
+                { icon: MonitorPlay, label: "Modalidade", value: course.modality },
+                { icon: Users, label: "Vagas", value: `${course.seats}` },
+              ].map((s, i) => (
+                <div key={i} className="bg-ink-soft p-6">
+                  <s.icon className="h-4 w-4 text-gold" />
+                  <p className="mt-3 text-[10px] uppercase tracking-[0.3em] text-paper-muted">{s.label}</p>
+                  <p className="mt-1 font-serif text-2xl text-paper">{s.value}</p>
                 </div>
               ))}
             </div>
 
             <div className="mt-10">
-              <SectionLabel>Estrutura da experiencia</SectionLabel>
+              <SectionLabel>Cronograma</SectionLabel>
               <Accordion type="single" collapsible className="mt-6 border-t border-ink-line">
-                {course.modules.map((module, index) => (
-                  <AccordionItem key={module.id} value={module.id} className="border-b border-ink-line">
+                {course.schedule.map((s, i) => (
+                  <AccordionItem key={i} value={`item-${i}`} className="border-b border-ink-line">
                     <AccordionTrigger className="py-5 text-left font-serif text-xl text-paper hover:no-underline">
                       <span className="flex items-baseline gap-4">
-                        <span className="text-gold-soft">{String(index + 1).padStart(2, "0")}</span>
-                        <span>{module.title}</span>
+                        <span className="text-gold-soft">{String(i + 1).padStart(2, "0")}</span>
+                        <span>{s.week}</span>
                       </span>
                     </AccordionTrigger>
-                    <AccordionContent className="pb-5 text-paper-soft">
-                      <p className="mb-4">{module.description}</p>
-                      <ul className="space-y-3">
-                        {module.lessons.map((lesson) => (
-                          <li key={lesson.id} className="flex items-start justify-between gap-4 border-t border-ink-line/60 pt-3">
-                            <div>
-                              <p className="text-paper">{lesson.title}</p>
-                              <p className="text-sm text-paper-muted">{lesson.summary}</p>
-                            </div>
-                            <span className="text-[10px] uppercase tracking-[0.22em] text-gold">
-                              {lesson.isPreview ? "preview" : `${lesson.dripAfterDays}d`}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </AccordionContent>
+                    <AccordionContent className="pb-5 text-paper-soft">{s.topic}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
+            </div>
+
+            <div className="mt-10">
+              <SectionLabel>Materiais complementares</SectionLabel>
+              <ul className="mt-6 divide-y divide-ink-line border-y border-ink-line">
+                {course.materials.map((m, i) => (
+                  <li key={i} className="flex items-center justify-between py-4">
+                    <span className="text-paper">{m.name}</span>
+                    <span className="flex items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-gold">
+                      {m.type}
+                      <Download className="h-3.5 w-3.5" />
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
           <aside className="lg:col-span-5">
             <div className="sticky top-28 border border-ink-line bg-ink-soft p-8">
               <div className="aspect-[4/5] overflow-hidden border border-ink-line">
-                <img src={course.thumbnailUrl} alt={course.title} className="h-full w-full object-cover" />
+                <img src={course.image} alt={course.title} className="h-full w-full object-cover" />
               </div>
-              <p className="mt-6 text-[11px] uppercase tracking-[0.3em] text-gold">Equipe responsavel</p>
-              <p className="mt-2 font-serif text-2xl text-paper">{course.producerName}</p>
-              <p className="mt-2 text-sm text-paper-muted">{course.audience}</p>
-              <div className="mt-8 space-y-3">
-                {course.offers.map((offer) => (
-                  <div key={offer.id} className="border border-ink-line bg-ink p-5">
-                    <p className="text-[11px] uppercase tracking-[0.22em] text-gold">{offer.title}</p>
-                    <p className="mt-2 font-serif text-3xl text-paper">{offer.priceLabel}</p>
-                    <p className="mt-3 text-sm text-paper-muted">{offer.description}</p>
-                    <GoldButton to={`/checkout/${offer.id}`} className="mt-6 w-full justify-center">
-                      Ir para checkout
-                    </GoldButton>
-                  </div>
-                ))}
+              <p className="mt-6 text-[11px] uppercase tracking-[0.3em] text-gold">Instrutor(a)</p>
+              <p className="mt-2 font-serif text-2xl text-paper">{course.instructor}</p>
+              <div className="mt-8">
+                <GoldButton className="w-full justify-center">Quero me matricular</GoldButton>
               </div>
+              <p className="mt-4 text-center text-[10px] uppercase tracking-[0.25em] text-paper-muted">
+                Vagas limitadas
+              </p>
             </div>
           </aside>
         </div>

@@ -1,153 +1,96 @@
-import { useQuery } from "@tanstack/react-query";
-import { useState, useTransition } from "react";
-import { Activity, ArrowUpRight, BadgeCheck, RadioTower, Wallet } from "lucide-react";
-
-import { OperationLayout } from "@/components/platform/OperationLayout";
-import { approveApplication, getAdminOverview } from "@/lib/platform-api";
-
-function getMessage(error: unknown, fallback: string) {
-  if (error instanceof Error && error.message.trim()) {
-    return error.message;
-  }
-
-  return fallback;
-}
+import { Link } from "react-router-dom";
+import {
+  ArrowUpRight,
+  Calendar,
+  GraduationCap,
+  Store,
+  Eye,
+} from "lucide-react";
+import { AdminLayout } from "@/components/admin/AdminLayout";
+import { businesses, courses, events } from "@/data/portal";
 
 const AdminDashboard = () => {
-  const { data, refetch } = useQuery({
-    queryKey: ["admin-overview"],
-    queryFn: getAdminOverview
-  });
-
-  const [feedback, setFeedback] = useState<string | null>(null);
-  const [approvingId, setApprovingId] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
-
   const stats = [
-    {
-      label: "Aprovacoes pendentes",
-      value: `${data?.approvals.filter((item) => item.state !== "approved").length ?? 0}`,
-      hint: "fila ativa de governanca",
-      Icon: BadgeCheck
-    },
-    {
-      label: "Checkouts",
-      value: `${data?.finance.lastCheckoutCount ?? 0}`,
-      hint: "sessoes criadas no staging",
-      Icon: Wallet
-    },
-    {
-      label: "Webhooks",
-      value: `${data?.finance.webhookEventsReceived ?? 0}`,
-      hint: "eventos recebidos pela operacao",
-      Icon: RadioTower
-    },
-    {
-      label: "Saude",
-      value: data?.health.paymentsMode ?? "sandbox-first",
-      hint: data?.health.stagingDomain ?? "aulas.abasolucoesetecnologia.com.br",
-      Icon: Activity
-    }
+    { label: "Eventos", value: events.length, hint: "publicados", to: "/admin/eventos", Icon: Calendar },
+    { label: "Cursos ativos", value: courses.filter((c) => c.status === "publicado").length, hint: "com matrículas abertas", to: "/admin/cursos", Icon: GraduationCap },
+    { label: "Negócios", value: businesses.length, hint: "na vitrine", to: "/admin/comunidade", Icon: Store },
+    { label: "Visitas (30d)", value: "12.4k", hint: "+18% vs mês anterior", to: "/admin", Icon: Eye },
+  ];
+
+  const recent = [
+    { who: "Camila A.", what: "publicou o curso", target: "Fundamentos do Empreendedorismo", when: "há 2h" },
+    { who: "Renato C.", what: "editou o evento", target: "Encontro Anual", when: "há 5h" },
+    { who: "Atelier Barro", what: "submeteu cadastro de negócio", target: "—", when: "ontem" },
+    { who: "Mariana L.", what: "criou o curso", target: "Gestão Financeira Essencial", when: "ontem" },
   ];
 
   return (
-    <OperationLayout
-      title="Admin"
-      subtitle="Governanca, aprovacoes e leitura operacional do staging sem exposicao publica de modulos sensiveis."
-      eyebrow="Painel administrativo"
+    <AdminLayout
+      title="Visão geral"
+      subtitle="Acompanhe a saúde do portal e atalhos para os principais módulos."
     >
-      {feedback ? <p className="mb-6 text-sm text-paper-soft">{feedback}</p> : null}
-
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
+        {stats.map((s) => (
+          <Link
+            key={s.label}
+            to={s.to}
             className="group relative flex flex-col justify-between border border-ink-line bg-ink-soft p-6 transition-all duration-500 hover:border-gold/40"
           >
             <div className="flex items-center justify-between">
-              <stat.Icon className="h-4 w-4 text-gold" />
-              <ArrowUpRight className="h-4 w-4 text-paper-muted transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-gold" />
+              <s.Icon className="h-4 w-4 text-gold" />
+              <ArrowUpRight className="h-4 w-4 text-paper-muted transition-all duration-500 group-hover:text-gold group-hover:translate-x-1 group-hover:-translate-y-1" />
             </div>
             <div className="mt-10">
-              <div className="font-serif text-4xl text-paper">{stat.value}</div>
-              <p className="mt-2 text-[11px] uppercase tracking-[0.25em] text-gold">{stat.label}</p>
-              <p className="mt-2 text-xs text-paper-muted">{stat.hint}</p>
+              <div className="font-serif text-5xl text-paper">{s.value}</div>
+              <p className="mt-2 text-[11px] uppercase tracking-[0.25em] text-gold">{s.label}</p>
+              <p className="mt-2 text-xs text-paper-muted">{s.hint}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
-      <div className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="border border-ink-line bg-ink-soft">
+      <div className="mt-8 grid gap-5 lg:grid-cols-3">
+        <div className="lg:col-span-2 border border-ink-line bg-ink-soft">
           <div className="flex items-center justify-between border-b border-ink-line px-6 py-4">
-            <h2 className="font-serif text-2xl text-paper">Fila de aprovacao</h2>
-            <span className="text-[10px] uppercase tracking-[0.3em] text-paper-muted">tempo real da demo</span>
+            <h2 className="font-serif text-2xl text-paper">Atividade recente</h2>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-paper-muted">últimos 7 dias</span>
           </div>
           <ul className="divide-y divide-ink-line">
-            {(data?.approvals ?? []).map((approval) => (
-              <li key={approval.id} className="px-6 py-5">
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-gold">
-                      {approval.kind} · {approval.state}
-                    </p>
-                    <p className="mt-2 font-serif text-2xl text-paper">{approval.displayName}</p>
-                    <p className="mt-2 text-sm text-paper-muted">{approval.note}</p>
-                  </div>
-
-                  {approval.state !== "approved" ? (
-                    <button
-                      type="button"
-                      disabled={isPending && approvingId === approval.id}
-                      onClick={() => {
-                        setApprovingId(approval.id);
-                        startTransition(() => {
-                          void (async () => {
-                            try {
-                              const result = await approveApplication(approval.id, "aprovado pelo painel administrativo");
-                              setFeedback(result.message);
-                              await refetch();
-                            } catch (error) {
-                              setFeedback(getMessage(error, "Nao foi possivel registrar a aprovacao."));
-                            } finally {
-                              setApprovingId(null);
-                            }
-                          })();
-                        });
-                      }}
-                      className="hover-gold-shimmer px-5 py-3 text-[11px] uppercase tracking-[0.25em] text-gold-foreground"
-                    >
-                      {isPending && approvingId === approval.id ? "Aprovando..." : "Aprovar"}
-                    </button>
-                  ) : (
-                    <span className="border border-gold/30 px-4 py-3 text-[10px] uppercase tracking-[0.22em] text-gold">
-                      aprovado
-                    </span>
-                  )}
+            {recent.map((r, i) => (
+              <li key={i} className="flex items-center justify-between px-6 py-5">
+                <div>
+                  <p className="text-sm text-paper">
+                    <span className="text-gold">{r.who}</span> {r.what} <span className="italic text-paper-soft">{r.target}</span>
+                  </p>
                 </div>
+                <span className="text-[10px] uppercase tracking-[0.25em] text-paper-muted">{r.when}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="space-y-5">
-          <div className="border border-ink-line bg-ink-soft p-6">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-gold">Saude do ambiente</p>
-            <p className="mt-4 font-serif text-3xl text-paper">{data?.health.stagingDomain}</p>
-            <p className="mt-4 text-sm text-paper-muted">
-              Pagamentos em {data?.health.paymentsMode} com video por {data?.health.videoProviders.join(" + ")}.
-            </p>
-          </div>
-
-          <div className="border border-ink-line bg-ink-soft p-6">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-gold">Observabilidade</p>
-            <p className="mt-4 text-sm leading-relaxed text-paper-muted">
-              Este painel consolida aprovacoes, checkouts e eventos do staging para a prova comercial do cliente.
-            </p>
+        <div className="border border-ink-line bg-ink-soft p-6">
+          <h2 className="font-serif text-2xl text-paper">Atalhos</h2>
+          <div className="mt-6 space-y-2">
+            {[
+              { to: "/admin/eventos", label: "Novo evento" },
+              { to: "/admin/cursos", label: "Novo curso" },
+              { to: "/admin/comunidade", label: "Aprovar negócios" },
+              { to: "/admin/paginas", label: "Editar homepage" },
+            ].map((a) => (
+              <Link
+                key={a.to}
+                to={a.to}
+                className="group flex items-center justify-between border border-ink-line bg-ink p-4 text-sm text-paper transition-all hover:border-gold/40 hover:text-gold"
+              >
+                {a.label}
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </Link>
+            ))}
           </div>
         </div>
       </div>
-    </OperationLayout>
+    </AdminLayout>
   );
 };
 

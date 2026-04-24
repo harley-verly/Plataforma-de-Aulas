@@ -1,42 +1,62 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@400;500;600;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+  ACMB — Noir & Gold Editorial Design System
+  All colors in HSL. Tokens drive every component.
+*/
+
 @layer base {
   :root {
-    --background: 0 0% 5%;
-    --foreground: 40 30% 94%;
+    /* Surfaces — deep noir */
+    --background: 0 0% 5%;            /* #0d0d0d ink */
+    --foreground: 40 30% 94%;         /* warm paper */
+
     --ink: 0 0% 5%;
-    --ink-soft: 0 0% 10%;
+    --ink-soft: 0 0% 10%;             /* #1a1a1a */
     --ink-elevated: 0 0% 13%;
     --ink-line: 40 12% 18%;
+
     --paper: 40 30% 94%;
     --paper-soft: 40 18% 82%;
     --paper-muted: 40 8% 60%;
-    --gold: 44 52% 54%;
-    --gold-soft: 44 75% 75%;
+
+    /* Gold accents */
+    --gold: 44 52% 54%;               /* #c9a84c */
+    --gold-soft: 44 75% 75%;          /* #f0d78c */
     --gold-deep: 40 55% 38%;
     --gold-foreground: 0 0% 5%;
+
+    /* Semantic mapping (shadcn) */
     --card: 0 0% 7%;
     --card-foreground: 40 30% 94%;
+
     --popover: 0 0% 8%;
     --popover-foreground: 40 30% 94%;
+
     --primary: 44 52% 54%;
     --primary-foreground: 0 0% 5%;
+
     --secondary: 0 0% 12%;
     --secondary-foreground: 40 30% 94%;
+
     --muted: 0 0% 12%;
     --muted-foreground: 40 8% 60%;
+
     --accent: 44 52% 54%;
     --accent-foreground: 0 0% 5%;
+
     --destructive: 0 70% 45%;
     --destructive-foreground: 40 30% 94%;
+
     --border: 40 12% 18%;
     --input: 40 12% 18%;
     --ring: 44 52% 54%;
+
     --radius: 0.25rem;
+
+    /* Sidebar — admin */
     --sidebar-background: 0 0% 6%;
     --sidebar-foreground: 40 18% 82%;
     --sidebar-primary: 44 52% 54%;
@@ -45,18 +65,27 @@
     --sidebar-accent-foreground: 40 30% 94%;
     --sidebar-border: 40 12% 16%;
     --sidebar-ring: 44 52% 54%;
+
+    /* Gradients */
     --gradient-gold: linear-gradient(135deg, hsl(44 75% 75%) 0%, hsl(44 52% 54%) 50%, hsl(40 55% 38%) 100%);
     --gradient-gold-line: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.6), transparent);
     --gradient-ink: linear-gradient(180deg, hsl(0 0% 7%) 0%, hsl(0 0% 4%) 100%);
     --gradient-fade-bottom: linear-gradient(180deg, transparent 0%, hsl(var(--background)) 100%);
     --gradient-fade-top: linear-gradient(0deg, transparent 0%, hsl(var(--background)) 100%);
     --gradient-radial-gold: radial-gradient(circle at 50% 50%, hsl(var(--gold) / 0.15), transparent 60%);
+
+    /* Shadows */
     --shadow-editorial: 0 30px 80px -30px hsl(0 0% 0% / 0.7);
     --shadow-gold-glow: 0 0 60px -15px hsl(var(--gold) / 0.45);
     --shadow-card: 0 1px 0 hsl(var(--gold) / 0.06) inset, 0 20px 40px -20px hsl(0 0% 0% / 0.5);
-    --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
-  }
 
+    /* Motion */
+    --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+    --transition-base: 400ms var(--ease-editorial);
+  }
+}
+
+@layer base {
   * {
     @apply border-border;
   }
@@ -68,7 +97,7 @@
   }
 
   body {
-    @apply bg-background font-sans text-foreground;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "ss01", "ss02", "cv11";
   }
 
@@ -77,11 +106,7 @@
     color: hsl(var(--paper));
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5 {
+  h1, h2, h3, h4, h5 {
     @apply font-serif font-normal tracking-tight;
   }
 }
@@ -102,7 +127,6 @@
   .editorial-grain {
     position: relative;
   }
-
   .editorial-grain::after {
     content: "";
     position: absolute;
@@ -125,7 +149,6 @@
     background-position: 0% 50%;
     transition: background-position 700ms var(--ease-editorial);
   }
-
   .hover-gold-shimmer:hover {
     background-position: 100% 50%;
   }
@@ -133,7 +156,6 @@
   .editorial-link {
     @apply relative inline-block text-paper-soft transition-colors duration-300;
   }
-
   .editorial-link::after {
     content: "";
     position: absolute;
@@ -146,11 +168,9 @@
     transform-origin: right;
     transition: transform 400ms var(--ease-editorial);
   }
-
   .editorial-link:hover {
     color: hsl(var(--paper));
   }
-
   .editorial-link:hover::after {
     transform: scaleX(1);
     transform-origin: left;
@@ -163,57 +183,26 @@
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  .text-pretty {
-    text-wrap: pretty;
-  }
-
-  .animate-fade-up {
-    animation: fade-up 800ms var(--ease-editorial) both;
-  }
-
-  .animate-fade-in {
-    animation: fade-in 800ms var(--ease-editorial) both;
-  }
-
-  .delay-100 {
-    animation-delay: 100ms;
-  }
-
-  .delay-200 {
-    animation-delay: 200ms;
-  }
-
-  .delay-300 {
-    animation-delay: 300ms;
-  }
-
-  .delay-500 {
-    animation-delay: 500ms;
-  }
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+  .animate-fade-up { animation: fade-up 800ms var(--ease-editorial) both; }
+  .animate-fade-in { animation: fade-in 800ms var(--ease-editorial) both; }
+  .animate-marquee { animation: marquee 40s linear infinite; }
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-500 { animation-delay: 500ms; }
 }
 
 @keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
