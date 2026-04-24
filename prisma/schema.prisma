@@ -1,0 +1,275 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  PLATFORM_ADMIN
+  PRODUCER
+  AFFILIATE
+  STUDENT
+  SUPPORT
+}
+
+enum ApprovalStatus {
+  PENDING_REVIEW
+  APPROVED
+  NEEDS_ADJUSTMENT
+}
+
+enum VideoProvider {
+  PANDA
+  YOUTUBE
+}
+
+enum OfferBillingModel {
+  ONE_TIME
+  SUBSCRIPTION
+}
+
+enum CheckoutStatus {
+  CREATED
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum CommissionStatus {
+  PENDING
+  READY
+  PAID
+  REVERSED
+}
+
+enum WebhookProvider {
+  ASAAS
+}
+
+model User {
+  id               String             @id @default(cuid())
+  email            String             @unique
+  fullName         String
+  passwordHash     String?
+  role             UserRole
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  producerProfile  ProducerProfile?
+  affiliateProfile AffiliateProfile?
+  enrollments      Enrollment[]
+  certificates     Certificate[]
+  progressEntries  LessonProgress[]
+}
+
+model ProducerProfile {
+  id               String         @id @default(cuid())
+  userId           String         @unique
+  user             User           @relation(fields: [userId], references: [id])
+  displayName      String
+  status           ApprovalStatus @default(PENDING_REVIEW)
+  payoutWalletId   String?
+  payoutAccountId  String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  courses          Course[]
+}
+
+model AffiliateProfile {
+  id                String             @id @default(cuid())
+  userId            String             @unique
+  user              User               @relation(fields: [userId], references: [id])
+  status            ApprovalStatus     @default(PENDING_REVIEW)
+  trackingSlug      String             @unique
+  payoutWalletId    String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  affiliateLinks    AffiliateLink[]
+  commissionEntries CommissionEntry[]
+}
+
+model Course {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  title            String
+  subtitle         String
+  summary          String
+  thumbnailUrl     String
+  status           ApprovalStatus @default(PENDING_REVIEW)
+  producerId       String
+  producer         ProducerProfile @relation(fields: [producerId], references: [id])
+  publishedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  modules          CourseModule[]
+  offers           Offer[]
+  enrollments      Enrollment[]
+}
+
+model CourseModule {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  title       String
+  description String
+  orderIndex  Int
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id             String        @id @default(cuid())
+  moduleId       String
+  module         CourseModule  @relation(fields: [moduleId], references: [id])
+  slug           String
+  title          String
+  summary        String
+  orderIndex     Int
+  isPreview      Boolean       @default(false)
+  dripAfterDays  Int           @default(0)
+  videoProvider  VideoProvider
+  externalVideoId String
+  embedUrl       String
+  allowedDomains String[]
+  durationSec    Int
+  captionsUrl    String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  assets         LessonAsset[]
+  progress       LessonProgress[]
+}
+
+model LessonAsset {
+  id        String   @id @default(cuid())
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  label     String
+  url       String
+}
+
+model Offer {
+  id                 String            @id @default(cuid())
+  courseId           String
+  course             Course            @relation(fields: [courseId], references: [id])
+  title              String
+  description        String
+  priceInCents       Int
+  billingModel       OfferBillingModel
+  recurrenceLabel    String?
+  checkoutHeadline   String
+  checkoutGuarantee  String?
+  isActive           Boolean           @default(true)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  coupons            Coupon[]
+  checkoutSessions   CheckoutSession[]
+}
+
+model Coupon {
+  id             String   @id @default(cuid())
+  offerId        String
+  offer          Offer    @relation(fields: [offerId], references: [id])
+  code           String   @unique
+  discountPct    Int?
+  discountCents  Int?
+  expiresAt      DateTime?
+}
+
+model Enrollment {
+  id          String        @id @default(cuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  courseId    String
+  course      Course        @relation(fields: [courseId], references: [id])
+  offerId     String?
+  createdAt   DateTime      @default(now())
+  progress    LessonProgress[]
+}
+
+model LessonProgress {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  lessonId      String
+  lesson        Lesson      @relation(fields: [lessonId], references: [id])
+  enrollmentId  String?
+  enrollment    Enrollment? @relation(fields: [enrollmentId], references: [id])
+  watchedPct    Int
+  completedAt   DateTime?
+  updatedAt     DateTime    @updatedAt
+}
+
+model Certificate {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  courseId    String
+  serialCode  String   @unique
+  issuedAt    DateTime @default(now())
+}
+
+model AffiliateLink {
+  id           String            @id @default(cuid())
+  affiliateId  String
+  affiliate    AffiliateProfile  @relation(fields: [affiliateId], references: [id])
+  courseId     String
+  offerId      String?
+  slug         String            @unique
+  createdAt    DateTime          @default(now())
+}
+
+model CheckoutSession {
+  id                   String         @id @default(cuid())
+  offerId              String
+  offer                Offer          @relation(fields: [offerId], references: [id])
+  buyerEmail           String
+  buyerName            String
+  status               CheckoutStatus @default(CREATED)
+  provider             String
+  providerCheckoutId   String?
+  providerPaymentId    String?
+  producerWalletId     String?
+  affiliateWalletId    String?
+  splitPrepared        Boolean        @default(false)
+  affiliateLinkId      String?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  commissionEntries    CommissionEntry[]
+}
+
+model CommissionEntry {
+  id                String            @id @default(cuid())
+  checkoutSessionId String
+  checkoutSession   CheckoutSession   @relation(fields: [checkoutSessionId], references: [id])
+  affiliateId       String?
+  affiliate         AffiliateProfile? @relation(fields: [affiliateId], references: [id])
+  amountInCents     Int
+  percentValue      Float?
+  status            CommissionStatus  @default(PENDING)
+  notes             String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model PayoutAccount {
+  id            String   @id @default(cuid())
+  ownerUserId   String
+  provider      String
+  walletId      String?
+  accountRef    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model WebhookEvent {
+  id              String          @id @default(cuid())
+  provider        WebhookProvider
+  eventName       String
+  externalId      String?
+  payloadJson     Json
+  processedAt     DateTime?
+  createdAt       DateTime        @default(now())
+}

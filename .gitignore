@@ -1,0 +1,13 @@
+node_modules/
+.pnpm-store/
+dist/
+.next/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+apps/api/dist/
+apps/web/.next/
+prisma/generated/
+*.tsbuildinfo

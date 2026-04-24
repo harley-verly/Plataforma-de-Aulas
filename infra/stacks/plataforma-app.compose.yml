@@ -1,0 +1,57 @@
+services:
+  api:
+    build:
+      context: ../..
+      dockerfile: apps/api/Dockerfile
+    environment:
+      APP_STAGE: staging
+      API_PORT: 4000
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: false
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      ASAAS_ENV: sandbox
+      ASAAS_API_KEY: ${ASAAS_API_KEY}
+      CORS_ORIGIN: https://aulas.abasolucoesetecnologia.com.br
+    networks:
+      - proxy
+      - plataforma-internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plataforma-api.rule=Host(`aulas.abasolucoesetecnologia.com.br`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.plataforma-api.entrypoints=websecure"
+      - "traefik.http.routers.plataforma-api.tls.certresolver=le"
+      - "traefik.http.routers.plataforma-api.priority=100"
+      - "traefik.http.services.plataforma-api.loadbalancer.server.port=4000"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ../..
+      dockerfile: apps/web/Dockerfile
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_URL: https://aulas.abasolucoesetecnologia.com.br
+      NEXT_PUBLIC_API_BASE_URL: https://aulas.abasolucoesetecnologia.com.br/api
+    networks:
+      - proxy
+      - plataforma-internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plataforma-web.rule=Host(`aulas.abasolucoesetecnologia.com.br`)"
+      - "traefik.http.routers.plataforma-web.entrypoints=websecure"
+      - "traefik.http.routers.plataforma-web.tls.certresolver=le"
+      - "traefik.http.services.plataforma-web.loadbalancer.server.port=3000"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+  plataforma-internal:
+    external: true
