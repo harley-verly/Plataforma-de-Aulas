@@ -1,6 +1,7 @@
-import { ButtonLink, Pill, SectionHeading, SurfaceCard } from "@plataforma/ui";
+import { ButtonLink, Pill, SurfaceCard } from "@plataforma/ui";
 
-import { SiteShell } from "../../components/site-shell";
+import { MemberApplicationsPanel } from "../../components/member-applications-panel";
+import { MemberShell } from "../../components/member-shell";
 import { getCatalogCourses, getLearningOverview } from "../../lib/platform-api";
 
 export default async function LearningOverviewPage() {
@@ -9,78 +10,72 @@ export default async function LearningOverviewPage() {
 
   if (!currentCourse) {
     return (
-      <SiteShell eyebrow="area do aluno" title="Learning" subtitle="Nao ha cursos configurados nesta base de demonstracao.">
-        <section className="content-section" />
-      </SiteShell>
+      <MemberShell
+        bannerImage={courses[0]?.thumbnailUrl}
+        currentSection="learning"
+        eyebrow="area do aluno"
+        title="Minha area de cursos"
+        subtitle="Nao ha cursos configurados nesta base de demonstracao."
+      >
+        <section className="member-page-section" />
+      </MemberShell>
     );
   }
 
   return (
-    <SiteShell
-      eyebrow="area do aluno"
-      title="Learning"
-      subtitle="Uma biblioteca com destaque editorial, retomada clara e clima de academia premium para continuar consumindo aulas."
+    <MemberShell
+      bannerImage={courses[0]?.thumbnailUrl}
+      currentSection="learning"
+      eyebrow="introducao e boas vindas"
+      title="Minha area de cursos"
+      subtitle="Biblioteca interna, retomada de aulas e solicitacoes de acesso em um layout inspirado na sua plataforma WordPress."
     >
-      <section className="member-stage">
-        <SurfaceCard className="member-stage-main">
-          <p className="section-eyebrow">retomar agora</p>
-          <h2>{currentCourse.title}</h2>
-          <p>
-            {currentCourse.nextLesson
-              ? `A proxima aula sugerida nesta trilha e ${currentCourse.nextLesson}.`
-              : "Sua trilha ja esta pronta para retomada."}
-          </p>
-          <div className="hero-actions">
-            <ButtonLink href={`/learning/${currentCourse.slug}`}>Continuar curso</ButtonLink>
-            <ButtonLink href="/catalog">Ver catalogo</ButtonLink>
-          </div>
-          <div className="story-facts">
-            <div className="story-fact">
-              <span className="story-fact-label">progresso atual</span>
-              <strong>{currentCourse.completionPct}%</strong>
+      <section className="member-page-section">
+        <div className="member-dashboard-grid">
+          <SurfaceCard className="member-highlight-card">
+            <span className="member-card-kicker">continue de onde parou</span>
+            <h2>{currentCourse.title}</h2>
+            <p>
+              {currentCourse.nextLesson
+                ? `A proxima aula sugerida para voce e ${currentCourse.nextLesson}.`
+                : "Sua trilha esta pronta para retomada imediata."}
+            </p>
+            <div className="member-card-actions">
+              <ButtonLink href={`/learning/${currentCourse.slug}`}>Continuar curso</ButtonLink>
+              <ButtonLink href="/catalog">Explorar catalogo</ButtonLink>
             </div>
-            <div className="story-fact">
-              <span className="story-fact-label">certificados prontos</span>
-              <strong>{overview.certificatesReady}</strong>
-            </div>
-            <div className="story-fact">
-              <span className="story-fact-label">status do ritmo</span>
-              <strong>{currentCourse.nextLesson ? "retomada recomendada" : "trilha em dia"}</strong>
-            </div>
-          </div>
-        </SurfaceCard>
+          </SurfaceCard>
 
-        <SurfaceCard className="member-stage-side">
-          <p className="section-eyebrow">carteira do aluno</p>
-          <div className="story-list">
-            <div className="story-list-item">
-              <span>curso em foco</span>
-              <strong>{currentCourse.title}</strong>
+          <SurfaceCard className="member-side-summary">
+            <div className="member-stat-list">
+              <div className="member-stat-item">
+                <span>Seu progresso</span>
+                <strong>{currentCourse.completionPct}%</strong>
+              </div>
+              <div className="member-stat-item">
+                <span>Certificados</span>
+                <strong>{overview.certificatesReady}</strong>
+              </div>
+              <div className="member-stat-item">
+                <span>Ritmo atual</span>
+                <strong>{currentCourse.nextLesson ? "retomada recomendada" : "trilha em dia"}</strong>
+              </div>
             </div>
-            <div className="story-list-item">
-              <span>drip e previews</span>
-              <strong>ativos por configuracao</strong>
-            </div>
-            <div className="story-list-item">
-              <span>certificados</span>
-              <strong>{overview.certificatesReady} prontos</strong>
-            </div>
-          </div>
-        </SurfaceCard>
+          </SurfaceCard>
+        </div>
       </section>
 
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="minha biblioteca"
-          title="Cursos ativos e trilhas sugeridas"
-          description="Cada bloco abaixo representa como o aluno enxerga a carteira de aprendizagem dentro de uma area de membros mais editorial."
-        />
-        <div className="feature-grid">
+      <section className="member-page-section">
+        <div className="member-section-heading">
+          <span className="member-card-kicker">minha biblioteca</span>
+          <h2>Cursos ativos e trilhas recomendadas</h2>
+        </div>
+        <div className="member-library-grid">
           {courses.map((course, index) => {
             const enrolledCourse = overview.enrolledCourses.find((item) => item.slug === course.slug);
 
             return (
-              <SurfaceCard key={course.id} className="feature-card">
+              <SurfaceCard key={course.id} className="member-course-card">
                 <div className="course-card-meta">
                   <Pill>{enrolledCourse ? "matriculado" : index === 0 ? "matriculado" : "sugerido"}</Pill>
                   <Pill>{course.offers.length} ofertas</Pill>
@@ -94,6 +89,14 @@ export default async function LearningOverviewPage() {
           })}
         </div>
       </section>
-    </SiteShell>
+
+      <section className="member-page-section">
+        <div className="member-section-heading">
+          <span className="member-card-kicker">solicitacoes internas</span>
+          <h2>Afiliacao e publicacao de cursos acontecem aqui por dentro</h2>
+        </div>
+        <MemberApplicationsPanel />
+      </section>
+    </MemberShell>
   );
 }

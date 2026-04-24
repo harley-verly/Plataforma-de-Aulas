@@ -1,25 +1,20 @@
-import { SectionHeading } from "@plataforma/ui";
-
 import { AffiliateConsole } from "../../components/affiliate-console";
-import { SiteShell } from "../../components/site-shell";
+import { MemberShell } from "../../components/member-shell";
 import { getAffiliateOverview } from "../../lib/platform-api";
 
 export default async function AffiliatePage() {
   const overview = await getAffiliateOverview();
 
   return (
-    <SiteShell
+    <MemberShell
+      currentSection="affiliate"
+      eyebrow="painel do afiliado"
       title="Affiliate"
-      subtitle="Painel de afiliacao com links rastreaveis, aprovacao e leitura clara de comissoes."
+      subtitle="Links, conversao e leitura comercial para perfis de afiliacao ja aprovados."
     >
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="afiliacao"
-          title="Governanca antes de escala"
-          description="A fundacao do produto ja considera aprovacao, links por campanha e trilha financeira preparada para split."
-        />
+      <section className="member-page-section">
         <AffiliateConsole overview={overview} />
       </section>
-    </SiteShell>
+    </MemberShell>
   );
 }

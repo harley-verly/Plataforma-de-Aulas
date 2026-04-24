@@ -1,43 +1,39 @@
-import { SectionHeading } from "@plataforma/ui";
-
 import { AdminApprovalConsole } from "../../components/admin-approval-console";
-import { SiteShell } from "../../components/site-shell";
+import { MemberShell } from "../../components/member-shell";
 import { getAdminApprovals, getAdminOverview } from "../../lib/platform-api";
 
 export default async function AdminPage() {
   const [overview, approvals] = await Promise.all([getAdminOverview(), getAdminApprovals()]);
 
   return (
-    <SiteShell
-      eyebrow="governanca"
+    <MemberShell
+      currentSection="admin"
+      eyebrow="console operacional"
       title="Admin"
-      subtitle="Console operacional para curadoria de entrada, leitura financeira e supervisao do ambiente de prova."
+      subtitle="Curadoria de entrada, leitura financeira e governanca do ambiente de demonstracao."
     >
-      <section className="content-section">
-        <div className="story-stage">
-          <div className="story-stage-main">
-            <p className="section-eyebrow">sala de controle</p>
+      <section className="member-page-section">
+        <div className="member-dashboard-grid">
+          <div className="member-highlight-card surface-card">
+            <span className="member-card-kicker">sala de controle</span>
             <h2>Fila de aprovacao, saude operacional e leitura financeira no mesmo panorama.</h2>
             <p>
-              Para a demonstracao ficar crivel, o admin precisa transmitir governanca de verdade. Por isso a pagina
-              agora carrega contexto operacional antes dos cards de aprovacao.
+              O admin fica dentro da area interna, sem exposicao publica, mas com contexto suficiente para a demo
+              parecer operacao real.
             </p>
           </div>
-
-          <div className="story-stage-side">
-            <span className="spotlight-badge">ambiente atual</span>
-            <h3>Guard rails do staging</h3>
-            <div className="story-list">
-              <div className="story-list-item">
-                <span>pagamentos</span>
+          <div className="member-side-summary surface-card">
+            <div className="member-stat-list">
+              <div className="member-stat-item">
+                <span>Pagamentos</span>
                 <strong>{overview.health.paymentsMode}</strong>
               </div>
-              <div className="story-list-item">
-                <span>videos</span>
+              <div className="member-stat-item">
+                <span>Video</span>
                 <strong>{overview.health.videoProviders.join(" + ")}</strong>
               </div>
-              <div className="story-list-item">
-                <span>dominio</span>
+              <div className="member-stat-item">
+                <span>Dominio</span>
                 <strong>{overview.health.stagingDomain}</strong>
               </div>
             </div>
@@ -45,14 +41,9 @@ export default async function AdminPage() {
         </div>
       </section>
 
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="governanca ativa"
-          title="Fila de aprovacao e observabilidade"
-          description="A administracao do produto concentra aprovacoes, saude operacional e leitura das trilhas financeiras."
-        />
+      <section className="member-page-section">
         <AdminApprovalConsole initialApprovals={approvals} overview={overview} />
       </section>
-    </SiteShell>
+    </MemberShell>
   );
 }

@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
 
-import { SectionHeading } from "@plataforma/ui";
-
 import { LearningCourseConsole } from "../../../components/learning-course-console";
-import { SiteShell } from "../../../components/site-shell";
+import { MemberShell } from "../../../components/member-shell";
 import { getLearningCourse } from "../../../lib/platform-api";
 
 export default async function LearningCoursePage({
@@ -19,19 +17,16 @@ export default async function LearningCoursePage({
   }
 
   return (
-    <SiteShell
+    <MemberShell
+      bannerImage={course.thumbnailUrl}
+      currentSection="learning"
       eyebrow="conteudo do curso"
       title={course.title}
-      subtitle="Consumo guiado com video em destaque, biblioteca lateral e progresso por aula."
+      subtitle="Consumo guiado com video em destaque, progresso visivel e navegacao lateral no mesmo clima da referencia WordPress."
     >
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="ritmo da trilha"
-          title="Mapa de consumo"
-          description="A jornada do aluno combina retomada, progresso visivel, video central e uma navegacao lateral mais parecida com uma area de membros premium."
-        />
+      <section className="member-page-section">
         <LearningCourseConsole initialCourse={course} />
       </section>
-    </SiteShell>
+    </MemberShell>
   );
 }

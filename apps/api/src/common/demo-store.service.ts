@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 
 type ApprovalState = "pending_review" | "approved" | "needs_adjustment";
 type Role = "super_admin" | "platform_admin" | "producer" | "affiliate" | "student" | "support";
@@ -46,6 +46,13 @@ interface DemoCourse {
   audience: string;
   offers: DemoOffer[];
   modules: DemoModule[];
+}
+
+interface DemoUser {
+  fullName: string;
+  email: string;
+  password: string;
+  role: Role;
 }
 
 @Injectable()
@@ -240,6 +247,57 @@ export class DemoStoreService {
 
   private checkoutEvents: Array<Record<string, unknown>> = [];
   private webhookEvents: Array<Record<string, unknown>> = [];
+  private readonly users = new Map<string, DemoUser>([
+    [
+      "aluno@plataforma.local",
+      {
+        fullName: "Aluno Demo",
+        email: "aluno@plataforma.local",
+        password: "premium123",
+        role: "student"
+      }
+    ],
+    [
+      "produtor@plataforma.local",
+      {
+        fullName: "Camila Freitas",
+        email: "produtor@plataforma.local",
+        password: "premium123",
+        role: "producer"
+      }
+    ],
+    [
+      "afiliado@plataforma.local",
+      {
+        fullName: "Carlos Ventura",
+        email: "afiliado@plataforma.local",
+        password: "premium123",
+        role: "affiliate"
+      }
+    ],
+    [
+      "admin@plataforma.local",
+      {
+        fullName: "Operacao Plataforma",
+        email: "admin@plataforma.local",
+        password: "premium123",
+        role: "platform_admin"
+      }
+    ],
+    [
+      "suporte@plataforma.local",
+      {
+        fullName: "Suporte Interno",
+        email: "suporte@plataforma.local",
+        password: "premium123",
+        role: "support"
+      }
+    ]
+  ]);
+
+  private normalizeEmail(email: string) {
+    return email.trim().toLowerCase();
+  }
 
   getHome() {
     return {
@@ -307,35 +365,60 @@ export class DemoStoreService {
     };
   }
 
-  register(input: { fullName: string; email: string; role: Role }) {
+  register(input: { fullName: string; email: string; password: string }) {
+    const normalizedEmail = this.normalizeEmail(input.email);
+
+    if (this.users.has(normalizedEmail)) {
+      throw new ConflictException("Ja existe uma conta com este e-mail.");
+    }
+
+    const user: DemoUser = {
+      fullName: input.fullName.trim(),
+      email: normalizedEmail,
+      password: input.password,
+      role: "student"
+    };
+
+    this.users.set(normalizedEmail, user);
+
     return {
-      message: "Cadastro recebido em modo sandbox-first",
+      message: "Cadastro concluido com acesso padrao de aluno.",
       user: {
-        fullName: input.fullName,
-        email: input.email,
-        role: input.role
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role
       },
-      nextRoute: this.roleRoute[input.role]
+      nextRoute: this.roleRoute[user.role]
     };
   }
 
-  login(input: { email: string; role: Role }) {
+  login(input: { email: string; password: string }) {
+    const normalizedEmail = this.normalizeEmail(input.email);
+    const user = this.users.get(normalizedEmail);
+
+    if (!user || user.password !== input.password) {
+      throw new UnauthorizedException("E-mail ou senha invalidos.");
+    }
+
     return {
-      message: "Login de demonstracao realizado",
+      message: "Login realizado com sucesso.",
       session: {
-        token: `demo.${input.role}.token`,
-        email: input.email,
-        role: input.role,
-        nextRoute: this.roleRoute[input.role]
+        token: `demo.${user.role}.${Date.now()}`,
+        email: user.email,
+        fullName: user.fullName,
+        role: user.role,
+        nextRoute: this.roleRoute[user.role]
       }
     };
   }
 
   getCurrentUser() {
+    const adminUser = this.users.get("admin@plataforma.local");
+
     return {
-      fullName: "Harley Verly",
-      email: "admin@plataforma.local",
-      role: "platform_admin",
+      fullName: adminUser?.fullName ?? "Operacao Plataforma",
+      email: adminUser?.email ?? "admin@plataforma.local",
+      role: adminUser?.role ?? "platform_admin",
       route: this.roleRoute.platform_admin
     };
   }

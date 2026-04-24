@@ -121,6 +121,7 @@ export interface AuthLoginResponse {
   session: {
     token: string;
     email: string;
+    fullName?: string;
     role: PlatformRole;
     nextRoute: string;
   };

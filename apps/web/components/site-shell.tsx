@@ -1,47 +1,41 @@
 import Link from "next/link";
 
-import { platformConfig } from "@plataforma/config";
-
 import { SessionIndicator } from "./session-indicator";
 
 export function SiteShell({
-  eyebrow = "staging premium",
-  title,
-  subtitle,
   children
 }: {
-  eyebrow?: string;
-  title: string;
-  subtitle: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="page-shell">
-      <div className="ambient ambient-left" />
-      <div className="ambient ambient-right" />
-      <header className="topbar">
-        <Link href="/" className="brand-mark">
-          <span className="brand-dot" />
-          <span>{platformConfig.name}</span>
-        </Link>
-        <nav className="topnav">
-          {platformConfig.sections.map((section) => (
-            <Link key={section.href} href={section.href}>
-              {section.label}
-            </Link>
-          ))}
-        </nav>
-        <SessionIndicator />
-      </header>
+    <div className="public-app-shell">
+      <div className="portal-shell">
+        <header className="shell-topbar">
+          <Link href="/" className="product-lockup public-brand-lockup">
+            <div className="product-mark">
+              <span className="member-brand-dot" />
+            </div>
+            <div className="topbar-copy">
+              <span className="eyebrow">plataforma proprietaria</span>
+              <strong>Plataforma de Aulas</strong>
+              <p>Catalogo, checkout e area do aluno em uma experiencia unica.</p>
+            </div>
+          </Link>
 
-      <main className="main-content">
-        <section className="page-hero">
-          <p className="section-eyebrow">{eyebrow}</p>
-          <h1>{title}</h1>
-          <p>{subtitle}</p>
-        </section>
-        {children}
-      </main>
+          <nav className="public-nav-links" aria-label="Navegacao externa">
+            <Link href="/">Inicio</Link>
+            <Link href="/catalog">Catalogo</Link>
+            <Link href="/#estrutura">Estrutura</Link>
+            <Link href="/#experiencia">Experiencia</Link>
+          </nav>
+
+          <div className="public-session-slot">
+            <SessionIndicator />
+          </div>
+        </header>
+
+        <main>{children}</main>
+      </div>
     </div>
   );
 }

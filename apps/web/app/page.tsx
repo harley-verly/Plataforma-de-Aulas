@@ -1,8 +1,7 @@
 import Link from "next/link";
 
-import { platformConfig } from "@plataforma/config";
 import { demoAdminQueue, demoCourses, demoHomeMetrics, demoTestimonials } from "@plataforma/contracts";
-import { ButtonLink, DataStrip, Pill, SectionHeading, SurfaceCard } from "@plataforma/ui";
+import { DataStrip } from "@plataforma/ui";
 
 import { CourseCard } from "../components/course-card";
 import { SiteShell } from "../components/site-shell";
@@ -11,146 +10,188 @@ export default function HomePage() {
   const featuredCourse = demoCourses[0];
 
   return (
-    <SiteShell
-      eyebrow="plataforma premium"
-      title="Uma plataforma de aulas que ja nasce com presenca de marca."
-      subtitle="A prova comercial precisa parecer academia digital proprietaria, com contraste forte, narrativa clara e transicao natural entre descoberta, acesso, aprendizagem e operacao."
-    >
-      <section className="story-stage">
-        <SurfaceCard className="story-stage-main">
-          <p className="section-eyebrow">catalogo + checkout + learning</p>
-          <h2>Mais proxima de uma academia premium do que de um software generico.</h2>
-          <p>
-            A direcao visual foi reposicionada para transmitir um produto proprietario com atmosfera editorial, foco em
-            consumo de aulas e presenca forte na primeira dobra.
+    <SiteShell>
+      <section className="hero">
+        <div className="hero-copy">
+          <span className="eyebrow">plataforma de aulas premium</span>
+          <h1>Ambiente proprietario para vender, entregar e escalar cursos com presenca de marca.</h1>
+          <p className="hero-text">
+            A frente comercial segue o mesmo padrao visual da landing do Portal de Leads: composicao forte, hierarquia
+            clara e blocos que sustentam o valor do produto antes do login.
           </p>
           <div className="hero-actions">
-            <ButtonLink href="/login">Entrar na plataforma</ButtonLink>
-            <ButtonLink href="/catalog">Explorar catalogo</ButtonLink>
-            <Link className="ghost-link" href="/admin">
-              Ver console administrativo
+            <Link href="/login" className="primary-action workspace-link">
+              Entrar na plataforma
+            </Link>
+            <Link href="/catalog" className="secondary-action workspace-link">
+              Explorar catalogo
             </Link>
           </div>
-          <div className="story-facts">
-            <div className="story-fact">
-              <span className="story-fact-label">foco da demo</span>
-              <strong>entrada, biblioteca e operacao</strong>
-            </div>
-            <div className="story-fact">
-              <span className="story-fact-label">tom visual</span>
-              <strong>escuro, dourado e cinematografico</strong>
-            </div>
-            <div className="story-fact">
-              <span className="story-fact-label">proxima retomada</span>
-              <strong>{featuredCourse?.title ?? "catalogo principal"}</strong>
-            </div>
-          </div>
-        </SurfaceCard>
+        </div>
 
-        <SurfaceCard className="story-stage-side">
-          <span className="spotlight-badge">ambiente de demonstracao</span>
-          <h3>{featuredCourse?.title ?? platformConfig.name}</h3>
-          <p>{featuredCourse?.subtitle ?? "Plataforma proprietaria para cursos, afiliacao e operacao."}</p>
-          <div className="story-list">
-            <div className="story-list-item">
-              <span>dominio ativo</span>
-              <strong>{platformConfig.domain}</strong>
+        <aside className="hero-panel">
+          <div className="brand-tile product-brand-tile">
+            <div className="brand-visual">
+              <div className="member-brand-emblem">
+                <span className="member-brand-dot" />
+              </div>
             </div>
-            <div className="story-list-item">
-              <span>fluxos prontos</span>
-              <strong>login, checkout, learning e admin</strong>
-            </div>
-            <div className="story-list-item">
-              <span>video</span>
-              <strong>Panda Video + YouTube</strong>
-            </div>
-            <div className="story-list-item">
-              <span>operacao financeira</span>
-              <strong>Asaas sandbox-first</strong>
+            <div>
+              <p className="muted-label">produto em destaque</p>
+              <strong>{featuredCourse?.title ?? "Plataforma de Aulas"}</strong>
+              <p className="brand-caption">{featuredCourse?.subtitle}</p>
             </div>
           </div>
-        </SurfaceCard>
+
+          <div className="hero-stats hero-stats-compact">
+            {demoHomeMetrics.map((metric) => (
+              <article className="stat-card" key={metric.label}>
+                <span className="muted-label">{metric.label}</span>
+                <strong>{metric.value}</strong>
+                <p>{metric.note}</p>
+              </article>
+            ))}
+          </div>
+        </aside>
+      </section>
+
+      <section className="content-grid" id="estrutura">
+        <div className="content-column">
+          <div className="section-heading">
+            <span className="eyebrow">estrutura principal</span>
+            <h2>Uma fachada comercial elegante na frente e uma operacao real por tras.</h2>
+            <p className="section-copy">
+              A plataforma foi organizada para apresentar valor na descoberta, fechar venda no checkout e sustentar o
+              consumo do aluno dentro de uma area de membros consistente.
+            </p>
+          </div>
+
+          <div className="module-grid">
+            <article className="panel-card">
+              <div className="card-topline">
+                <strong>Catalogo premium</strong>
+                <span>publico</span>
+              </div>
+              <p>Vitrine comercial com cursos, provas de valor e caminhos naturais para oferta e checkout.</p>
+            </article>
+            <article className="panel-card">
+              <div className="card-topline">
+                <strong>Checkout sandbox-first</strong>
+                <span>publico</span>
+              </div>
+              <p>Fluxo funcional para demonstrar compra, atribuicao de afiliado e liberacao do aluno.</p>
+            </article>
+            <article className="panel-card">
+              <div className="card-topline">
+                <strong>Area de membros</strong>
+                <span>interna</span>
+              </div>
+              <p>Biblioteca, progresso, video e pedidos internos num ambiente coerente com plataforma de cursos real.</p>
+            </article>
+            <article className="panel-card">
+              <div className="card-topline">
+                <strong>Governanca operacional</strong>
+                <span>interna</span>
+              </div>
+              <p>Entradas de produtor e afiliado, fila administrativa e leitura de saude do ambiente.</p>
+            </article>
+          </div>
+        </div>
+
+        <div className="sidebar-column">
+          <div className="stack-panel">
+            <div className="panel-headline">
+              <span className="eyebrow">superficies oficiais</span>
+              <h3>Camadas do produto</h3>
+            </div>
+            <div className="domain-list">
+              <div className="domain-row">
+                <strong>Area publica</strong>
+                <code>aulas.abasolucoesetecnologia.com.br</code>
+                <p>Landing, catalogo, oferta e fluxo de entrada da plataforma.</p>
+              </div>
+              <div className="domain-row">
+                <strong>Area do aluno</strong>
+                <code>/learning</code>
+                <p>Biblioteca, retomada, progresso e solicitacoes internas de afiliado ou produtor.</p>
+              </div>
+              <div className="domain-row">
+                <strong>Operacao interna</strong>
+                <code>/studio /affiliate /admin</code>
+                <p>Ambientes liberados somente apos validacao de perfil e permissao correspondente.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="stack-panel">
+            <div className="panel-headline">
+              <span className="eyebrow">governanca</span>
+              <h3>Regras do acesso</h3>
+            </div>
+            <ul className="rule-list">
+              <li>o cadastro publico cria conta comum de aluno</li>
+              <li>afiliacao e publicacao de cursos sao solicitadas por dentro da area logada</li>
+              <li>perfis administrativos nao sao escolhidos na tela de login</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="three-up-grid" id="experiencia">
+        <article className="panel-card accent-card">
+          <strong>Experiencia comercial</strong>
+          <p>Hero, vitrine e pilhas de conteudo com a mesma disciplina visual da landing do Portal de Leads.</p>
+        </article>
+        <article className="panel-card accent-card">
+          <strong>Experiencia de aluno</strong>
+          <p>Area interna inspirada na sua referencia WordPress, com banner forte, modulos e video em destaque.</p>
+        </article>
+        <article className="panel-card accent-card">
+          <strong>Experiencia de operacao</strong>
+          <p>Pedidos internos, aprovacoes e consoles restritos sem expor papeis sensiveis na parte publica.</p>
+        </article>
       </section>
 
       <DataStrip items={demoHomeMetrics} />
 
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="biblioteca em destaque"
-          title="Cursos e ofertas com cara de produto pronto para venda"
-          description="A vitrine agora trabalha em cima da mesma sensacao observada na referencia: fundo escuro, informacao bem hierarquizada e chamadas com calor comercial."
-        />
-        <div className="card-grid">
-          {demoCourses.map((course) => (
-            <CourseCard key={course.id} course={course} />
-          ))}
+      <section className="content-grid lower-grid">
+        <div className="content-column">
+          <div className="section-heading">
+            <span className="eyebrow">cursos em destaque</span>
+            <h2>Ofertas preparadas para demonstrar valor, compra e entrega.</h2>
+          </div>
+          <div className="card-grid">
+            {demoCourses.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
         </div>
+
+        <aside className="sidebar-column">
+          <div className="stack-panel tall">
+            <span className="eyebrow">aprovacoes em fila</span>
+            <h3>Entrada de parceiros com controle</h3>
+            <div className="story-list compact-story-list">
+              {demoAdminQueue.map((item) => (
+                <div className="story-list-item" key={item.id}>
+                  <span>{item.kind === "producer" ? "produtor" : "afiliado"}</span>
+                  <strong>{item.displayName}</strong>
+                  <p>{item.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
       </section>
 
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="operacao"
-          title="Cada superficie responde a uma etapa critica da jornada"
-          description="Aluno, produtor, afiliado e administracao enxergam a mesma plataforma, mas com fachadas e prioridades diferentes."
-        />
-        <div className="feature-grid">
-          <SurfaceCard className="feature-card">
-            <Pill>learning</Pill>
-            <h3>Area do aluno</h3>
-            <p>Retomada clara, video em destaque, curso organizado e ambiente que convida a continuar assistindo.</p>
-          </SurfaceCard>
-          <SurfaceCard className="feature-card">
-            <Pill>studio</Pill>
-            <h3>Estudio do produtor</h3>
-            <p>Publicacao, rascunhos e leitura comercial sem tirar o produto do mesmo universo visual.</p>
-          </SurfaceCard>
-          <SurfaceCard className="feature-card">
-            <Pill>affiliate</Pill>
-            <h3>Painel do afiliado</h3>
-            <p>Links rastreaveis, conversao e extrato com uma camada mais elegante para apresentacao.</p>
-          </SurfaceCard>
-          <SurfaceCard className="feature-card">
-            <Pill>admin</Pill>
-            <h3>Console administrativo</h3>
-            <p>Curadoria de entrada, observabilidade financeira e seguranca minima de acesso para a demo.</p>
-          </SurfaceCard>
-        </div>
-      </section>
-
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="fila atual"
-          title="Governanca suficiente para a plataforma nao crescer no escuro"
-          description="A fundacao ja contempla fila de aprovacao e leitura operacional para a demonstracao nao parecer um mock desconectado."
-        />
-        <div className="queue-grid">
-          {demoAdminQueue.map((item) => (
-            <SurfaceCard key={item.id} className="queue-card">
-              <Pill>{item.kind === "producer" ? "produtor" : "afiliado"}</Pill>
-              <h3>{item.displayName}</h3>
-              <p className="muted-label">estado: {item.state}</p>
-              <p>{item.note}</p>
-            </SurfaceCard>
-          ))}
-        </div>
-      </section>
-
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="sinal social"
-          title="A apresentacao comercial precisa parecer produto, nao improviso"
-          description="Esses blocos ajudam a sustentar a narrativa de software proprietario com acabamento premium."
-        />
-        <div className="quote-grid">
-          {demoTestimonials.map((testimonial) => (
-            <SurfaceCard key={testimonial.name} className="quote-card">
-              <p className="quote">"{testimonial.quote}"</p>
-              <p className="muted-label">
-                {testimonial.name} - {testimonial.role}
-              </p>
-            </SurfaceCard>
-          ))}
-        </div>
+      <section className="three-up-grid">
+        {demoTestimonials.map((testimonial) => (
+          <article className="panel-card" key={testimonial.name}>
+            <strong>{testimonial.name}</strong>
+            <p>{testimonial.quote}</p>
+            <span className="muted-label">{testimonial.role}</span>
+          </article>
+        ))}
       </section>
     </SiteShell>
   );

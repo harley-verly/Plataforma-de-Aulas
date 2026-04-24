@@ -4,28 +4,10 @@ import { useState, useTransition } from "react";
 
 import { DataStrip, Pill, SurfaceCard } from "@plataforma/ui";
 
-import { getClientApiBaseUrl, type AffiliateOverviewResponse } from "../lib/platform-api";
-
-function getErrorMessage(payload: unknown, fallback: string) {
-  if (!payload || typeof payload !== "object") {
-    return fallback;
-  }
-
-  const message = "message" in payload ? payload.message : undefined;
-  if (Array.isArray(message)) {
-    return message.join(" ");
-  }
-  if (typeof message === "string") {
-    return message;
-  }
-
-  return fallback;
-}
+import type { AffiliateOverviewResponse } from "../lib/platform-api";
 
 export function AffiliateConsole({ overview }: { overview: AffiliateOverviewResponse }) {
-  const [fullName, setFullName] = useState("Carlos Ventura");
-  const [email, setEmail] = useState("carlos@afiliado.com.br");
-  const [channelUrl, setChannelUrl] = useState("https://instagram.com/carlosventura");
+  const [campaignSlug, setCampaignSlug] = useState("campanha-instituto");
   const [feedback, setFeedback] = useState<{ tone: "success" | "error"; text: string } | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -34,7 +16,7 @@ export function AffiliateConsole({ overview }: { overview: AffiliateOverviewResp
       <DataStrip items={overview.kpis} />
 
       <div className="split-grid">
-        <SurfaceCard>
+        <SurfaceCard className="member-console-card">
           <p className="section-eyebrow">links ativos</p>
           <div className="module-stack">
             {overview.links.map((link) => (
@@ -49,63 +31,36 @@ export function AffiliateConsole({ overview }: { overview: AffiliateOverviewResp
           </div>
         </SurfaceCard>
 
-        <SurfaceCard>
+        <SurfaceCard className="member-console-card">
           <form
-            className="form-shell"
+            className="form-grid"
             onSubmit={(event) => {
               event.preventDefault();
               startTransition(async () => {
-                setFeedback(null);
-
-                try {
-                  const response = await fetch(`${getClientApiBaseUrl()}/affiliate/apply`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      fullName,
-                      email,
-                      channelUrl
-                    })
-                  });
-
-                  const data = await response.json();
-                  if (!response.ok) {
-                    throw new Error(getErrorMessage(data, "Nao foi possivel registrar a solicitacao."));
-                  }
-
-                  setFeedback({
-                    tone: "success",
-                    text: typeof data.message === "string" ? data.message : "Solicitacao registrada."
-                  });
-                } catch (error) {
-                  setFeedback({
-                    tone: "error",
-                    text: error instanceof Error ? error.message : "Nao foi possivel registrar a solicitacao."
-                  });
-                }
+                setFeedback({
+                  tone: "success",
+                  text: `Link de demonstracao preparado para a campanha ${campaignSlug}.`
+                });
               });
             }}
           >
-            <p className="section-eyebrow">entrada com aprovacao</p>
-            <h3>Aplicar como afiliado</h3>
-            <div className="control-grid">
-              <label className="field">
-                <span>Nome</span>
-                <input onChange={(event) => setFullName(event.target.value)} required value={fullName} />
-              </label>
-              <label className="field">
-                <span>E-mail</span>
-                <input onChange={(event) => setEmail(event.target.value)} required type="email" value={email} />
-              </label>
-              <label className="field">
-                <span>Canal de divulgacao</span>
-                <input onChange={(event) => setChannelUrl(event.target.value)} required type="url" value={channelUrl} />
-              </label>
-            </div>
-            <button className="primary-button" disabled={isPending} type="submit">
-              Enviar para avaliacao
+            <p className="section-eyebrow">operacao ativa</p>
+            <h3>Gerar campanha interna</h3>
+            <label className="field-label">
+              <span>Slug da campanha</span>
+              <input
+                className="field-input"
+                onChange={(event) => setCampaignSlug(event.target.value)}
+                required
+                value={campaignSlug}
+              />
+            </label>
+            <p className="section-copy">
+              A aplicacao de afiliado acontece dentro da conta comum. Quem chegou nesta tela ja foi aprovado e enxerga
+              apenas ferramentas operacionais.
+            </p>
+            <button className="primary-action" disabled={isPending} type="submit">
+              Gerar link de demonstracao
             </button>
           </form>
 

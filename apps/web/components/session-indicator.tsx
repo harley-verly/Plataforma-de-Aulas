@@ -3,9 +3,17 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { ButtonLink, Pill } from "@plataforma/ui";
+import { ButtonLink } from "@plataforma/ui";
 
 import { DEMO_SESSION_EVENT, clearDemoSession, readDemoSession, type DemoSession } from "../lib/demo-session";
+
+function getDisplayName(session: DemoSession) {
+  if (session.fullName?.trim()) {
+    return session.fullName.trim();
+  }
+
+  return session.email;
+}
 
 export function SessionIndicator() {
   const [session, setSession] = useState<DemoSession | null>(null);
@@ -30,14 +38,14 @@ export function SessionIndicator() {
   }
 
   return (
-    <div className="session-chip">
-      <div className="session-chip-meta">
-        <Pill>{session.role}</Pill>
-        <span>{session.email}</span>
+    <div className="public-session-card">
+      <div className="public-session-copy">
+        <span className="muted-label">sessao ativa</span>
+        <strong>{getDisplayName(session)}</strong>
       </div>
-      <div className="session-chip-actions">
-        <Link className="ghost-link" href={session.nextRoute}>
-          Abrir painel
+      <div className="public-session-actions">
+        <Link className="secondary-action workspace-link" href={session.nextRoute}>
+          Minha area
         </Link>
         <button
           className="text-button"

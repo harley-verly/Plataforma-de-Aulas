@@ -8,6 +8,7 @@ import { getClientApiBaseUrl, type LearningCourseResponse } from "../lib/platfor
 
 export function LearningCourseConsole({ initialCourse }: { initialCourse: LearningCourseResponse }) {
   const [course, setCourse] = useState(initialCourse);
+  const [activeTab, setActiveTab] = useState<"overview" | "comments">("overview");
   const [activeLessonId, setActiveLessonId] = useState(
     initialCourse.progress.flatMap((module) => module.lessons).find((lesson) => lesson.watchedPct < 100)?.lessonId ??
       initialCourse.progress[0]?.lessons[0]?.lessonId ??
@@ -65,8 +66,25 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
   };
 
   return (
-    <div className="module-stack">
+    <div className="module-stack internal-course-shell">
       {feedback ? <div className="status-banner status-banner-success">{feedback}</div> : null}
+
+      <div className="lesson-command-bar">
+        <div className="lesson-command-meta">
+          <span>Seu progresso: {completedLessons} de {totalLessons} aulas</span>
+          <strong>({overallProgress}%)</strong>
+        </div>
+        {activeLesson ? (
+          <button
+            className="primary-action"
+            disabled={isPending}
+            onClick={() => toggleLessonProgress(activeLesson.id, progressById.get(activeLesson.id) ?? 0)}
+            type="button"
+          >
+            {(progressById.get(activeLesson.id) ?? 0) >= 100 ? "Marcar como pendente" : "Marcar como concluido"}
+          </button>
+        ) : null}
+      </div>
 
       <div className="lesson-workspace">
         <section className="lesson-main-stage">
@@ -100,39 +118,56 @@ export function LearningCourseConsole({ initialCourse }: { initialCourse: Learni
             )}
           </div>
 
-          <div className="lesson-support-grid">
-            <SurfaceCard className="inline-card">
-              <p className="muted-label">Resumo da trilha</p>
-              <div className="course-card-meta">
-                <Pill>{completedLessons}/{totalLessons} concluidas</Pill>
-                <Pill>{overallProgress}% total</Pill>
-              </div>
-              <div className="progress-meter">
-                <div className="progress-bar" style={{ width: `${overallProgress}%` }} />
-              </div>
-              <p className="muted-label">Seu progresso geral fica visivel antes mesmo de abrir o menu lateral.</p>
-            </SurfaceCard>
-
-            <SurfaceCard className="inline-card">
-              <p className="muted-label">Metadados ativos</p>
-              <ul className="check-list">
-                <li>externalVideoId: {activeLesson?.externalVideoId ?? "-"}</li>
-                <li>drip desta aula: {activeLesson?.dripAfterDays ?? 0} dia(s)</li>
-                <li>captions: {activeLesson?.captionsUrl ?? "nao informado"}</li>
-                <li>curso: {course.title}</li>
-              </ul>
-              {activeLesson ? (
-                <button
-                  className="primary-button"
-                  disabled={isPending}
-                  onClick={() => toggleLessonProgress(activeLesson.id, progressById.get(activeLesson.id) ?? 0)}
-                  type="button"
-                >
-                  {(progressById.get(activeLesson.id) ?? 0) >= 100 ? "Reiniciar aula ativa" : "Marcar aula ativa como concluida"}
-                </button>
-              ) : null}
-            </SurfaceCard>
+          <div className="lesson-panel-tabs">
+            <button
+              className={activeTab === "overview" ? "lesson-tab-button lesson-tab-button-active" : "lesson-tab-button"}
+              onClick={() => setActiveTab("overview")}
+              type="button"
+            >
+              Visao geral
+            </button>
+            <button
+              className={activeTab === "comments" ? "lesson-tab-button lesson-tab-button-active" : "lesson-tab-button"}
+              onClick={() => setActiveTab("comments")}
+              type="button"
+            >
+              Comentarios
+            </button>
           </div>
+
+          {activeTab === "overview" ? (
+            <div className="lesson-support-grid">
+              <SurfaceCard className="inline-card">
+                <p className="muted-label">Resumo da trilha</p>
+                <div className="course-card-meta">
+                  <Pill>{completedLessons}/{totalLessons} concluidas</Pill>
+                  <Pill>{overallProgress}% total</Pill>
+                </div>
+                <div className="progress-meter">
+                  <div className="progress-bar" style={{ width: `${overallProgress}%` }} />
+                </div>
+                <p className="muted-label">Seu progresso geral fica visivel antes mesmo de abrir o menu lateral.</p>
+              </SurfaceCard>
+
+              <SurfaceCard className="inline-card">
+                <p className="muted-label">Sobre a aula</p>
+                <ul className="check-list">
+                  <li>externalVideoId: {activeLesson?.externalVideoId ?? "-"}</li>
+                  <li>drip desta aula: {activeLesson?.dripAfterDays ?? 0} dia(s)</li>
+                  <li>captions: {activeLesson?.captionsUrl ?? "nao informado"}</li>
+                  <li>curso: {course.title}</li>
+                </ul>
+              </SurfaceCard>
+            </div>
+          ) : (
+            <SurfaceCard className="inline-card lesson-comments-card">
+              <p className="muted-label">Comentarios da aula</p>
+              <p>
+                Este bloco representa a extensao natural da area interna para duvidas, conversa e suporte do aluno sem
+                quebrar o visual principal da trilha.
+              </p>
+            </SurfaceCard>
+          )}
         </section>
 
         <aside className="lesson-sidebar">

@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
 
-import { SectionHeading } from "@plataforma/ui";
-
 import { CheckoutDemoPanel } from "../../../components/checkout-demo-panel";
 import { SiteShell } from "../../../components/site-shell";
 import { getCheckoutOffer } from "../../../lib/platform-api";
@@ -19,16 +17,27 @@ export default async function CheckoutPage({
   }
 
   return (
-    <SiteShell
-      title="Checkout sandbox-first"
-      subtitle="Uma prova comercial funcional para demonstrar criacao de sessao, atribuicao de afiliado e encaminhamento para a area do aluno."
-    >
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="pagamento"
-          title="Sessao comercial pronta para a demonstracao"
-          description="Este fluxo usa a API real do staging em modo sandbox-first, preservando a preparacao de split e observabilidade para o painel admin."
-        />
+    <SiteShell>
+      <section className="hero hero-compact">
+        <div className="hero-copy">
+          <span className="eyebrow">checkout</span>
+          <h1>Sessao comercial pronta para a demonstracao.</h1>
+          <p className="hero-text">
+            Fluxo externo da plataforma com criacao de sessao, atribuicao opcional de afiliado e encaminhamento para a
+            area interna do aluno.
+          </p>
+        </div>
+
+        <aside className="hero-panel">
+          <div className="stack-panel compact-stack-panel">
+            <span className="eyebrow">modo atual</span>
+            <h3>Sandbox-first</h3>
+            <p>Preparado para Asaas, split e observabilidade sem expor a operacao para o cliente.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section className="content-grid">
         <CheckoutDemoPanel course={checkoutOffer.course} offer={checkoutOffer.offer} />
       </section>
     </SiteShell>

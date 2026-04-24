@@ -1,23 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import { routeByRole } from "@plataforma/config";
 import type { PlatformRole } from "@plataforma/contracts";
-import { Pill, SurfaceCard } from "@plataforma/ui";
 
 import { writeDemoSession } from "../lib/demo-session";
 import { getClientApiBaseUrl, type AuthLoginResponse, type AuthRegisterResponse } from "../lib/platform-api";
-
-const roleOptions: Array<{ value: PlatformRole; label: string; hint: string }> = [
-  { value: "student", label: "Aluno", hint: "area do aluno com progresso e retomada" },
-  { value: "producer", label: "Produtor", hint: "studio com aprovacao e rascunhos" },
-  { value: "affiliate", label: "Afiliado", hint: "links, conversao e comissao" },
-  { value: "platform_admin", label: "Admin da plataforma", hint: "governanca, aprovacao e saude operacional" },
-  { value: "support", label: "Suporte", hint: "acompanhamento interno da operacao" },
-  { value: "super_admin", label: "Super admin", hint: "controle maximo do ambiente" }
-];
 
 function getErrorMessage(payload: unknown, fallback: string) {
   if (!payload || typeof payload !== "object") {
@@ -59,7 +50,6 @@ export function AuthPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<"login" | "register">("login");
-  const [role, setRole] = useState<PlatformRole>("student");
   const [fullName, setFullName] = useState("Harley Verly");
   const [email, setEmail] = useState("contato@abasolucoesetecnologia.com.br");
   const [password, setPassword] = useState("premium123");
@@ -70,36 +60,56 @@ export function AuthPanel() {
   const redirectTarget = redirectParam?.startsWith("/") ? redirectParam : null;
 
   return (
-    <div className="auth-demo-layout">
-      <SurfaceCard className="auth-shell auth-shell-primary">
-        <div className="auth-shell-copy">
-          <p className="section-eyebrow">entrada principal</p>
-          <h2>{mode === "login" ? "Bem-vindo de volta" : "Crie uma conta de demonstracao"}</h2>
+    <div className="auth-shell auth-shell-course">
+      <section className="auth-hero">
+        <Link href="/" className="auth-brand">
+          <div className="auth-brand-mark">
+            <span className="member-brand-dot" />
+          </div>
+          <div>
+            <span className="eyebrow">plataforma oficial</span>
+            <strong>Plataforma de Aulas</strong>
+            <p>Experiencia proprietaria para descoberta, compra e consumo de aulas.</p>
+          </div>
+        </Link>
+
+        <div className="auth-copy-card auth-copy-card-course">
+          <span className="eyebrow">acesso central</span>
+          <h1>Uma unica entrada para aluno, produtor, afiliado e operacao interna.</h1>
           <p>
-            O fluxo registra uma sessao local de demonstracao e redireciona automaticamente para a area correta do
-            perfil selecionado.
+            O cadastro publico nasce como conta de aluno. Solicitacoes para afiliacao e publicacao de cursos acontecem
+            somente por dentro da area logada, do jeito certo para uma plataforma real.
           </p>
+          <div className="auth-pill-row">
+            <span className="scope-pill">area do aluno</span>
+            <span className="scope-pill">solicitacoes internas</span>
+            <span className="scope-pill">acesso administrativo controlado</span>
+          </div>
+          <div className="auth-guidance-card">
+            <strong>Regra de acesso da demo</strong>
+            <p>
+              Ninguem escolhe papel sensivel nesta tela. Perfis administrativos usam credenciais internas, e afiliado
+              ou produtor pedem liberacao depois do login.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="auth-panel">
+        <div className="card-topline">
+          <strong>{mode === "login" ? "Entrar na plataforma" : "Criar conta de aluno"}</strong>
+          <span>{mode === "login" ? "Sessao oficial" : "Cadastro inicial"}</span>
         </div>
 
-        <div className="segmented-control" role="tablist" aria-label="Modo de autenticacao">
-          <button
-            className={mode === "login" ? "segment-button segment-button-active" : "segment-button"}
-            onClick={() => setMode("login")}
-            type="button"
-          >
-            Entrar
-          </button>
-          <button
-            className={mode === "register" ? "segment-button segment-button-active" : "segment-button"}
-            onClick={() => setMode("register")}
-            type="button"
-          >
-            Criar conta
-          </button>
-        </div>
+        {feedback ? (
+          <div className={feedback.tone === "error" ? "integration-notice danger" : "integration-notice success"}>
+            <strong>{feedback.tone === "error" ? "Atencao" : "Operacao concluida"}</strong>
+            <p>{feedback.text}</p>
+          </div>
+        ) : null}
 
         <form
-          className="form-shell"
+          className="form-grid auth-form"
           onSubmit={(event) => {
             event.preventDefault();
 
@@ -107,10 +117,7 @@ export function AuthPanel() {
               setFeedback(null);
 
               const endpoint = mode === "login" ? "/auth/login" : "/auth/register";
-              const payload =
-                mode === "login"
-                  ? { email, password, role }
-                  : { fullName, email, password, role };
+              const payload = mode === "login" ? { email, password } : { fullName, email, password };
 
               try {
                 const response = await fetch(`${getClientApiBaseUrl()}${endpoint}`, {
@@ -137,6 +144,7 @@ export function AuthPanel() {
 
                   writeDemoSession({
                     email: data.session.email,
+                    fullName: data.session.fullName,
                     role: data.session.role,
                     nextRoute: homeRoute,
                     token: data.session.token,
@@ -156,16 +164,11 @@ export function AuthPanel() {
                     role: data.user.role,
                     nextRoute: homeRoute,
                     fullName: data.user.fullName,
-                    statusLabel: "cadastro sandbox"
+                    statusLabel: "cadastro concluido"
                   });
                   router.push(targetRoute);
                   return;
                 }
-
-                setFeedback({
-                  tone: "success",
-                  text: "Fluxo concluido com sucesso."
-                });
               } catch {
                 setFeedback({
                   tone: "error",
@@ -175,72 +178,71 @@ export function AuthPanel() {
             });
           }}
         >
-          <div className="control-grid">
-            {mode === "register" ? (
-              <label className="field">
-                <span>Nome completo</span>
-                <input onChange={(event) => setFullName(event.target.value)} required value={fullName} />
-              </label>
-            ) : null}
-
-            <label className="field">
-              <span>E-mail</span>
-              <input onChange={(event) => setEmail(event.target.value)} required type="email" value={email} />
+          {mode === "register" ? (
+            <label className="field-label">
+              <span>Nome completo</span>
+              <input
+                className="field-input"
+                onChange={(event) => setFullName(event.target.value)}
+                placeholder="Seu nome completo"
+                required
+                value={fullName}
+              />
             </label>
-
-            <label className="field">
-              <span>Senha</span>
-              <input onChange={(event) => setPassword(event.target.value)} required type="password" value={password} />
-            </label>
-          </div>
-
-          <div className="inline-card">
-            <div className="course-card-meta">
-              <Pill>{role}</Pill>
-              <Pill className="pill-accent">{roleOptions.find((option) => option.value === role)?.label}</Pill>
-            </div>
-            <p className="muted-label">
-              Perfil ativo para o proximo acesso: {roleOptions.find((option) => option.value === role)?.hint}
-            </p>
-          </div>
-
-          {feedback ? (
-            <div className={feedback.tone === "error" ? "status-banner status-banner-error" : "status-banner status-banner-success"}>
-              {feedback.text}
-            </div>
           ) : null}
 
-          <div className="action-row">
-            <button className="primary-button" disabled={isPending} type="submit">
-              {isPending ? "Processando..." : mode === "login" ? "Entrar no staging" : "Criar conta sandbox"}
-            </button>
-            <p className="muted-label">
-              O acesso anonimo nao abre admin, studio, affiliate ou learning sem sessao valida.
+          <label className="field-label">
+            <span>E-mail</span>
+            <input
+              className="field-input"
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="voce@empresa.com"
+              required
+              type="email"
+              value={email}
+            />
+          </label>
+
+          <label className="field-label">
+            <span>Senha</span>
+            <input
+              className="field-input"
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Digite sua senha"
+              required
+              type="password"
+              value={password}
+            />
+          </label>
+
+          <div className="auth-form-note">
+            <strong>Como funciona a liberacao interna</strong>
+            <p>
+              Depois do primeiro acesso, o proprio usuario pode solicitar entrada no programa de afiliados ou no fluxo
+              de produtor de forma interna, sem burlar governanca.
             </p>
           </div>
-        </form>
-      </SurfaceCard>
 
-      <SurfaceCard className="auth-shell auth-shell-secondary">
-        <p className="section-eyebrow">perfis de entrada</p>
-        <div className="auth-role-grid">
-          {roleOptions.map((option) => (
+          <div className="action-row">
+            <button className="primary-action" disabled={isPending} type="submit">
+              {isPending
+                ? mode === "login"
+                  ? "Entrando..."
+                  : "Criando conta..."
+                : mode === "login"
+                  ? "Entrar"
+                  : "Criar conta"}
+            </button>
             <button
-              key={option.value}
-              className={option.value === role ? "role-option role-option-active" : "role-option"}
-              onClick={() => setRole(option.value)}
+              className="secondary-action workspace-link"
+              onClick={() => setMode((current) => (current === "login" ? "register" : "login"))}
               type="button"
             >
-              <div className="course-card-meta">
-                <Pill>{option.value}</Pill>
-                {option.value === role ? <Pill className="pill-accent">selecionado</Pill> : null}
-              </div>
-              <strong>{option.label}</strong>
-              <span>{option.hint}</span>
+              {mode === "login" ? "Criar conta" : "Ja tenho conta"}
             </button>
-          ))}
-        </div>
-      </SurfaceCard>
+          </div>
+        </form>
+      </section>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Module, Post } from "@nestjs/common";
-import { IsEmail, IsIn, IsString, MinLength } from "class-validator";
+import { IsEmail, IsString, MinLength } from "class-validator";
 
 import { DemoStoreService } from "../../common/demo-store.service";
 
@@ -14,9 +14,6 @@ class RegisterDto {
   @IsString()
   @MinLength(6)
   password!: string;
-
-  @IsIn(["super_admin", "platform_admin", "producer", "affiliate", "student", "support"])
-  role!: "super_admin" | "platform_admin" | "producer" | "affiliate" | "student" | "support";
 }
 
 class LoginDto {
@@ -26,9 +23,6 @@ class LoginDto {
   @IsString()
   @MinLength(6)
   password!: string;
-
-  @IsIn(["super_admin", "platform_admin", "producer", "affiliate", "student", "support"])
-  role!: "super_admin" | "platform_admin" | "producer" | "affiliate" | "student" | "support";
 }
 
 @Controller("auth")

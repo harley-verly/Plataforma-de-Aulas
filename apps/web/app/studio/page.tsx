@@ -1,25 +1,20 @@
-import { SectionHeading } from "@plataforma/ui";
-
+import { MemberShell } from "../../components/member-shell";
 import { StudioConsole } from "../../components/studio-console";
-import { SiteShell } from "../../components/site-shell";
 import { getStudioOverview } from "../../lib/platform-api";
 
 export default async function StudioPage() {
   const overview = await getStudioOverview();
 
   return (
-    <SiteShell
+    <MemberShell
+      currentSection="studio"
+      eyebrow="studio do produtor"
       title="Studio"
-      subtitle="Um bastidor de produtor pensado para publicar cursos, acompanhar pipeline e crescer com governanca."
+      subtitle="Bastidor interno para cursos, pipeline e operacao do produtor ja aprovado."
     >
-      <section className="content-section">
-        <SectionHeading
-          eyebrow="produtor"
-          title="Esteira de operacao"
-          description="O studio foi desenhado para receber pedidos de entrada, cursos em rascunho e leitura consolidada da operacao."
-        />
+      <section className="member-page-section">
         <StudioConsole overview={overview} />
       </section>
-    </SiteShell>
+    </MemberShell>
   );
 }

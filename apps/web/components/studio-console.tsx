@@ -23,9 +23,6 @@ function getErrorMessage(payload: unknown, fallback: string) {
 }
 
 export function StudioConsole({ overview }: { overview: StudioOverviewResponse }) {
-  const [producerName, setProducerName] = useState("Camila Freitas");
-  const [producerEmail, setProducerEmail] = useState("camila@produtora.com.br");
-  const [portfolioUrl, setPortfolioUrl] = useState("https://portfolio.exemplo.com.br/camila");
   const [draftTitle, setDraftTitle] = useState("Imersao de Onboarding Premium");
   const [draftSummary, setDraftSummary] = useState(
     "Programa desenhado para estruturar onboarding, acompanhamento e leitura de valor percebido em produtos educacionais."
@@ -55,7 +52,7 @@ export function StudioConsole({ overview }: { overview: StudioOverviewResponse }
       <DataStrip items={overview.kpis} />
 
       <div className="split-grid">
-        <SurfaceCard>
+        <SurfaceCard className="member-console-card">
           <p className="section-eyebrow">pipeline atual</p>
           <div className="module-stack">
             {overview.pipeline.map((item) => (
@@ -69,58 +66,11 @@ export function StudioConsole({ overview }: { overview: StudioOverviewResponse }
           </div>
         </SurfaceCard>
 
-        <SurfaceCard>
+        <SurfaceCard className="member-console-card">
           <p className="section-eyebrow">acoes do studio</p>
           <div className="module-stack">
             <form
-              className="form-shell"
-              onSubmit={(event) => {
-                event.preventDefault();
-                startTransition(async () => {
-                  setFeedback(null);
-                  try {
-                    const data = await postJson("/studio/producers/apply", {
-                      fullName: producerName,
-                      email: producerEmail,
-                      portfolioUrl
-                    });
-                    setFeedback({ tone: "success", text: data.message });
-                  } catch (error) {
-                    setFeedback({
-                      tone: "error",
-                      text: error instanceof Error ? error.message : "Nao foi possivel enviar a solicitacao."
-                    });
-                  }
-                });
-              }}
-            >
-              <h3>Solicitar entrada como produtor</h3>
-              <div className="control-grid">
-                <label className="field">
-                  <span>Nome</span>
-                  <input onChange={(event) => setProducerName(event.target.value)} required value={producerName} />
-                </label>
-                <label className="field">
-                  <span>E-mail</span>
-                  <input
-                    onChange={(event) => setProducerEmail(event.target.value)}
-                    required
-                    type="email"
-                    value={producerEmail}
-                  />
-                </label>
-                <label className="field">
-                  <span>Portfolio</span>
-                  <input onChange={(event) => setPortfolioUrl(event.target.value)} required type="url" value={portfolioUrl} />
-                </label>
-              </div>
-              <button className="primary-button" disabled={isPending} type="submit">
-                Enviar para aprovacao
-              </button>
-            </form>
-
-            <form
-              className="form-shell"
+              className="form-grid"
               onSubmit={(event) => {
                 event.preventDefault();
                 startTransition(async () => {
@@ -141,17 +91,21 @@ export function StudioConsole({ overview }: { overview: StudioOverviewResponse }
               }}
             >
               <h3>Criar rascunho de curso</h3>
-              <div className="control-grid">
-                <label className="field">
+              <label className="field-label">
                   <span>Titulo</span>
-                  <input onChange={(event) => setDraftTitle(event.target.value)} required value={draftTitle} />
+                  <input className="field-input" onChange={(event) => setDraftTitle(event.target.value)} required value={draftTitle} />
                 </label>
-                <label className="field">
+                <label className="field-label">
                   <span>Resumo</span>
-                  <textarea onChange={(event) => setDraftSummary(event.target.value)} required rows={4} value={draftSummary} />
+                  <textarea
+                    className="field-input field-textarea"
+                    onChange={(event) => setDraftSummary(event.target.value)}
+                    required
+                    rows={4}
+                    value={draftSummary}
+                  />
                 </label>
-              </div>
-              <button className="primary-button" disabled={isPending} type="submit">
+              <button className="primary-action" disabled={isPending} type="submit">
                 Gerar rascunho
               </button>
             </form>
