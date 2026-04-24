@@ -10,52 +10,52 @@ const sequences = {
     {
       kind: "node",
       script: "node_modules/typescript/bin/tsc",
-      args: ["-p", "packages/contracts/tsconfig.json"],
+      args: ["-p", "packages/contracts/tsconfig.json"]
     },
     {
       kind: "node",
       script: "node_modules/typescript/bin/tsc",
-      args: ["-p", "packages/config/tsconfig.json"],
+      args: ["-p", "packages/config/tsconfig.json"]
     },
     {
       kind: "node",
       script: "node_modules/typescript/bin/tsc",
-      args: ["-p", "packages/ui/tsconfig.json"],
-    },
+      args: ["-p", "packages/ui/tsconfig.json"]
+    }
   ],
   typecheck: [
     {
       kind: "sequence",
-      sequence: "build:packages",
+      sequence: "build:packages"
     },
     {
       kind: "node",
       script: "node_modules/typescript/bin/tsc",
-      args: ["-p", "apps/api/tsconfig.json", "--noEmit"],
+      args: ["-p", "apps/api/tsconfig.json", "--noEmit"]
     },
     {
       kind: "node",
       script: "node_modules/typescript/bin/tsc",
-      args: ["-p", "apps/web/tsconfig.json", "--noEmit"],
-    },
+      args: ["-p", "apps/web/tsconfig.app.json", "--noEmit"]
+    }
   ],
   build: [
     {
       kind: "sequence",
-      sequence: "build:packages",
+      sequence: "build:packages"
     },
     {
       kind: "node",
       script: "node_modules/typescript/bin/tsc",
-      args: ["-p", "apps/api/tsconfig.build.json"],
+      args: ["-p", "apps/api/tsconfig.build.json"]
     },
     {
       kind: "node",
-      script: "apps/web/node_modules/next/dist/bin/next",
+      script: "apps/web/node_modules/vite/bin/vite.js",
       args: ["build"],
-      cwd: "apps/web",
-    },
-  ],
+      cwd: "apps/web"
+    }
+  ]
 };
 
 const sequenceName = process.argv[2];
@@ -82,7 +82,7 @@ function runNodeTask(task) {
     stdio: "inherit",
     cwd,
     env,
-    shell: false,
+    shell: false
   });
 
   if (result.error) {

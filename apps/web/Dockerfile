@@ -17,17 +17,11 @@ RUN pnpm install --no-frozen-lockfile
 RUN pnpm run build:packages
 RUN pnpm --filter @plataforma/web build
 
-FROM node:22-alpine AS runtime
+FROM nginx:1.29-alpine AS runtime
 
-ENV NODE_ENV=production
-ENV HOSTNAME=0.0.0.0
-ENV PORT=3000
+COPY apps/web/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/apps/web/dist /usr/share/nginx/html
 
-WORKDIR /app
+EXPOSE 80
 
-COPY --from=build /app/apps/web/.next/standalone ./
-COPY --from=build /app/apps/web/.next/static ./apps/web/.next/static
-
-EXPOSE 3000
-
-CMD ["node", "apps/web/server.js"]
+CMD ["nginx", "-g", "daemon off;"]

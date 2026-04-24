@@ -1,0 +1,219 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 5%;
+    --foreground: 40 30% 94%;
+    --ink: 0 0% 5%;
+    --ink-soft: 0 0% 10%;
+    --ink-elevated: 0 0% 13%;
+    --ink-line: 40 12% 18%;
+    --paper: 40 30% 94%;
+    --paper-soft: 40 18% 82%;
+    --paper-muted: 40 8% 60%;
+    --gold: 44 52% 54%;
+    --gold-soft: 44 75% 75%;
+    --gold-deep: 40 55% 38%;
+    --gold-foreground: 0 0% 5%;
+    --card: 0 0% 7%;
+    --card-foreground: 40 30% 94%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 40 30% 94%;
+    --primary: 44 52% 54%;
+    --primary-foreground: 0 0% 5%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 40 30% 94%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 40 8% 60%;
+    --accent: 44 52% 54%;
+    --accent-foreground: 0 0% 5%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 40 30% 94%;
+    --border: 40 12% 18%;
+    --input: 40 12% 18%;
+    --ring: 44 52% 54%;
+    --radius: 0.25rem;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 40 18% 82%;
+    --sidebar-primary: 44 52% 54%;
+    --sidebar-primary-foreground: 0 0% 5%;
+    --sidebar-accent: 0 0% 11%;
+    --sidebar-accent-foreground: 40 30% 94%;
+    --sidebar-border: 40 12% 16%;
+    --sidebar-ring: 44 52% 54%;
+    --gradient-gold: linear-gradient(135deg, hsl(44 75% 75%) 0%, hsl(44 52% 54%) 50%, hsl(40 55% 38%) 100%);
+    --gradient-gold-line: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.6), transparent);
+    --gradient-ink: linear-gradient(180deg, hsl(0 0% 7%) 0%, hsl(0 0% 4%) 100%);
+    --gradient-fade-bottom: linear-gradient(180deg, transparent 0%, hsl(var(--background)) 100%);
+    --gradient-fade-top: linear-gradient(0deg, transparent 0%, hsl(var(--background)) 100%);
+    --gradient-radial-gold: radial-gradient(circle at 50% 50%, hsl(var(--gold) / 0.15), transparent 60%);
+    --shadow-editorial: 0 30px 80px -30px hsl(0 0% 0% / 0.7);
+    --shadow-gold-glow: 0 0 60px -15px hsl(var(--gold) / 0.45);
+    --shadow-card: 0 1px 0 hsl(var(--gold) / 0.06) inset, 0 20px 40px -20px hsl(0 0% 0% / 0.5);
+    --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground;
+    font-feature-settings: "ss01", "ss02", "cv11";
+  }
+
+  ::selection {
+    background: hsl(var(--gold) / 0.3);
+    color: hsl(var(--paper));
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-serif font-normal tracking-tight;
+  }
+}
+
+@layer components {
+  .gold-rule {
+    height: 1px;
+    background: var(--gradient-gold-line);
+  }
+
+  .gold-text {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .editorial-grain {
+    position: relative;
+  }
+
+  .editorial-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .hover-gold-shimmer {
+    background: linear-gradient(
+      110deg,
+      hsl(var(--gold)) 0%,
+      hsl(var(--gold-soft)) 45%,
+      hsl(var(--gold)) 55%,
+      hsl(var(--gold-deep)) 100%
+    );
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    transition: background-position 700ms var(--ease-editorial);
+  }
+
+  .hover-gold-shimmer:hover {
+    background-position: 100% 50%;
+  }
+
+  .editorial-link {
+    @apply relative inline-block text-paper-soft transition-colors duration-300;
+  }
+
+  .editorial-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    height: 1px;
+    width: 100%;
+    background: hsl(var(--gold));
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 400ms var(--ease-editorial);
+  }
+
+  .editorial-link:hover {
+    color: hsl(var(--paper));
+  }
+
+  .editorial-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .container-editorial {
+    @apply mx-auto w-full px-6 md:px-10 lg:px-16;
+    max-width: 1440px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 800ms var(--ease-editorial) both;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 800ms var(--ease-editorial) both;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

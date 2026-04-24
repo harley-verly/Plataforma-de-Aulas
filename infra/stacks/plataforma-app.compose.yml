@@ -33,10 +33,6 @@ services:
     build:
       context: ../..
       dockerfile: apps/web/Dockerfile
-    environment:
-      NODE_ENV: production
-      NEXT_PUBLIC_APP_URL: https://aulas.abasolucoesetecnologia.com.br
-      NEXT_PUBLIC_API_BASE_URL: https://aulas.abasolucoesetecnologia.com.br/api
     networks:
       - proxy
       - plataforma-internal
@@ -45,7 +41,7 @@ services:
       - "traefik.http.routers.plataforma-web.rule=Host(`aulas.abasolucoesetecnologia.com.br`)"
       - "traefik.http.routers.plataforma-web.entrypoints=websecure"
       - "traefik.http.routers.plataforma-web.tls.certresolver=le"
-      - "traefik.http.services.plataforma-web.loadbalancer.server.port=3000"
+      - "traefik.http.services.plataforma-web.loadbalancer.server.port=80"
     depends_on:
       - api
     restart: unless-stopped
