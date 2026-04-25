@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
@@ -7,11 +8,18 @@ import { EventCard } from "@/components/site/EventCard";
 import { CourseCard } from "@/components/site/CourseCard";
 import { BusinessCard } from "@/components/site/BusinessCard";
 import { businesses, courses, events, institutional } from "@/data/portal";
+import { getCatalogHome } from "@/lib/platform-api";
 import heroImg from "@/assets/hero-entrepreneur.jpg";
 
 const Index = () => {
+  const { data: homeData } = useQuery({
+    queryKey: ["catalog-home"],
+    queryFn: getCatalogHome
+  });
   const featuredEvent = events[0];
-  const featuredCourses = courses.filter((c) => c.status === "publicado").slice(0, 3);
+  const fallbackCourses = courses.filter((c) => c.status === "publicado");
+  const featuredCourses = (homeData?.featuredCourses ?? fallbackCourses).slice(0, 3);
+  const courseCount = homeData?.featuredCourses.length ?? fallbackCourses.length;
   const featuredBiz = businesses.slice(0, 4);
 
   return (
@@ -139,7 +147,7 @@ const Index = () => {
               </div>
               <div className="mt-10">
                 <p className="font-serif text-5xl leading-none text-paper md:text-6xl">
-                  4 <span className="text-gold-soft">cursos</span>
+                  {courseCount} <span className="text-gold-soft">cursos</span>
                 </p>
                 <p className="mt-3 text-sm text-paper-muted">com matrículas abertas para o próximo ciclo.</p>
               </div>

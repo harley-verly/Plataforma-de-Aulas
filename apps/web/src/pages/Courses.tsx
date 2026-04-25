@@ -1,10 +1,16 @@
+import { useQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { CourseCard } from "@/components/site/CourseCard";
 import { courses } from "@/data/portal";
+import { getCatalogCourses } from "@/lib/platform-api";
 
 const CoursesPage = () => {
-  const list = courses.filter((c) => c.status === "publicado");
+  const { data: apiCourses } = useQuery({
+    queryKey: ["catalog-courses"],
+    queryFn: getCatalogCourses
+  });
+  const list = (apiCourses ?? courses).filter((c) => c.status === "publicado");
   return (
     <SiteLayout>
       <section className="container-editorial pt-12 pb-12 md:pt-20">

@@ -3,6 +3,8 @@ import { ConflictException, Injectable, NotFoundException, UnauthorizedException
 type ApprovalState = "pending_review" | "approved" | "needs_adjustment";
 type Role = "super_admin" | "platform_admin" | "producer" | "affiliate" | "student" | "support";
 type VideoProvider = "panda" | "youtube";
+type CourseStatus = "publicado" | "rascunho";
+type CourseModality = "Online" | "Presencial" | "Hibrido";
 
 interface DemoOffer {
   id: string;
@@ -40,10 +42,19 @@ interface DemoCourse {
   slug: string;
   title: string;
   subtitle: string;
+  excerpt: string;
+  description: string;
   summary: string;
   thumbnailUrl: string;
   producerName: string;
+  instructor: string;
   audience: string;
+  workload: string;
+  modality: CourseModality;
+  seats: number;
+  schedule: Array<{ week: string; topic: string }>;
+  materials: Array<{ name: string; type: string }>;
+  status: CourseStatus;
   offers: DemoOffer[];
   modules: DemoModule[];
 }
@@ -72,12 +83,29 @@ export class DemoStoreService {
       slug: "operacao-premium-de-cursos",
       title: "Operacao Premium de Cursos",
       subtitle: "Produto, oferta, onboarding e experiencia do aluno sob a mesma operacao.",
+      excerpt: "Da oferta ao acompanhamento do aluno com uma arquitetura premium de produto digital.",
+      description:
+        "Programa desenhado para estruturar uma operacao completa de cursos com narrativa comercial, member area, governanca e acompanhamento de experiencia.",
       summary:
         "Curso estruturado para transformar conteudo em um produto digital premium com governanca, acompanhamento e margem protegida.",
       thumbnailUrl:
         "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
       producerName: "Equipe Plataforma de Aulas",
+      instructor: "Operacao Plataforma",
       audience: "Times de operacao, especialistas e produtores",
+      workload: "28h",
+      modality: "Hibrido",
+      seats: 32,
+      schedule: [
+        { week: "Modulo 1", topic: "Oferta, promessa e narrativa comercial" },
+        { week: "Modulo 2", topic: "Checkout, onboarding e member area" },
+        { week: "Modulo 3", topic: "Retencao, progresso e indicadores" }
+      ],
+      materials: [
+        { name: "Blueprint da jornada do aluno", type: "PDF" },
+        { name: "Checklist de go-live da operacao", type: "XLSX" }
+      ],
+      status: "publicado",
       offers: [
         {
           id: "offer-premium-once",
@@ -156,16 +184,155 @@ export class DemoStoreService {
       ]
     },
     {
+      id: "course-entrepreneurship",
+      slug: "fundamentos-do-empreendedorismo",
+      title: "Fundamentos do Empreendedorismo",
+      subtitle: "Da ideia ao primeiro cliente com clareza de proposta e tracao inicial.",
+      excerpt: "Uma trilha pratica para sair da intuicao e construir um negocio com base real.",
+      description:
+        "Curso introdutorio para quem esta estruturando seu primeiro produto, oferta ou servico, com foco em validacao, posicionamento e primeiras vendas.",
+      summary:
+        "Programa intensivo voltado para descoberta de publico, validacao de oferta e execucao comercial inicial.",
+      thumbnailUrl:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+      producerName: "Equipe Academica",
+      instructor: "Camila Andrade",
+      audience: "Novos empreendedores e profissionais em transicao",
+      workload: "32h",
+      modality: "Hibrido",
+      seats: 24,
+      schedule: [
+        { week: "Semana 1", topic: "Mentalidade, problema e publico" },
+        { week: "Semana 2", topic: "Modelo de negocio e proposta de valor" },
+        { week: "Semana 3", topic: "Validacao, MVP e aprendizado" },
+        { week: "Semana 4", topic: "Primeiras vendas e indicadores" }
+      ],
+      materials: [
+        { name: "Canvas comentado", type: "PDF" },
+        { name: "Planilha de validacao", type: "XLSX" }
+      ],
+      status: "publicado",
+      offers: [
+        {
+          id: "offer-entrepreneurship-once",
+          title: "Turma completa",
+          description: "Acesso integral a aulas, encontros e certificado.",
+          priceLabel: "R$ 497,00",
+          priceInCents: 49700,
+          billingModel: "one_time"
+        }
+      ],
+      modules: [
+        {
+          id: "module-entre-1",
+          title: "Base do negocio",
+          description: "Fundamentos para sair da ideia e entrar em construcao.",
+          lessons: [
+            {
+              id: "lesson-entre-1",
+              slug: "clareza-de-oferta",
+              title: "Clareza de oferta",
+              summary: "Como transformar conhecimento em proposta compreensivel e desejavel.",
+              dripAfterDays: 0,
+              isPreview: true,
+              videoProvider: "youtube",
+              externalVideoId: "dQw4w9WgXcQ",
+              embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+              allowedDomains: ["aulas.abasolucoesetecnologia.com.br", "localhost"],
+              durationSec: 840,
+              captionsUrl: null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "course-finance",
+      slug: "gestao-financeira-essencial",
+      title: "Gestao Financeira Essencial",
+      subtitle: "Numeros claros para decisoes corajosas e sustentaveis.",
+      excerpt: "Fluxo de caixa, margem e leitura financeira para pequenas operacoes.",
+      description:
+        "Capacitacao pratica para consolidar rotina financeira, precificacao e visao de indicadores sem depender de planilhas improvisadas.",
+      summary:
+        "Programa direto ao ponto para consolidar leitura financeira, margem e tomada de decisao em pequenos negocios.",
+      thumbnailUrl:
+        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80",
+      producerName: "Equipe Financeira",
+      instructor: "Mariana Lopes",
+      audience: "Empreendedores, gestores e operacao administrativa",
+      workload: "16h",
+      modality: "Presencial",
+      seats: 20,
+      schedule: [
+        { week: "Encontro 1", topic: "Fluxo de caixa e DRE simplificado" },
+        { week: "Encontro 2", topic: "Precificacao e margem" },
+        { week: "Encontro 3", topic: "Indicadores e rotina de decisao" }
+      ],
+      materials: [{ name: "Planilha de gestao financeira", type: "XLSX" }],
+      status: "publicado",
+      offers: [
+        {
+          id: "offer-finance-once",
+          title: "Imersao presencial",
+          description: "Acesso as aulas presenciais com materiais e suporte.",
+          priceLabel: "R$ 397,00",
+          priceInCents: 39700,
+          billingModel: "one_time"
+        }
+      ],
+      modules: [
+        {
+          id: "module-fin-1",
+          title: "Fundamentos financeiros",
+          description: "Base para organizar caixa, margem e previsao.",
+          lessons: [
+            {
+              id: "lesson-fin-1",
+              slug: "caixa-sem-caos",
+              title: "Caixa sem caos",
+              summary: "Como estruturar entradas, saidas e leitura de saldo com criterio.",
+              dripAfterDays: 0,
+              isPreview: true,
+              videoProvider: "panda",
+              externalVideoId: "pv_004",
+              embedUrl: "https://player.pandavideo.com.br/embed/?v=pv_004",
+              allowedDomains: ["aulas.abasolucoesetecnologia.com.br", "localhost"],
+              durationSec: 920,
+              captionsUrl: null
+            }
+          ]
+        }
+      ]
+    },
+    {
       id: "course-affiliates",
       slug: "maquina-de-afiliacao-com-governanca",
       title: "Maquina de Afiliacao com Governanca",
       subtitle: "Aquisicao com criterio, rastreio e leitura financeira.",
+      excerpt: "Afiliacao com processo, rastreio e seguranca de marca.",
+      description:
+        "Curso voltado para a criacao de uma operacao de afiliacao com criterios de aprovacao, links rastreaveis, leitura financeira e protecao comercial.",
       summary:
         "Programa voltado para a criacao de uma operacao de afiliacao com aprovacao, links rastreaveis e acompanhamento de comissao.",
       thumbnailUrl:
         "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
       producerName: "Equipe Comercial",
+      instructor: "Carlos Ventura",
       audience: "Gestores comerciais, afiliados e times de growth",
+      workload: "18h",
+      modality: "Online",
+      seats: 40,
+      schedule: [
+        { week: "Modulo 1", topic: "Governanca, regras e filtros de entrada" },
+        { week: "Modulo 2", topic: "Links, comissoes e acompanhamento" },
+        { week: "Modulo 3", topic: "Escala sem perder criterio" }
+      ],
+      materials: [
+        { name: "Playbook de aprovacao de afiliados", type: "PDF" },
+        { name: "Modelo de acompanhamento de campanha", type: "XLSX" }
+      ],
+      status: "rascunho",
       offers: [
         {
           id: "offer-affiliate-once",
@@ -307,7 +474,7 @@ export class DemoStoreService {
           "Catalogo, checkout, area do aluno, studio, afiliacao e administracao em uma estrutura unica."
       },
       metrics: this.homeMetrics,
-      featuredCourses: this.listCourses(),
+      featuredCourses: this.listCourses().filter((course) => course.status === "publicado"),
       testimonials: this.testimonials
     };
   }
@@ -318,10 +485,19 @@ export class DemoStoreService {
       slug: course.slug,
       title: course.title,
       subtitle: course.subtitle,
+      excerpt: course.excerpt,
+      description: course.description,
       summary: course.summary,
       thumbnailUrl: course.thumbnailUrl,
       producerName: course.producerName,
+      instructor: course.instructor,
       audience: course.audience,
+      workload: course.workload,
+      modality: course.modality,
+      seats: course.seats,
+      schedule: course.schedule,
+      materials: course.materials,
+      status: course.status,
       offers: course.offers
     }));
   }
@@ -549,6 +725,11 @@ export class DemoStoreService {
   getAdminOverview() {
     return {
       approvals: this.approvals,
+      summary: {
+        totalCourses: this.courses.length,
+        activeCourses: this.courses.filter((course) => course.status === "publicado").length,
+        pendingApprovals: this.approvals.filter((item) => item.state !== "approved").length
+      },
       health: {
         paymentsMode: "sandbox-first",
         videoProviders: ["panda", "youtube"],
@@ -557,7 +738,39 @@ export class DemoStoreService {
       finance: {
         lastCheckoutCount: this.checkoutEvents.length,
         webhookEventsReceived: this.webhookEvents.length
-      }
+      },
+      recentActivity: [
+        {
+          who: "Camila Freitas",
+          what: "aguarda aprovacao de perfil",
+          target: "produtor",
+          when: "ha 2h"
+        },
+        {
+          who: "Carlos Ventura",
+          what: "ajustou a aplicacao",
+          target: "afiliado",
+          when: "ha 5h"
+        },
+        {
+          who: "Checkout sandbox",
+          what: "registrou sessao",
+          target: `${this.checkoutEvents.length} operacoes`,
+          when: "hoje"
+        },
+        {
+          who: "Webhooks Asaas",
+          what: "receberam eventos",
+          target: `${this.webhookEvents.length} payloads`,
+          when: "hoje"
+        }
+      ],
+      shortcuts: [
+        { label: "Novo evento", to: "/admin/eventos" },
+        { label: "Novo curso", to: "/admin/cursos" },
+        { label: "Aprovar negocios", to: "/admin/comunidade" },
+        { label: "Editar homepage", to: "/admin/paginas" }
+      ]
     };
   }
 

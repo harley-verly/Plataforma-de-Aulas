@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import { Clock, Users, MonitorPlay, Download } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
@@ -10,10 +11,29 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { courses } from "@/data/portal";
+import { getCatalogCourse } from "@/lib/platform-api";
 
 const CourseDetail = () => {
   const { slug } = useParams();
-  const course = courses.find((c) => c.slug === slug);
+  const fallbackCourse = courses.find((c) => c.slug === slug);
+  const { data: apiCourse, isError } = useQuery({
+    queryKey: ["catalog-course", slug],
+    queryFn: () => getCatalogCourse(slug!),
+    enabled: Boolean(slug),
+    retry: false
+  });
+  const course = apiCourse ?? fallbackCourse;
+
+  if (!course && !isError) {
+    return (
+      <SiteLayout>
+        <div className="container-editorial py-32 text-center">
+          <h1 className="font-serif text-4xl text-paper">Carregando curso</h1>
+        </div>
+      </SiteLayout>
+    );
+  }
+
   if (!course) {
     return (
       <SiteLayout>
@@ -24,6 +44,8 @@ const CourseDetail = () => {
       </SiteLayout>
     );
   }
+
+  const courseImage = "thumbnailUrl" in course ? course.thumbnailUrl : course.image;
 
   return (
     <SiteLayout>
@@ -89,7 +111,7 @@ const CourseDetail = () => {
           <aside className="lg:col-span-5">
             <div className="sticky top-28 border border-ink-line bg-ink-soft p-8">
               <div className="aspect-[4/5] overflow-hidden border border-ink-line">
-                <img src={course.image} alt={course.title} className="h-full w-full object-cover" />
+                <img src={courseImage} alt={course.title} className="h-full w-full object-cover" />
               </div>
               <p className="mt-6 text-[11px] uppercase tracking-[0.3em] text-gold">Instrutor(a)</p>
               <p className="mt-2 font-serif text-2xl text-paper">{course.instructor}</p>

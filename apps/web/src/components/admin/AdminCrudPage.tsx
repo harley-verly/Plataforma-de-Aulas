@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Edit3, Plus, Search, Trash2 } from "lucide-react";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import {
@@ -38,6 +38,10 @@ export function AdminCrudPage<T extends { slug?: string; status?: string; title?
   const [list, setList] = useState(items);
   const [editing, setEditing] = useState<T | null>(null);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setList(items);
+  }, [items]);
 
   const filtered = list.filter((it) => {
     const v = (it.title || it.name || "").toString().toLowerCase();
