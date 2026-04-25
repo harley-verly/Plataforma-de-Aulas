@@ -51,14 +51,12 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
     <section className="container-editorial py-12 md:py-16">
       <div className="mx-auto max-w-5xl">
         <div className="border border-ink-line bg-ink-soft p-6 md:p-8 xl:p-10">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Proposta comercial exclusiva</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Apresentação comercial</p>
           <h1 className="mt-5 max-w-5xl font-serif text-5xl leading-[0.98] text-paper md:text-7xl">
-            Veja como a Plataforma de Aulas pode se tornar um produto premium da sua marca.
+            Apresentação Comercial para Criação de Plataforma de cursos, marketplace e comunidade, proprietária.
           </h1>
           <p className="mt-6 max-w-4xl text-lg leading-relaxed text-paper-soft">
-            Preencha seus dados para acessar uma proposta comercial construída para posicionar a sua operação
-            de cursos em outro nível, com experiência premium, narrativa de marca mais forte e um plano claro
-            de entrega para transformar o demo atual em um ativo digital proprietário.
+            A melhor oportunidade é para quem decide rápido e sabe o que quer!
           </p>
 
           <form className="mt-10 grid gap-5" onSubmit={handleSubmit}>
@@ -77,7 +75,7 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
                 icon={<Phone className="h-4 w-4" />}
                 value={form.phone}
                 onChange={(value) => setForm((previous) => ({ ...previous, phone: value }))}
-                placeholder="(82) 98109-3783"
+                placeholder="(11) 98765-4321"
                 autoComplete="tel"
               />
               <Field
@@ -91,19 +89,19 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
             </div>
 
             <div className="rounded-sm border border-ink-line bg-background/60 px-5 py-4">
-              <p className="text-[10px] uppercase tracking-[0.28em] text-gold">O que esta proposta revela</p>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-gold">Como vamos conduzir esta apresentação</p>
               <div className="mt-3 grid gap-3 md:grid-cols-3">
                 <ValueCard
-                  title="Posicionamento premium"
-                  description="Você verá como a plataforma valoriza a marca, aumenta a percepção de qualidade e eleva o nível da experiência pública."
+                  title="1. Vamos nos conhecer"
+                  description="Precisamos do seu nome, e-mail e whatsapp, para formalizar a proposta"
                 />
                 <ValueCard
-                  title="Condição comercial reservada"
-                  description="A proposta mostra a condição vigente deste acesso com investimento, cronograma e acompanhamento pós-entrega."
+                  title="2. Entenda a Plataforma"
+                  description="Navegue pela apresentação, com explicações práticas e rápidas sobre o desenvolvimento da plataforma."
                 />
                 <ValueCard
-                  title="Base concreta para decidir"
-                  description="A contratação parte de um demo real, já publicado, o que reduz risco percebido e encurta a distância entre proposta e execução."
+                  title="3. Seja Ágil"
+                  description="Quanto mais rápido tomar a decisão, melhor a ofeta que vai aproveitar"
                 />
               </div>
             </div>
