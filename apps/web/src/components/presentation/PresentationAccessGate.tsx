@@ -137,23 +137,27 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
         </div>
 
         <aside className="border border-gold/20 bg-gradient-ink p-6">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Condição comercial</p>
-          <h2 className="mt-3 font-serif text-3xl text-paper">Oferta progressiva por navegador</h2>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Acesso protegido</p>
+          <h2 className="mt-3 font-serif text-3xl text-paper">
+            A proposta completa só aparece depois da liberação.
+          </h2>
+          <p className="mt-4 text-sm leading-relaxed text-paper-muted">
+            Enquanto os dados do cliente não forem registrados, a apresentação não mostra preço,
+            prazo, condição comercial nem detalhes da oferta.
+          </p>
+
           <div className="mt-6 space-y-4">
-            <OfferTierPreview
-              title="Até 24 horas"
-              price="R$ 20.000,00"
-              summary="Beta em 15 dias, entrega final em 30 dias e 90 dias de acompanhamento."
+            <OfferVisibilityCard
+              title="O que fica oculto"
+              summary="Valores, marcos de tempo, prazo de beta, prazo final e janela comercial só aparecem depois do lead entrar no CRM."
             />
-            <OfferTierPreview
-              title="Até 48 horas"
-              price="R$ 22.000,00"
-              summary="Beta em 30 dias, entrega final em 45 dias e 60 dias de acompanhamento."
+            <OfferVisibilityCard
+              title="Quando libera"
+              summary="Assim que nome, telefone e e-mail forem enviados com sucesso, a proposta é destravada e o contador começa."
             />
-            <OfferTierPreview
-              title="Até 72 horas"
-              price="R$ 25.000,00"
-              summary="Beta em 45 dias, entrega final em 60 dias e 30 dias de acompanhamento."
+            <OfferVisibilityCard
+              title="Como retoma depois"
+              summary="O navegador guarda o avanço da proposta para o cliente continuar do mesmo ponto já com a condição ativa."
             />
           </div>
         </aside>
@@ -199,18 +203,15 @@ const AccessMetric = ({ title, description }: { title: string; description: stri
   </div>
 );
 
-const OfferTierPreview = ({
+const OfferVisibilityCard = ({
   title,
-  price,
   summary
 }: {
   title: string;
-  price: string;
   summary: string;
 }) => (
   <div className="border border-ink-line bg-background/60 px-4 py-4">
     <p className="text-[10px] uppercase tracking-[0.28em] text-gold">{title}</p>
-    <p className="mt-2 font-serif text-2xl text-paper">{price}</p>
     <p className="mt-2 text-sm leading-relaxed text-paper-muted">{summary}</p>
   </div>
 );
