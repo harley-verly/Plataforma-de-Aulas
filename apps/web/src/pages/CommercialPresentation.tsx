@@ -176,7 +176,7 @@ const CommercialPresentation = () => {
 
   if (!lead || !progress || !activeOffer) {
     return (
-      <SiteLayout>
+      <SiteLayout mode="proposal">
         <PresentationAccessGate
           onSubmit={handleUnlockPresentation}
           isSubmitting={isUnlocking}
@@ -187,7 +187,7 @@ const CommercialPresentation = () => {
   }
 
   return (
-    <SiteLayout>
+    <SiteLayout mode="proposal">
       <PresentationStickySummaryBar
         activeOffer={activeOffer}
         currentChapter={currentChapter}
