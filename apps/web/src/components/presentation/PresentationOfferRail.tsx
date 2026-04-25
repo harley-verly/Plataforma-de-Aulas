@@ -1,0 +1,111 @@
+import {
+  ActiveOfferState,
+  COMMERCIAL_OFFER_TIERS,
+  PresentationChapter,
+  buildWhatsAppHref,
+  formatCurrency,
+  formatRemainingTime
+} from "@/lib/commercial-presentation";
+
+type Props = {
+  activeOffer: ActiveOfferState;
+  currentChapter: PresentationChapter;
+  compact?: boolean;
+};
+
+export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = false }: Props) => {
+  const whatsappHref = buildWhatsAppHref(currentChapter.title, activeOffer.activeTier);
+
+  return (
+    <div className={["border border-gold/20 bg-gradient-ink", compact ? "p-5" : "p-6"].join(" ")}>
+      <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Condicao comercial</p>
+      <h2 className="mt-3 font-serif text-3xl text-paper">{activeOffer.activeTier.label}</h2>
+      <p className="mt-3 text-sm leading-relaxed text-paper-muted">
+        A janela desta proposta fica salva neste navegador para que o cliente retome do ponto onde parou.
+      </p>
+
+      <div className="mt-6 grid gap-3 border-y border-ink-line py-5">
+        <div className="flex items-baseline justify-between gap-4">
+          <span className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">Investimento</span>
+          <div className="text-right">
+            <p className="text-xs text-paper-muted line-through">
+              {formatCurrency(activeOffer.activeTier.priceOriginal)}
+            </p>
+            <p className="font-serif text-4xl text-gold-soft">
+              {formatCurrency(activeOffer.activeTier.priceCurrent)}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          <OfferMetric label="Beta" value={`${activeOffer.activeTier.betaDeliveryDays} dias`} />
+          <OfferMetric label="Entrega final" value={`${activeOffer.activeTier.finalDeliveryDays} dias`} />
+          <OfferMetric label="Suporte" value={`${activeOffer.activeTier.supportDays} dias`} />
+        </div>
+
+        <div className="rounded-sm border border-gold/20 bg-background/70 px-4 py-4">
+          <p className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">Tempo restante</p>
+          <p className="mt-2 font-serif text-3xl text-paper">
+            {activeOffer.offerExpired ? "Encerrado" : formatRemainingTime(activeOffer.remainingMs)}
+          </p>
+          <p className="mt-2 text-sm text-paper-muted">
+            {activeOffer.offerExpired
+              ? "A janela promocional deste navegador terminou. A proposta segue disponivel em valor cheio."
+              : "A faixa atual troca automaticamente de acordo com o tempo desta visita."}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-5 space-y-3">
+        {COMMERCIAL_OFFER_TIERS.map((tier) => {
+          const isActive = tier.tierId === activeOffer.activeTier.tierId;
+
+          return (
+            <div
+              key={tier.tierId}
+              className={[
+                "border px-4 py-4 transition-all",
+                isActive ? "border-gold/50 bg-gold/10" : "border-ink-line bg-background/60"
+              ].join(" ")}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.28em] text-gold">{tier.label}</p>
+                  <p className="mt-2 font-serif text-2xl text-paper">{formatCurrency(tier.priceCurrent)}</p>
+                </div>
+                <span className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">
+                  ate {tier.deadlineHours}h
+                </span>
+              </div>
+              <p className="mt-3 text-sm text-paper-muted">
+                Beta em {tier.betaDeliveryDays} dias, entrega final em {tier.finalDeliveryDays} dias e {tier.supportDays} dias de acompanhamento.
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      <a
+        href={whatsappHref}
+        target="_blank"
+        rel="noreferrer"
+        className="hover-gold-shimmer mt-6 inline-flex w-full items-center justify-center gap-3 px-6 py-4 text-[11px] uppercase tracking-[0.25em] text-gold-foreground shadow-gold-glow"
+      >
+        Falar no WhatsApp
+      </a>
+
+      {!compact && (
+        <p className="mt-4 text-xs leading-relaxed text-paper-muted">
+          Capitulo atual: <span className="text-paper">{currentChapter.title}</span>
+        </p>
+      )}
+    </div>
+  );
+};
+
+const OfferMetric = ({ label, value }: { label: string; value: string }) => (
+  <div className="border border-ink-line bg-background/50 px-4 py-4">
+    <p className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">{label}</p>
+    <p className="mt-2 font-serif text-2xl text-paper">{value}</p>
+  </div>
+);

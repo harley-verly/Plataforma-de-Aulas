@@ -12,6 +12,7 @@ import CourseDetail from "./pages/CourseDetail.tsx";
 import Community from "./pages/Community.tsx";
 import BusinessDetail from "./pages/BusinessDetail.tsx";
 import BusinessRegister from "./pages/BusinessRegister.tsx";
+import CommercialPresentation from "./pages/CommercialPresentation.tsx";
 import Contact from "./pages/Contact.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import AdminEvents from "./pages/admin/AdminEvents.tsx";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/comunidade/cadastrar" element={<BusinessRegister />} />
           <Route path="/comunidade/:slug" element={<BusinessDetail />} />
           <Route path="/contato" element={<Contact />} />
+          <Route path="/apresentacao-comercial" element={<CommercialPresentation />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/eventos" element={<AdminEvents />} />
           <Route path="/admin/cursos" element={<AdminCourses />} />
