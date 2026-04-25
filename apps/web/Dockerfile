@@ -15,7 +15,7 @@ COPY scripts ./scripts
 
 RUN pnpm install --no-frozen-lockfile
 RUN pnpm run build:packages
-RUN pnpm --filter @plataforma/web build
+RUN pnpm --dir apps/web build
 
 FROM nginx:1.29-alpine AS runtime
 
