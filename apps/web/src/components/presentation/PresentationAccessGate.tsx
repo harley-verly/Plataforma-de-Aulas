@@ -33,7 +33,7 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
     event.preventDefault();
 
     if (!isReady) {
-      setLocalError("Preencha nome, telefone e e-mail válidos para liberar a apresentação.");
+      setLocalError("Preencha nome, telefone e e-mail válidos para abrir a proposta.");
       return;
     }
 
@@ -51,13 +51,14 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
     <section className="container-editorial py-12 md:py-16">
       <div className="mx-auto max-w-5xl">
         <div className="border border-ink-line bg-ink-soft p-6 md:p-8 xl:p-10">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Apresentação comercial</p>
-          <h1 className="mt-5 max-w-4xl font-serif text-5xl leading-[0.98] text-paper md:text-7xl">
-            Libere a proposta com seus dados e acompanhe a condição comercial em tempo real.
+          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Proposta comercial exclusiva</p>
+          <h1 className="mt-5 max-w-5xl font-serif text-5xl leading-[0.98] text-paper md:text-7xl">
+            Veja como a Plataforma de Aulas pode se tornar um produto premium da sua marca.
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-paper-soft">
-            O contador das 24 horas começa somente após o registro do seu contato. Assim, a proposta
-            fica salva neste navegador e pode ser retomada do mesmo ponto sem perder a condição vigente.
+          <p className="mt-6 max-w-4xl text-lg leading-relaxed text-paper-soft">
+            Preencha seus dados para acessar uma proposta comercial construída para posicionar a sua operação
+            de cursos em outro nível, com experiência premium, narrativa de marca mais forte e um plano claro
+            de entrega para transformar o demo atual em um ativo digital proprietário.
           </p>
 
           <form className="mt-10 grid gap-5" onSubmit={handleSubmit}>
@@ -90,19 +91,19 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
             </div>
 
             <div className="rounded-sm border border-ink-line bg-background/60 px-5 py-4">
-              <p className="text-[10px] uppercase tracking-[0.28em] text-gold">O que acontece ao liberar</p>
+              <p className="text-[10px] uppercase tracking-[0.28em] text-gold">O que esta proposta revela</p>
               <div className="mt-3 grid gap-3 md:grid-cols-3">
-                <AccessMetric
-                  title="1. Registro do contato"
-                  description="Nome, telefone e e-mail seguem para o CRM do Portal de Leads."
+                <ValueCard
+                  title="Posicionamento premium"
+                  description="Você verá como a plataforma valoriza a marca, aumenta a percepção de qualidade e eleva o nível da experiência pública."
                 />
-                <AccessMetric
-                  title="2. Início da condição"
-                  description="A régua comercial começa em 24 horas a partir desta liberação."
+                <ValueCard
+                  title="Condição comercial reservada"
+                  description="A proposta mostra a condição vigente deste acesso com investimento, cronograma e acompanhamento pós-entrega."
                 />
-                <AccessMetric
-                  title="3. Retomada garantida"
-                  description="Este navegador salva o avanço da proposta e o capítulo onde você parou."
+                <ValueCard
+                  title="Base concreta para decidir"
+                  description="A contratação parte de um demo real, já publicado, o que reduz risco percebido e encurta a distância entre proposta e execução."
                 />
               </div>
             </div>
@@ -124,11 +125,11 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
               {isSubmitting ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Registrando acesso
+                  Preparando a proposta
                 </>
               ) : (
                 <>
-                  Liberar apresentação
+                  Abrir proposta comercial
                   <ArrowRight className="h-4 w-4" />
                 </>
               )}
@@ -170,7 +171,7 @@ const Field = ({
   </label>
 );
 
-const AccessMetric = ({ title, description }: { title: string; description: string }) => (
+const ValueCard = ({ title, description }: { title: string; description: string }) => (
   <div className="border border-ink-line bg-background/50 px-4 py-4">
     <p className="text-sm text-paper">{title}</p>
     <p className="mt-2 text-sm leading-relaxed text-paper-muted">{description}</p>

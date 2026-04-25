@@ -10,9 +10,9 @@ export const PresentationProgressNav = ({ chapters, currentChapterId, onSelectCh
   return (
     <div className="overflow-hidden border border-ink-line bg-ink-soft">
       <div className="border-b border-ink-line px-5 py-4">
-        <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Trilha da proposta</p>
+        <p className="text-[10px] uppercase tracking-[0.3em] text-gold">O que esta proposta comprova</p>
         <p className="mt-2 text-sm text-paper-muted">
-          Seu navegador guarda o capítulo atual e a janela comercial desta proposta.
+          Cada bloco reforça um ganho estratégico da plataforma em marca, conversão, experiência e operação.
         </p>
       </div>
       <div className="flex gap-3 overflow-x-auto px-4 py-4">

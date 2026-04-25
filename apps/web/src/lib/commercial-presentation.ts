@@ -61,7 +61,7 @@ export const COMMERCIAL_OFFER_TIERS: CommercialOfferTier[] = [
     betaDeliveryDays: 15,
     finalDeliveryDays: 30,
     supportDays: 90,
-    label: "Condição de 24 horas"
+    label: "Condição executiva de 24 horas"
   },
   {
     tierId: "48h",
@@ -71,7 +71,7 @@ export const COMMERCIAL_OFFER_TIERS: CommercialOfferTier[] = [
     betaDeliveryDays: 30,
     finalDeliveryDays: 45,
     supportDays: 60,
-    label: "Condição de 48 horas"
+    label: "Condição estratégica de 48 horas"
   },
   {
     tierId: "72h",
@@ -81,7 +81,7 @@ export const COMMERCIAL_OFFER_TIERS: CommercialOfferTier[] = [
     betaDeliveryDays: 45,
     finalDeliveryDays: 60,
     supportDays: 30,
-    label: "Condição padrão"
+    label: "Condição padrão de contratação"
   }
 ];
 
@@ -126,7 +126,11 @@ function getChapterIds(chapters: PresentationChapter[]) {
   return chapters.map((chapter) => chapter.id);
 }
 
-function resolveChapterId(chapters: PresentationChapter[], requestedChapterId: string | null, fallbackChapterId: string | null) {
+function resolveChapterId(
+  chapters: PresentationChapter[],
+  requestedChapterId: string | null,
+  fallbackChapterId: string | null
+) {
   const firstChapter = chapters[0]?.id ?? "visao-geral";
 
   if (isValidChapterId(chapters, requestedChapterId)) {
@@ -318,9 +322,9 @@ export function formatRemainingClock(remainingMs: number) {
 
 export function buildWhatsAppHref(currentChapterTitle: string, activeTier: CommercialOfferTier) {
   const message =
-    `Olá, quero avançar com a Plataforma de Aulas. ` +
-    `Vi a apresentação comercial e quero falar sobre a proposta vigente. ` +
-    `Capítulo atual: ${currentChapterTitle}. ` +
+    `Olá, quero avançar com a contratação da Plataforma de Aulas. ` +
+    `Vi a proposta comercial e quero falar sobre a condição vigente. ` +
+    `Ponto atual da proposta: ${currentChapterTitle}. ` +
     `Faixa ativa: ${activeTier.label} (${formatCurrency(activeTier.priceCurrent)}).`;
 
   return `https://wa.me/5582981093783?text=${encodeURIComponent(message)}`;

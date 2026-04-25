@@ -28,11 +28,11 @@ export const PresentationChapterCard = ({
           <p className="text-[10px] uppercase tracking-[0.3em] text-gold">{chapter.eyebrow}</p>
           <div className="mt-4 flex flex-wrap items-center gap-3">
             <span className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">
-              Capítulo {chapterIndex + 1} de {totalChapters}
+              Bloco {chapterIndex + 1} de {totalChapters}
             </span>
             <span className="h-px w-10 bg-gold/50" />
             <span className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">
-              walkthrough comercial
+              argumento de valor
             </span>
           </div>
 
@@ -74,7 +74,7 @@ export const PresentationChapterCard = ({
             />
           </div>
           <p className="mt-4 text-xs leading-relaxed text-paper-muted">
-            Screenshot estático versionado da demonstração atual para manter a apresentação comercial desacoplada do runtime.
+            Recorte real do ambiente que dá materialidade a esta proposta comercial.
           </p>
         </div>
       </div>
@@ -92,7 +92,7 @@ export const PresentationChapterCard = ({
           ].join(" ")}
         >
           <ChevronLeft className="h-3.5 w-3.5" />
-          Capítulo anterior
+          Ponto anterior
         </button>
 
         <button
@@ -106,7 +106,7 @@ export const PresentationChapterCard = ({
               : "cursor-not-allowed border-ink-line/40 text-paper-muted/60"
           ].join(" ")}
         >
-          Próximo capítulo
+          Próximo diferencial
           <ChevronRight className="h-3.5 w-3.5" />
         </button>
       </div>

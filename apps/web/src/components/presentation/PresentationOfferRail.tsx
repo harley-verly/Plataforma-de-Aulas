@@ -21,7 +21,8 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
       <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Condição comercial</p>
       <h2 className="mt-3 font-serif text-3xl text-paper">{activeOffer.activeTier.label}</h2>
       <p className="mt-3 text-sm leading-relaxed text-paper-muted">
-        A janela desta proposta fica salva neste navegador para que o cliente retome do ponto onde parou.
+        Esta proposta reserva uma condição de entrada pensada para acelerar a decisão sem perder clareza
+        de prazo, investimento e acompanhamento pós-entrega.
       </p>
 
       <div className="mt-6 grid gap-3 border-y border-ink-line py-5">
@@ -38,20 +39,20 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          <OfferMetric label="Beta" value={`${activeOffer.activeTier.betaDeliveryDays} dias`} />
-          <OfferMetric label="Entrega final" value={`${activeOffer.activeTier.finalDeliveryDays} dias`} />
-          <OfferMetric label="Suporte" value={`${activeOffer.activeTier.supportDays} dias`} />
+          <OfferMetric label="Versão beta" value={`${activeOffer.activeTier.betaDeliveryDays} dias`} />
+          <OfferMetric label="Projeto final" value={`${activeOffer.activeTier.finalDeliveryDays} dias`} />
+          <OfferMetric label="Acompanhamento" value={`${activeOffer.activeTier.supportDays} dias`} />
         </div>
 
         <div className="rounded-sm border border-gold/20 bg-background/70 px-4 py-4">
-          <p className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">Tempo restante</p>
+          <p className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">Janela desta condição</p>
           <p className="mt-2 font-serif text-3xl text-paper">
-            {activeOffer.offerExpired ? "Encerrado" : formatRemainingTime(activeOffer.remainingMs)}
+            {activeOffer.offerExpired ? "Encerrada" : formatRemainingTime(activeOffer.remainingMs)}
           </p>
           <p className="mt-2 text-sm text-paper-muted">
             {activeOffer.offerExpired
-              ? "A janela promocional deste navegador terminou. A proposta segue disponível em valor cheio."
-              : "A faixa atual troca automaticamente de acordo com o tempo desta visita."}
+              ? "A condição promocional deste acesso terminou. A proposta segue disponível na faixa padrão."
+              : "Enquanto esta janela estiver ativa, esta é a melhor condição reservada para esta apresentação."}
           </p>
         </div>
       </div>
@@ -78,7 +79,7 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
                 </span>
               </div>
               <p className="mt-3 text-sm text-paper-muted">
-                Beta em {tier.betaDeliveryDays} dias, entrega final em {tier.finalDeliveryDays} dias e {tier.supportDays} dias de acompanhamento.
+                Beta em {tier.betaDeliveryDays} dias, fase final em {tier.finalDeliveryDays} dias e {tier.supportDays} dias de acompanhamento pós-compra.
               </p>
             </div>
           );
@@ -91,12 +92,12 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
         rel="noreferrer"
         className="hover-gold-shimmer mt-6 inline-flex w-full items-center justify-center gap-3 px-6 py-4 text-[11px] uppercase tracking-[0.25em] text-gold-foreground shadow-gold-glow"
       >
-        Falar no WhatsApp
+        Quero avançar por WhatsApp
       </a>
 
       {!compact && (
         <p className="mt-4 text-xs leading-relaxed text-paper-muted">
-          Capítulo atual: <span className="text-paper">{currentChapter.title}</span>
+          Ponto atual da proposta: <span className="text-paper">{currentChapter.title}</span>
         </p>
       )}
     </div>

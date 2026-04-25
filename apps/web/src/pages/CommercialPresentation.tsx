@@ -167,7 +167,7 @@ const CommercialPresentation = () => {
       setSubmitError(
         error instanceof Error
           ? error.message
-          : "Não foi possível liberar a apresentação agora. Tente novamente em instantes."
+          : "Não foi possível abrir a proposta agora. Tente novamente em instantes."
       );
     } finally {
       setIsUnlocking(false);
@@ -199,12 +199,12 @@ const CommercialPresentation = () => {
 
         <div className="mt-8 max-w-4xl">
           <h1 className="font-serif text-5xl leading-[0.98] text-paper md:text-7xl">
-            Uma proposta comercial viva para vender a Plataforma de Aulas com clareza.
+            Uma plataforma de aulas pensada para valorizar a sua marca, elevar a percepção de qualidade e sustentar crescimento com padrão premium.
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-paper-soft">
-            Este material funciona como walkthrough comercial da estrutura já validada no demo
-            e da entrega contratada do projeto. O progresso e a janela de oferta ficam salvos
-            neste navegador para o cliente retomar a proposta sem perder contexto.
+            Esta proposta apresenta por que a Plataforma de Aulas vai além de um ambiente para hospedar conteúdo:
+            ela posiciona melhor a marca, fortalece a oferta, melhora a experiência do aluno e dá mais controle
+            para a operação crescer com segurança.
           </p>
         </div>
 

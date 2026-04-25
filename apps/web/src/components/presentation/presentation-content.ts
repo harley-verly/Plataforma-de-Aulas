@@ -10,119 +10,126 @@ import { PresentationChapter } from "@/lib/commercial-presentation";
 export const PRESENTATION_CHAPTERS: PresentationChapter[] = [
   {
     id: "visao-geral",
-    eyebrow: "Capítulo 01",
-    title: "Visão geral do projeto e proposta de valor",
-    summary: "Uma plataforma proprietária para vender, organizar e operar cursos com identidade própria.",
+    eyebrow: "Posicionamento do produto",
+    title: "Uma plataforma proprietária para transformar cursos em marca, experiência e receita.",
+    summary:
+      "Aqui, o cliente não compra apenas telas bonitas: compra um produto digital capaz de organizar a operação, valorizar a percepção da marca e sustentar crescimento.",
     description:
-      "Esta apresentação mostra o que já está vivo no demo e como essa mesma base pode ser transformada no produto final contratado, com acabamento comercial, governança e experiência premium.",
+      "A Plataforma de Aulas foi pensada para unir vitrine comercial, experiência do aluno e retaguarda operacional em um mesmo ecossistema. O resultado é um produto com cara de marca forte, não de solução improvisada.",
     features: [
-      "Base visual premium pronta para ser apresentada ao cliente final",
-      "Estrutura separada entre experiência pública e área operacional",
-      "Projeto pensado para evoluir sem ficar preso a uma ferramenta de terceiro",
-      "Rota comercial independente, fácil de acoplar e desacoplar da base"
+      "Marca própria, visual premium e autoridade percebida desde o primeiro acesso",
+      "Estrutura pensada para vender, entregar conteúdo e operar sem remendos",
+      "Experiência mais forte para aluno, equipe interna e gestão em uma única base",
+      "Projeto preparado para crescer como ativo digital do cliente, e não como ferramenta descartável"
     ],
     screenshot: chapterHome,
     liveDemoUrl: "/",
-    ctaLabel: "Ver homepage ao vivo"
+    ctaLabel: "Abrir homepage da plataforma"
   },
   {
     id: "experiencia-publica",
-    eyebrow: "Capítulo 02",
-    title: "Experiência pública e primeira impressão",
-    summary: "A fachada do produto trabalha posicionamento, navegação e percepção de autoridade desde a primeira dobra.",
+    eyebrow: "Primeira impressão que converte",
+    title: "A fachada pública foi desenhada para gerar confiança antes mesmo da matrícula.",
+    summary:
+      "Uma apresentação forte aumenta o valor percebido do curso, transmite autoridade e afasta a sensação de estar diante de um software genérico.",
     description:
-      "O visitante encontra uma vitrine clara, com narrativa forte, seções públicas bem organizadas e pontos de entrada para descoberta, curso, contato e apresentação institucional.",
+      "Quando a vitrine é bem resolvida, a marca parece maior, o conteúdo parece mais valioso e a decisão de compra fica mais fácil. É essa camada que transforma visita em interesse real.",
     features: [
-      "Navegação pública elegante e coerente com a proposta premium",
-      "Páginas pensadas para apresentar conteúdo, marca e autoridade",
-      "Experiência que pode receber branding, copy e ajustes comerciais do cliente",
-      "Estrutura pronta para abrir prova social, CTA e captação de interesse"
+      "Visual editorial premium para posicionar a marca acima do padrão comum do mercado",
+      "Navegação clara para conduzir o visitante do interesse à oferta",
+      "Ambiente pronto para receber prova social, copy comercial e campanhas de aquisição",
+      "Estrutura que comunica organização, seriedade e valor já na primeira dobra"
     ],
     screenshot: chapterCommunity,
     liveDemoUrl: "/comunidade",
-    ctaLabel: "Ver experiência pública"
+    ctaLabel: "Abrir vitrine pública"
   },
   {
     id: "catalogo-e-cursos",
-    eyebrow: "Capítulo 03",
-    title: "Catálogo e páginas de curso",
-    summary: "A navegação de cursos já mostra listagem, detalhe de produto e consumo de conteúdo de forma organizada.",
+    eyebrow: "Oferta organizada para vender melhor",
+    title: "Catálogo e páginas de curso preparados para transformar interesse em matrícula.",
+    summary:
+      "A plataforma organiza vitrine, detalhes do produto e consumo de conteúdo de forma coerente, valorizando a oferta sem dispersar a atenção.",
     description:
-      "O site já apresenta o catálogo, os cards de cursos e a página individual de curso como uma base comercial consistente para ofertas, trilhas e futuras conversões.",
+      "Em vez de confundir o usuário, o catálogo concentra o olhar no que importa: clareza da oferta, leitura rápida dos diferenciais e um caminho natural para a decisão.",
     features: [
-      "Página de cursos com leitura comercial imediata",
-      "Detalhe individual de curso com estrutura para oferta e cronograma",
-      "Consumo visual coerente entre vitrine e produto",
-      "Dados do catálogo já conectados ao backend do demo"
+      "Catálogo com leitura comercial imediata e foco em produtos que precisam vender",
+      "Página de curso com espaço para narrativa, oferta, cronograma e autoridade",
+      "Continuidade visual entre descoberta, avaliação e acesso ao conteúdo",
+      "Base conectada ao backend para que a proposta parta de algo tangível"
     ],
     screenshot: chapterCourses,
     liveDemoUrl: "/cursos",
-    ctaLabel: "Ver catálogo ao vivo"
+    ctaLabel: "Abrir catálogo"
   },
   {
     id: "painel-e-operacao",
-    eyebrow: "Capítulo 04",
-    title: "Painel administrativo e operação",
-    summary: "A área interna já demonstra como a operação pode acompanhar a saúde do portal, atalhos e rotinas centrais.",
+    eyebrow: "Governança e controle",
+    title: "Uma operação mais segura, mais clara e muito mais profissional.",
+    summary:
+      "O painel administrativo mostra que a plataforma não pensa só na vitrine: ela também cuida de gestão, leitura operacional e evolução do produto.",
     description:
-      "O painel administrativo foi desenhado para transmitir controle operacional, leitura executiva e facilidade de acesso aos módulos mais importantes do produto.",
+      "Quem vende cursos precisa de mais do que um front bonito. Precisa de controle, visão executiva e facilidade para acompanhar conteúdo, rotinas e crescimento da operação.",
     features: [
-      "Visão geral administrativa com indicadores e atalhos",
-      "Navegação interna consistente entre módulos de operação",
-      "Leitura premium para gestão de conteúdo, cursos e mídia",
-      "Base pronta para crescer com workflows mais profundos"
+      "Painel com leitura executiva para decisões mais rápidas",
+      "Base pronta para evoluir com workflows, aprovações e gestão de conteúdo",
+      "Navegação interna consistente para reduzir atrito no uso diário",
+      "Experiência que transmite maturidade operacional ao cliente e à equipe"
     ],
     screenshot: chapterAdminDashboard,
     liveDemoUrl: "/admin",
-    ctaLabel: "Ver painel ao vivo"
+    ctaLabel: "Abrir painel administrativo"
   },
   {
     id: "demo-atual",
-    eyebrow: "Capítulo 05",
-    title: "O que já existe no demo hoje",
-    summary: "A fase inicial de demonstração já permite apresentar o produto com mais do que uma landing estática.",
+    eyebrow: "Risco percebido menor",
+    title: "A contratação parte de uma base viva, não de uma promessa em branco.",
+    summary:
+      "Hoje já existe uma demonstração funcional para apresentar o produto, validar a direção visual e reduzir a insegurança na decisão.",
     description:
-      "Hoje o demo já mostra fachada pública, catálogo, detalhe de curso, área administrativa e dados conectados ao backend nas rotas principais. Ou seja: a venda parte de algo tangível, não apenas de promessa.",
+      "Isso encurta o caminho entre proposta e execução. Em vez de vender apenas conceito, a apresentação mostra um ambiente que já respira o produto final.",
     features: [
-      "Homepage e experiência pública publicadas no staging",
-      "Catálogo e página de curso consumindo dados reais do backend",
-      "Admin overview e grade de cursos alimentados por API",
-      "Assets, tema e navegação já consolidados como base oficial"
+      "Demonstração real já publicada e pronta para ser apresentada",
+      "Rotas principais já conectadas ao backend nas áreas centrais",
+      "Direção visual consolidada como base oficial do projeto",
+      "Mais confiança para contratar, porque o ponto de partida já é concreto"
     ],
     screenshot: chapterAdminCourses,
     liveDemoUrl: "/admin/cursos",
-    ctaLabel: "Ver demo atual"
+    ctaLabel: "Ver demonstração atual"
   },
   {
     id: "entrega-final",
-    eyebrow: "Capítulo 06",
-    title: "O que será entregue na versão contratada",
-    summary: "A contratação leva o projeto da demo validada para uma versão beta funcional e, depois, para a fase final refinada.",
+    eyebrow: "Transformação contratada",
+    title: "A versão contratada leva o demo para um produto pronto para operar com confiança.",
+    summary:
+      "O contrato não entrega apenas acabamento visual: entrega consolidação da experiência, refinamento operacional e entrada assistida em produção.",
     description:
-      "A entrega prevista cobre refinamento visual, customização do cliente, consolidação das telas-chave e período de testes com acompanhamento pós-compra conforme a faixa comercial ativa.",
+      "A próxima fase transforma a base validada em um produto maduro, com ajustes sob medida, rodadas de testes e suporte para que a implantação ganhe estabilidade e valor percebido.",
     features: [
-      "Versão beta entregue dentro da janela definida na proposta",
-      "Rodada de testes e customização para amadurecer o produto",
-      "Acompanhamento pós-compra para cobrir erros e bugs da fase inicial",
-      "Base pronta para seguir como produto proprietário do cliente"
+      "Refinamento da experiência pública, interna e administrativa com padrão premium",
+      "Customizações alinhadas à marca, à operação e às prioridades do cliente",
+      "Rodada de testes para reduzir ruído e amadurecer a entrega final",
+      "Acompanhamento pós-entrega para atravessar a fase inicial com mais segurança"
     ],
     screenshot: chapterAdminMedia
   },
   {
     id: "condicoes-comerciais",
-    eyebrow: "Capítulo 07",
-    title: "Condições comerciais e próximo passo",
-    summary: "A proposta combina urgência comercial, cronograma claro e suporte pós-compra para acelerar a decisão.",
+    eyebrow: "Decisão, prazo e condição",
+    title: "A proposta combina investimento, velocidade de entrega e acompanhamento pós-compra.",
+    summary:
+      "A janela comercial foi pensada para favorecer uma decisão mais rápida sem abrir mão de previsibilidade, qualidade de execução e suporte.",
     description:
-      "As condições abaixo são calculadas por navegador para preservar a janela comercial desde a primeira visita. Quando a fase promocional termina, a proposta continua visível em valor cheio neste mesmo computador.",
+      "Quanto mais cedo a contratação avança, melhor a condição de entrada e mais agressivo pode ser o cronograma de implantação. Isso cria vantagem real para quem decide no momento certo.",
     features: [
-      "24h com maior desconto e menor prazo de beta",
-      "48h com faixa intermediária de investimento e entrega",
-      "72h com proposta padrão e cronograma mais amplo",
-      "Contato direto por WhatsApp para fechamento rápido por PIX"
+      "Desconto mais forte e beta mais curto para entrada imediata via PIX",
+      "Faixas progressivas para preservar previsibilidade mesmo fora da primeira janela",
+      "Prazo de fase final claramente definido, sem promessa vaga",
+      "Período de acompanhamento pós-compra para dar segurança à implantação"
     ],
     screenshot: chapterCourseDetail,
     liveDemoUrl: "/cursos/operacao-premium-de-cursos",
-    ctaLabel: "Rever a página de curso"
+    ctaLabel: "Ver página de curso"
   }
 ];
