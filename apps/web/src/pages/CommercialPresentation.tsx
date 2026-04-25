@@ -190,8 +190,6 @@ const CommercialPresentation = () => {
     <SiteLayout mode="proposal">
       <PresentationStickySummaryBar
         activeOffer={activeOffer}
-        currentChapter={currentChapter}
-        lead={lead}
       />
 
       <section className="container-editorial py-12 md:py-16">
