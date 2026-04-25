@@ -17,6 +17,8 @@ services:
       ASAAS_ENV: sandbox
       ASAAS_API_KEY: ${ASAAS_API_KEY}
       CORS_ORIGIN: https://aulas.abasolucoesetecnologia.com.br
+      PORTAL_LEADS_PRESENTATION_INTAKE_URL: ${PORTAL_LEADS_PRESENTATION_INTAKE_URL:-https://api.abasolucoesetecnologia.com.br/v1/public/commercial-intakes/plataforma-de-aulas}
+      PORTAL_LEADS_SERVICE_TOKEN: ${PORTAL_LEADS_SERVICE_TOKEN}
     networks:
       - proxy
       - plataforma-internal

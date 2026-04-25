@@ -1,36 +1,57 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { PresentationAccessGate } from "@/components/presentation/PresentationAccessGate";
 import { PresentationChapterCard } from "@/components/presentation/PresentationChapterCard";
 import { PresentationOfferRail } from "@/components/presentation/PresentationOfferRail";
 import { PresentationProgressNav } from "@/components/presentation/PresentationProgressNav";
+import { PresentationStickySummaryBar } from "@/components/presentation/PresentationStickySummaryBar";
 import { PRESENTATION_CHAPTERS } from "@/components/presentation/presentation-content";
 import { SectionLabel } from "@/components/site/SectionLabel";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import {
+  COMMERCIAL_OFFER_TIERS,
+  createUnlockedProposalProgress,
   getActiveOfferState,
+  getSavedPresentationAccessLead,
   initializeProposalProgress,
   isValidChapterId,
+  persistPresentationAccessLead,
   persistProposalProgress
 } from "@/lib/commercial-presentation";
+import { captureCommercialPresentationLead } from "@/lib/platform-api";
 
 const CommercialPresentation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedChapterId = searchParams.get("capitulo");
-
-  const [progress, setProgress] = useState(() =>
-    initializeProposalProgress(PRESENTATION_CHAPTERS, requestedChapterId)
+  const savedLead = useMemo(() => getSavedPresentationAccessLead(), []);
+  const initialChapter = useMemo(
+    () =>
+      PRESENTATION_CHAPTERS.find((chapter) => chapter.id === requestedChapterId) ??
+      PRESENTATION_CHAPTERS[0],
+    [requestedChapterId]
   );
+
+  const [lead, setLead] = useState(savedLead);
+  const [progress, setProgress] = useState(() =>
+    savedLead ? initializeProposalProgress(PRESENTATION_CHAPTERS, requestedChapterId) : null
+  );
+  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [now, setNow] = useState(Date.now());
 
-  const currentChapterIndex = PRESENTATION_CHAPTERS.findIndex(
-    (chapter) => chapter.id === progress.lastChapter
-  );
+  const currentChapterIndex = progress
+    ? PRESENTATION_CHAPTERS.findIndex((chapter) => chapter.id === progress.lastChapter)
+    : 0;
   const safeChapterIndex = currentChapterIndex >= 0 ? currentChapterIndex : 0;
-  const currentChapter = PRESENTATION_CHAPTERS[safeChapterIndex];
-  const activeOffer = getActiveOfferState(progress.startedAt, now);
+  const currentChapter = progress ? PRESENTATION_CHAPTERS[safeChapterIndex] : initialChapter;
+  const activeOffer = progress ? getActiveOfferState(progress.startedAt, now) : null;
 
   useEffect(() => {
+    if (!progress) {
+      return;
+    }
+
     const interval = window.setInterval(() => {
       setNow(Date.now());
     }, 1000);
@@ -38,44 +59,58 @@ const CommercialPresentation = () => {
     return () => {
       window.clearInterval(interval);
     };
-  }, []);
+  }, [progress]);
 
   useEffect(() => {
-    if (!requestedChapterId || !isValidChapterId(PRESENTATION_CHAPTERS, requestedChapterId)) {
+    if (!progress || !requestedChapterId || !isValidChapterId(PRESENTATION_CHAPTERS, requestedChapterId)) {
       return;
     }
 
     setProgress((previous) =>
-      previous.lastChapter === requestedChapterId
+      !previous
         ? previous
-        : {
-            ...previous,
-            lastChapter: requestedChapterId,
-            lastSeenAt: Date.now()
-          }
+        : previous.lastChapter === requestedChapterId
+          ? previous
+          : {
+              ...previous,
+              lastChapter: requestedChapterId,
+              lastSeenAt: Date.now()
+            }
     );
-  }, [requestedChapterId]);
+  }, [progress, requestedChapterId]);
 
   useEffect(() => {
+    if (!progress) {
+      return;
+    }
+
     persistProposalProgress(progress);
   }, [progress]);
 
   useEffect(() => {
+    if (!progress) {
+      return;
+    }
+
     if (requestedChapterId !== progress.lastChapter) {
       setSearchParams({ capitulo: progress.lastChapter }, { replace: true });
     }
-  }, [progress.lastChapter, requestedChapterId, setSearchParams]);
+  }, [progress, requestedChapterId, setSearchParams]);
 
   const goToChapter = (chapterId: string) => {
-    setProgress((previous) => ({
-      ...previous,
-      lastChapter: chapterId,
-      lastSeenAt: Date.now()
-    }));
+    setProgress((previous) =>
+      !previous
+        ? previous
+        : {
+            ...previous,
+            lastChapter: chapterId,
+            lastSeenAt: Date.now()
+          }
+    );
   };
 
   const goToPreviousChapter = () => {
-    if (safeChapterIndex === 0) {
+    if (!progress || safeChapterIndex === 0) {
       return;
     }
 
@@ -83,15 +118,82 @@ const CommercialPresentation = () => {
   };
 
   const goToNextChapter = () => {
-    if (safeChapterIndex >= PRESENTATION_CHAPTERS.length - 1) {
+    if (!progress || safeChapterIndex >= PRESENTATION_CHAPTERS.length - 1) {
       return;
     }
 
     goToChapter(PRESENTATION_CHAPTERS[safeChapterIndex + 1].id);
   };
 
+  const handleUnlockPresentation = async (input: {
+    name: string;
+    email: string;
+    phone: string;
+  }) => {
+    setIsUnlocking(true);
+    setSubmitError(null);
+
+    try {
+      const firstTier = COMMERCIAL_OFFER_TIERS[0];
+      const response = await captureCommercialPresentationLead({
+        name: input.name,
+        email: input.email,
+        phone: input.phone,
+        currentChapterId: initialChapter.id,
+        currentChapterTitle: initialChapter.title,
+        activeTierId: firstTier.tierId,
+        activeTierLabel: firstTier.label,
+        activePriceInCents: firstTier.priceCurrent,
+        landingPath: `${window.location.pathname}${window.location.search}`
+      });
+
+      const capturedAt = response.capturedAt || Date.now();
+      const unlockedLead = {
+        ...input,
+        capturedAt
+      };
+      const unlockedProgress = createUnlockedProposalProgress(
+        PRESENTATION_CHAPTERS,
+        requestedChapterId,
+        capturedAt
+      );
+
+      persistPresentationAccessLead(unlockedLead);
+      persistProposalProgress(unlockedProgress);
+      setLead(unlockedLead);
+      setProgress(unlockedProgress);
+      setNow(capturedAt);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível liberar a apresentação agora. Tente novamente em instantes."
+      );
+    } finally {
+      setIsUnlocking(false);
+    }
+  };
+
+  if (!lead || !progress || !activeOffer) {
+    return (
+      <SiteLayout>
+        <PresentationAccessGate
+          onSubmit={handleUnlockPresentation}
+          isSubmitting={isUnlocking}
+          errorMessage={submitError}
+        />
+      </SiteLayout>
+    );
+  }
+
   return (
     <SiteLayout>
+      <PresentationStickySummaryBar
+        activeOffer={activeOffer}
+        currentChapter={currentChapter}
+        lead={lead}
+      />
+
       <section className="container-editorial py-12 md:py-16">
         <SectionLabel number="00">Apresentação comercial</SectionLabel>
 
@@ -130,7 +232,7 @@ const CommercialPresentation = () => {
           </div>
 
           <aside className="hidden xl:block">
-            <div className="sticky top-28">
+            <div className="sticky top-[11.5rem]">
               <PresentationOfferRail activeOffer={activeOffer} currentChapter={currentChapter} />
             </div>
           </aside>

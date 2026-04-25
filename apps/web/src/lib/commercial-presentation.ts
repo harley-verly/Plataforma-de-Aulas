@@ -28,20 +28,28 @@ export type ProposalProgressState = {
   version: string;
 };
 
+export type PresentationAccessLead = {
+  name: string;
+  email: string;
+  phone: string;
+  capturedAt: number;
+};
+
 export type ActiveOfferState = {
   activeTier: CommercialOfferTier;
   remainingMs: number;
   offerExpired: boolean;
 };
 
-export const COMMERCIAL_PRESENTATION_VERSION = "2026-04-25-v1";
+export const COMMERCIAL_PRESENTATION_VERSION = "2026-04-25-v2";
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 90;
 
 export const OFFER_COOKIE_KEYS = {
   startedAt: "plataforma_offer_started_at",
   lastChapter: "plataforma_offer_last_chapter",
   lastSeenAt: "plataforma_offer_last_seen_at",
-  version: "plataforma_offer_version"
+  version: "plataforma_offer_version",
+  accessLead: "plataforma_offer_access_lead"
 } as const;
 
 export const COMMERCIAL_OFFER_TIERS: CommercialOfferTier[] = [
@@ -97,6 +105,14 @@ function setCookie(name: string, value: string) {
   document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${COOKIE_MAX_AGE_SECONDS}; SameSite=Lax`;
 }
 
+function deleteCookie(name: string) {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  document.cookie = `${name}=; path=/; max-age=0; SameSite=Lax`;
+}
+
 function isValidTimestamp(value: string | null) {
   if (!value) {
     return false;
@@ -110,8 +126,99 @@ function getChapterIds(chapters: PresentationChapter[]) {
   return chapters.map((chapter) => chapter.id);
 }
 
+function resolveChapterId(chapters: PresentationChapter[], requestedChapterId: string | null, fallbackChapterId: string | null) {
+  const firstChapter = chapters[0]?.id ?? "visao-geral";
+
+  if (isValidChapterId(chapters, requestedChapterId)) {
+    return requestedChapterId as string;
+  }
+
+  if (isValidChapterId(chapters, fallbackChapterId)) {
+    return fallbackChapterId as string;
+  }
+
+  return firstChapter;
+}
+
+function isValidPresentationAccessLead(value: unknown): value is PresentationAccessLead {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as Partial<PresentationAccessLead>;
+
+  return (
+    typeof candidate.name === "string" &&
+    candidate.name.trim().length > 0 &&
+    typeof candidate.email === "string" &&
+    candidate.email.includes("@") &&
+    typeof candidate.phone === "string" &&
+    candidate.phone.trim().length > 0 &&
+    typeof candidate.capturedAt === "number" &&
+    Number.isFinite(candidate.capturedAt) &&
+    candidate.capturedAt > 0
+  );
+}
+
 export function isValidChapterId(chapters: PresentationChapter[], chapterId: string | null) {
   return Boolean(chapterId && getChapterIds(chapters).includes(chapterId));
+}
+
+export function clearCommercialPresentationSession() {
+  deleteCookie(OFFER_COOKIE_KEYS.startedAt);
+  deleteCookie(OFFER_COOKIE_KEYS.lastChapter);
+  deleteCookie(OFFER_COOKIE_KEYS.lastSeenAt);
+  deleteCookie(OFFER_COOKIE_KEYS.version);
+  deleteCookie(OFFER_COOKIE_KEYS.accessLead);
+}
+
+export function getSavedPresentationAccessLead() {
+  const savedVersion = getCookie(OFFER_COOKIE_KEYS.version);
+
+  if (savedVersion !== COMMERCIAL_PRESENTATION_VERSION) {
+    clearCommercialPresentationSession();
+    return null;
+  }
+
+  const rawLead = getCookie(OFFER_COOKIE_KEYS.accessLead);
+
+  if (!rawLead) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(rawLead);
+
+    if (!isValidPresentationAccessLead(parsed)) {
+      clearCommercialPresentationSession();
+      return null;
+    }
+
+    return parsed;
+  } catch {
+    clearCommercialPresentationSession();
+    return null;
+  }
+}
+
+export function persistPresentationAccessLead(lead: PresentationAccessLead) {
+  setCookie(OFFER_COOKIE_KEYS.accessLead, JSON.stringify(lead));
+  setCookie(OFFER_COOKIE_KEYS.version, COMMERCIAL_PRESENTATION_VERSION);
+}
+
+export function createUnlockedProposalProgress(
+  chapters: PresentationChapter[],
+  requestedChapterId: string | null,
+  startedAt = Date.now()
+): ProposalProgressState {
+  const chapterId = resolveChapterId(chapters, requestedChapterId, chapters[0]?.id ?? "visao-geral");
+
+  return {
+    startedAt,
+    lastChapter: chapterId,
+    lastSeenAt: startedAt,
+    version: COMMERCIAL_PRESENTATION_VERSION
+  };
 }
 
 export function initializeProposalProgress(
@@ -119,23 +226,15 @@ export function initializeProposalProgress(
   requestedChapterId: string | null
 ): ProposalProgressState {
   const now = Date.now();
-  const firstChapter = chapters[0]?.id ?? "visao-geral";
-
-  const savedVersion = getCookie(OFFER_COOKIE_KEYS.version);
   const savedStartedAt = getCookie(OFFER_COOKIE_KEYS.startedAt);
   const savedLastChapter = getCookie(OFFER_COOKIE_KEYS.lastChapter);
 
   const shouldReset =
-    savedVersion !== COMMERCIAL_PRESENTATION_VERSION ||
     !isValidTimestamp(savedStartedAt) ||
     !isValidChapterId(chapters, savedLastChapter);
 
   const startedAt = shouldReset ? now : Number(savedStartedAt);
-  const chapterId = isValidChapterId(chapters, requestedChapterId)
-    ? (requestedChapterId as string)
-    : isValidChapterId(chapters, savedLastChapter)
-      ? (savedLastChapter as string)
-      : firstChapter;
+  const chapterId = resolveChapterId(chapters, requestedChapterId, savedLastChapter);
 
   return {
     startedAt,
@@ -205,6 +304,16 @@ export function formatRemainingTime(remainingMs: number) {
   const seconds = totalSeconds % 60;
 
   return `${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
+}
+
+export function formatRemainingClock(remainingMs: number) {
+  const safeRemainingMs = Math.max(0, remainingMs);
+  const totalSeconds = Math.floor(safeRemainingMs / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
 export function buildWhatsAppHref(currentChapterTitle: string, activeTier: CommercialOfferTier) {

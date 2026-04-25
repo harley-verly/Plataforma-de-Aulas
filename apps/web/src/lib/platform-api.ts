@@ -106,6 +106,25 @@ export type PlatformAdminOverview = {
   }>;
 };
 
+export type CommercialPresentationAccessPayload = {
+  name: string;
+  email: string;
+  phone: string;
+  currentChapterId: string;
+  currentChapterTitle: string;
+  activeTierId: "24h" | "48h" | "72h";
+  activeTierLabel: string;
+  activePriceInCents: number;
+  landingPath: string;
+};
+
+export type CommercialPresentationAccessResponse = {
+  status: "ok";
+  crm: "portal-de-leads";
+  intake: "plataforma-de-aulas";
+  capturedAt: number;
+};
+
 async function fetchJson<T>(path: string): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     credentials: "include",
@@ -119,6 +138,39 @@ async function fetchJson<T>(path: string): Promise<T> {
   }
 
   return (await response.json()) as T;
+}
+
+async function postJson<TResponse, TBody>(path: string, body: TBody): Promise<TResponse> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!response.ok) {
+    let message = `API request failed: ${response.status}`;
+
+    try {
+      const errorPayload = (await response.json()) as { message?: string | string[] };
+      const errorMessage = Array.isArray(errorPayload.message)
+        ? errorPayload.message.join(", ")
+        : errorPayload.message;
+
+      if (errorMessage) {
+        message = errorMessage;
+      }
+    } catch {
+      // Keep the generic message when the API does not return JSON.
+    }
+
+    throw new Error(message);
+  }
+
+  return (await response.json()) as TResponse;
 }
 
 export function getCatalogHome() {
@@ -135,4 +187,11 @@ export function getCatalogCourse(slug: string) {
 
 export function getAdminOverview() {
   return fetchJson<PlatformAdminOverview>("/admin/overview");
+}
+
+export function captureCommercialPresentationLead(body: CommercialPresentationAccessPayload) {
+  return postJson<CommercialPresentationAccessResponse, CommercialPresentationAccessPayload>(
+    "/commercial/presentation/access",
+    body
+  );
 }
