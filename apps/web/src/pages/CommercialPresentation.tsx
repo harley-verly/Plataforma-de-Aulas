@@ -41,26 +41,30 @@ const CommercialPresentation = () => {
   }, []);
 
   useEffect(() => {
-    if (
-      requestedChapterId &&
-      requestedChapterId !== progress.lastChapter &&
-      isValidChapterId(PRESENTATION_CHAPTERS, requestedChapterId)
-    ) {
-      setProgress((previous) => ({
-        ...previous,
-        lastChapter: requestedChapterId,
-        lastSeenAt: Date.now()
-      }));
+    if (!requestedChapterId || !isValidChapterId(PRESENTATION_CHAPTERS, requestedChapterId)) {
+      return;
     }
-  }, [progress.lastChapter, requestedChapterId]);
+
+    setProgress((previous) =>
+      previous.lastChapter === requestedChapterId
+        ? previous
+        : {
+            ...previous,
+            lastChapter: requestedChapterId,
+            lastSeenAt: Date.now()
+          }
+    );
+  }, [requestedChapterId]);
 
   useEffect(() => {
     persistProposalProgress(progress);
+  }, [progress]);
 
-    if (searchParams.get("capitulo") !== progress.lastChapter) {
+  useEffect(() => {
+    if (requestedChapterId !== progress.lastChapter) {
       setSearchParams({ capitulo: progress.lastChapter }, { replace: true });
     }
-  }, [progress, searchParams, setSearchParams]);
+  }, [progress.lastChapter, requestedChapterId, setSearchParams]);
 
   const goToChapter = (chapterId: string) => {
     setProgress((previous) => ({
