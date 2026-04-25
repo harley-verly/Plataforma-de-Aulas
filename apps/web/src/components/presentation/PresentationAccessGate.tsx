@@ -75,7 +75,7 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
                 icon={<Phone className="h-4 w-4" />}
                 value={form.phone}
                 onChange={(value) => setForm((previous) => ({ ...previous, phone: value }))}
-                placeholder="(11) 98765-4321"
+                placeholder="(XX) XXXXX-XXXX"
                 autoComplete="tel"
               />
               <Field
