@@ -53,7 +53,7 @@ export const COMMERCIAL_OFFER_TIERS: CommercialOfferTier[] = [
     betaDeliveryDays: 15,
     finalDeliveryDays: 30,
     supportDays: 90,
-    label: "Condicao de 24 horas"
+    label: "Condição de 24 horas"
   },
   {
     tierId: "48h",
@@ -63,7 +63,7 @@ export const COMMERCIAL_OFFER_TIERS: CommercialOfferTier[] = [
     betaDeliveryDays: 30,
     finalDeliveryDays: 45,
     supportDays: 60,
-    label: "Condicao de 48 horas"
+    label: "Condição de 48 horas"
   },
   {
     tierId: "72h",
@@ -73,7 +73,7 @@ export const COMMERCIAL_OFFER_TIERS: CommercialOfferTier[] = [
     betaDeliveryDays: 45,
     finalDeliveryDays: 60,
     supportDays: 30,
-    label: "Condicao padrao"
+    label: "Condição padrão"
   }
 ];
 
@@ -209,9 +209,9 @@ export function formatRemainingTime(remainingMs: number) {
 
 export function buildWhatsAppHref(currentChapterTitle: string, activeTier: CommercialOfferTier) {
   const message =
-    `Ola, quero avancar com a Plataforma de Aulas. ` +
-    `Vi a apresentacao comercial e quero falar sobre a proposta vigente. ` +
-    `Capitulo atual: ${currentChapterTitle}. ` +
+    `Olá, quero avançar com a Plataforma de Aulas. ` +
+    `Vi a apresentação comercial e quero falar sobre a proposta vigente. ` +
+    `Capítulo atual: ${currentChapterTitle}. ` +
     `Faixa ativa: ${activeTier.label} (${formatCurrency(activeTier.priceCurrent)}).`;
 
   return `https://wa.me/5582981093783?text=${encodeURIComponent(message)}`;

@@ -4,7 +4,7 @@ type ApprovalState = "pending_review" | "approved" | "needs_adjustment";
 type Role = "super_admin" | "platform_admin" | "producer" | "affiliate" | "student" | "support";
 type VideoProvider = "panda" | "youtube";
 type CourseStatus = "publicado" | "rascunho";
-type CourseModality = "Online" | "Presencial" | "Hibrido";
+type CourseModality = "Online" | "Presencial" | "Híbrido";
 
 interface DemoOffer {
   id: string;
@@ -81,29 +81,29 @@ export class DemoStoreService {
     {
       id: "course-premium-ops",
       slug: "operacao-premium-de-cursos",
-      title: "Operacao Premium de Cursos",
-      subtitle: "Produto, oferta, onboarding e experiencia do aluno sob a mesma operacao.",
+      title: "Operação Premium de Cursos",
+      subtitle: "Produto, oferta, onboarding e experiência do aluno sob a mesma operação.",
       excerpt: "Da oferta ao acompanhamento do aluno com uma arquitetura premium de produto digital.",
       description:
-        "Programa desenhado para estruturar uma operacao completa de cursos com narrativa comercial, member area, governanca e acompanhamento de experiencia.",
+        "Programa desenhado para estruturar uma operação completa de cursos com narrativa comercial, área de membros, governança e acompanhamento da experiência.",
       summary:
-        "Curso estruturado para transformar conteudo em um produto digital premium com governanca, acompanhamento e margem protegida.",
+        "Curso estruturado para transformar conteúdo em um produto digital premium com governança, acompanhamento e margem protegida.",
       thumbnailUrl:
         "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
       producerName: "Equipe Plataforma de Aulas",
-      instructor: "Operacao Plataforma",
-      audience: "Times de operacao, especialistas e produtores",
+      instructor: "Operação Plataforma",
+      audience: "Times de operação, especialistas e produtores",
       workload: "28h",
-      modality: "Hibrido",
+      modality: "Híbrido",
       seats: 32,
       schedule: [
-        { week: "Modulo 1", topic: "Oferta, promessa e narrativa comercial" },
-        { week: "Modulo 2", topic: "Checkout, onboarding e member area" },
-        { week: "Modulo 3", topic: "Retencao, progresso e indicadores" }
+        { week: "Módulo 1", topic: "Oferta, promessa e narrativa comercial" },
+        { week: "Módulo 2", topic: "Checkout, onboarding e área de membros" },
+        { week: "Módulo 3", topic: "Retenção, progresso e indicadores" }
       ],
       materials: [
         { name: "Blueprint da jornada do aluno", type: "PDF" },
-        { name: "Checklist de go-live da operacao", type: "XLSX" }
+        { name: "Checklist de go-live da operação", type: "XLSX" }
       ],
       status: "publicado",
       offers: [
@@ -118,7 +118,7 @@ export class DemoStoreService {
         {
           id: "offer-premium-sub",
           title: "Ciclo mensal",
-          description: "Recorrencia mensal com encontros e atualizacoes.",
+          description: "Recorrência mensal com encontros e atualizações.",
           priceLabel: "R$ 197,00",
           priceInCents: 19700,
           billingModel: "subscription"
@@ -128,13 +128,13 @@ export class DemoStoreService {
         {
           id: "module-1",
           title: "Oferta e posicionamento",
-          description: "Definicao de proposta, narrativa e valor percebido.",
+          description: "Definição de proposta, narrativa e valor percebido.",
           lessons: [
             {
               id: "lesson-1",
               slug: "diagnostico-da-oferta",
-              title: "Diagnostico da oferta",
-              summary: "Mapeamento de publico, promessa e diferencas do produto.",
+              title: "Diagnóstico da oferta",
+              summary: "Mapeamento de público, promessa e diferenças do produto.",
               dripAfterDays: 0,
               isPreview: true,
               videoProvider: "panda",
@@ -147,8 +147,8 @@ export class DemoStoreService {
             {
               id: "lesson-2",
               slug: "pagina-e-checkout",
-              title: "Pagina e checkout",
-              summary: "Costura entre pagina de oferta, checkout e onboarding.",
+              title: "Página e checkout",
+              summary: "Costura entre página de oferta, checkout e onboarding.",
               dripAfterDays: 1,
               isPreview: false,
               videoProvider: "youtube",
@@ -162,14 +162,14 @@ export class DemoStoreService {
         },
         {
           id: "module-2",
-          title: "Entrega e retencao",
+          title: "Entrega e retenção",
           description: "Progresso, checkpoints, certificados e recompra.",
           lessons: [
             {
               id: "lesson-3",
               slug: "ritmo-de-consumo",
               title: "Ritmo de consumo",
-              summary: "Como desenhar uma experiencia que leva o aluno ate a aplicacao.",
+              summary: "Como desenhar uma experiência que leva o aluno até a aplicação.",
               dripAfterDays: 3,
               isPreview: false,
               videoProvider: "panda",
@@ -187,29 +187,29 @@ export class DemoStoreService {
       id: "course-entrepreneurship",
       slug: "fundamentos-do-empreendedorismo",
       title: "Fundamentos do Empreendedorismo",
-      subtitle: "Da ideia ao primeiro cliente com clareza de proposta e tracao inicial.",
-      excerpt: "Uma trilha pratica para sair da intuicao e construir um negocio com base real.",
+      subtitle: "Da ideia ao primeiro cliente com clareza de proposta e tração inicial.",
+      excerpt: "Uma trilha prática para sair da intuição e construir um negócio com base real.",
       description:
-        "Curso introdutorio para quem esta estruturando seu primeiro produto, oferta ou servico, com foco em validacao, posicionamento e primeiras vendas.",
+        "Curso introdutório para quem está estruturando seu primeiro produto, oferta ou serviço, com foco em validação, posicionamento e primeiras vendas.",
       summary:
-        "Programa intensivo voltado para descoberta de publico, validacao de oferta e execucao comercial inicial.",
+        "Programa intensivo voltado para descoberta de público, validação de oferta e execução comercial inicial.",
       thumbnailUrl:
         "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
-      producerName: "Equipe Academica",
+      producerName: "Equipe Acadêmica",
       instructor: "Camila Andrade",
-      audience: "Novos empreendedores e profissionais em transicao",
+      audience: "Novos empreendedores e profissionais em transição",
       workload: "32h",
-      modality: "Hibrido",
+      modality: "Híbrido",
       seats: 24,
       schedule: [
-        { week: "Semana 1", topic: "Mentalidade, problema e publico" },
-        { week: "Semana 2", topic: "Modelo de negocio e proposta de valor" },
-        { week: "Semana 3", topic: "Validacao, MVP e aprendizado" },
+        { week: "Semana 1", topic: "Mentalidade, problema e público" },
+        { week: "Semana 2", topic: "Modelo de negócio e proposta de valor" },
+        { week: "Semana 3", topic: "Validação, MVP e aprendizado" },
         { week: "Semana 4", topic: "Primeiras vendas e indicadores" }
       ],
       materials: [
         { name: "Canvas comentado", type: "PDF" },
-        { name: "Planilha de validacao", type: "XLSX" }
+        { name: "Planilha de validação", type: "XLSX" }
       ],
       status: "publicado",
       offers: [
@@ -225,14 +225,14 @@ export class DemoStoreService {
       modules: [
         {
           id: "module-entre-1",
-          title: "Base do negocio",
-          description: "Fundamentos para sair da ideia e entrar em construcao.",
+          title: "Base do negócio",
+          description: "Fundamentos para sair da ideia e entrar em construção.",
           lessons: [
             {
               id: "lesson-entre-1",
               slug: "clareza-de-oferta",
               title: "Clareza de oferta",
-              summary: "Como transformar conhecimento em proposta compreensivel e desejavel.",
+              summary: "Como transformar conhecimento em proposta compreensível e desejável.",
               dripAfterDays: 0,
               isPreview: true,
               videoProvider: "youtube",
@@ -249,33 +249,33 @@ export class DemoStoreService {
     {
       id: "course-finance",
       slug: "gestao-financeira-essencial",
-      title: "Gestao Financeira Essencial",
-      subtitle: "Numeros claros para decisoes corajosas e sustentaveis.",
-      excerpt: "Fluxo de caixa, margem e leitura financeira para pequenas operacoes.",
+      title: "Gestão Financeira Essencial",
+      subtitle: "Números claros para decisões corajosas e sustentáveis.",
+      excerpt: "Fluxo de caixa, margem e leitura financeira para pequenas operações.",
       description:
-        "Capacitacao pratica para consolidar rotina financeira, precificacao e visao de indicadores sem depender de planilhas improvisadas.",
+        "Capacitação prática para consolidar rotina financeira, precificação e visão de indicadores sem depender de planilhas improvisadas.",
       summary:
-        "Programa direto ao ponto para consolidar leitura financeira, margem e tomada de decisao em pequenos negocios.",
+        "Programa direto ao ponto para consolidar leitura financeira, margem e tomada de decisão em pequenos negócios.",
       thumbnailUrl:
         "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80",
       producerName: "Equipe Financeira",
       instructor: "Mariana Lopes",
-      audience: "Empreendedores, gestores e operacao administrativa",
+      audience: "Empreendedores, gestores e operação administrativa",
       workload: "16h",
       modality: "Presencial",
       seats: 20,
       schedule: [
         { week: "Encontro 1", topic: "Fluxo de caixa e DRE simplificado" },
-        { week: "Encontro 2", topic: "Precificacao e margem" },
-        { week: "Encontro 3", topic: "Indicadores e rotina de decisao" }
+        { week: "Encontro 2", topic: "Precificação e margem" },
+        { week: "Encontro 3", topic: "Indicadores e rotina de decisão" }
       ],
-      materials: [{ name: "Planilha de gestao financeira", type: "XLSX" }],
+      materials: [{ name: "Planilha de gestão financeira", type: "XLSX" }],
       status: "publicado",
       offers: [
         {
           id: "offer-finance-once",
-          title: "Imersao presencial",
-          description: "Acesso as aulas presenciais com materiais e suporte.",
+          title: "Imersão presencial",
+          description: "Acesso às aulas presenciais com materiais e suporte.",
           priceLabel: "R$ 397,00",
           priceInCents: 39700,
           billingModel: "one_time"
@@ -285,13 +285,13 @@ export class DemoStoreService {
         {
           id: "module-fin-1",
           title: "Fundamentos financeiros",
-          description: "Base para organizar caixa, margem e previsao.",
+          description: "Base para organizar caixa, margem e previsão.",
           lessons: [
             {
               id: "lesson-fin-1",
               slug: "caixa-sem-caos",
               title: "Caixa sem caos",
-              summary: "Como estruturar entradas, saidas e leitura de saldo com criterio.",
+              summary: "Como estruturar entradas, saídas e leitura de saldo com critério.",
               dripAfterDays: 0,
               isPreview: true,
               videoProvider: "panda",
@@ -308,13 +308,13 @@ export class DemoStoreService {
     {
       id: "course-affiliates",
       slug: "maquina-de-afiliacao-com-governanca",
-      title: "Maquina de Afiliacao com Governanca",
-      subtitle: "Aquisicao com criterio, rastreio e leitura financeira.",
-      excerpt: "Afiliacao com processo, rastreio e seguranca de marca.",
+      title: "Máquina de Afiliação com Governança",
+      subtitle: "Aquisição com critério, rastreio e leitura financeira.",
+      excerpt: "Afiliação com processo, rastreio e segurança de marca.",
       description:
-        "Curso voltado para a criacao de uma operacao de afiliacao com criterios de aprovacao, links rastreaveis, leitura financeira e protecao comercial.",
+        "Curso voltado para a criação de uma operação de afiliação com critérios de aprovação, links rastreáveis, leitura financeira e proteção comercial.",
       summary:
-        "Programa voltado para a criacao de uma operacao de afiliacao com aprovacao, links rastreaveis e acompanhamento de comissao.",
+        "Programa voltado para a criação de uma operação de afiliação com aprovação, links rastreáveis e acompanhamento de comissão.",
       thumbnailUrl:
         "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",
       producerName: "Equipe Comercial",
@@ -324,12 +324,12 @@ export class DemoStoreService {
       modality: "Online",
       seats: 40,
       schedule: [
-        { week: "Modulo 1", topic: "Governanca, regras e filtros de entrada" },
-        { week: "Modulo 2", topic: "Links, comissoes e acompanhamento" },
-        { week: "Modulo 3", topic: "Escala sem perder criterio" }
+        { week: "Módulo 1", topic: "Governança, regras e filtros de entrada" },
+        { week: "Módulo 2", topic: "Links, comissões e acompanhamento" },
+        { week: "Módulo 3", topic: "Escala sem perder critério" }
       ],
       materials: [
-        { name: "Playbook de aprovacao de afiliados", type: "PDF" },
+        { name: "Playbook de aprovação de afiliados", type: "PDF" },
         { name: "Modelo de acompanhamento de campanha", type: "XLSX" }
       ],
       status: "rascunho",
@@ -346,14 +346,14 @@ export class DemoStoreService {
       modules: [
         {
           id: "module-aff-1",
-          title: "Governanca",
-          description: "Regras, filtros e protecao de marca.",
+          title: "Governança",
+          description: "Regras, filtros e proteção de marca.",
           lessons: [
             {
               id: "lesson-aff-1",
               slug: "criterios-de-aprovacao",
-              title: "Criterios de aprovacao",
-              summary: "Como desenhar um processo de entrada sem bagunca.",
+              title: "Critérios de aprovação",
+              summary: "Como desenhar um processo de entrada sem bagunça.",
               dripAfterDays: 0,
               isPreview: true,
               videoProvider: "panda",
@@ -370,17 +370,17 @@ export class DemoStoreService {
   ];
 
   private readonly homeMetrics = [
-    { label: "Cursos ativos", value: "12", note: "catalogo com modelos avulso e recorrente" },
-    { label: "Produtores em revisao", value: "4", note: "pipeline com aprovacao operacional" },
-    { label: "Afiliados aprovados", value: "28", note: "links e comissoes rastreaveis" }
+    { label: "Cursos ativos", value: "12", note: "catálogo com modelos avulso e recorrente" },
+    { label: "Produtores em revisão", value: "4", note: "pipeline com aprovação operacional" },
+    { label: "Afiliados aprovados", value: "28", note: "links e comissões rastreáveis" }
   ];
 
   private readonly testimonials = [
     {
       name: "Marina Costa",
-      role: "Operacao academica",
+      role: "Operação acadêmica",
       quote:
-        "A plataforma organiza pagina, member area e bastidores sem parecer um conjunto solto de ferramentas."
+        "A plataforma organiza página, área de membros e bastidores sem parecer um conjunto solto de ferramentas."
     },
     {
       name: "Rafael Nunes",
@@ -395,14 +395,14 @@ export class DemoStoreService {
       kind: "producer" as const,
       displayName: "Camila Freitas",
       state: "pending_review" as ApprovalState,
-      note: "validar payout e portfolio"
+      note: "validar payout e portfólio"
     },
     {
       id: "approval-affiliate-014",
       kind: "affiliate" as const,
       displayName: "Carlos Ventura",
       state: "needs_adjustment" as ApprovalState,
-      note: "ajustar pagina de divulgacao"
+      note: "ajustar página de divulgação"
     }
   ];
 
@@ -445,7 +445,7 @@ export class DemoStoreService {
     [
       "admin@plataforma.local",
       {
-        fullName: "Operacao Plataforma",
+        fullName: "Operação Plataforma",
         email: "admin@plataforma.local",
         password: "premium123",
         role: "platform_admin"
@@ -469,9 +469,9 @@ export class DemoStoreService {
   getHome() {
     return {
       hero: {
-        title: "Plataforma proprietaria de aulas com operacao premium",
+        title: "Plataforma proprietária de aulas com operação premium",
         subtitle:
-          "Catalogo, checkout, area do aluno, studio, afiliacao e administracao em uma estrutura unica."
+          "Catálogo, checkout, área do aluno, studio, afiliação e administração em uma estrutura única."
       },
       metrics: this.homeMetrics,
       featuredCourses: this.listCourses().filter((course) => course.status === "publicado"),
@@ -505,7 +505,7 @@ export class DemoStoreService {
   getCourse(slug: string) {
     const course = this.courses.find((item) => item.slug === slug);
     if (!course) {
-      throw new NotFoundException(`Curso '${slug}' nao encontrado`);
+      throw new NotFoundException(`Curso '${slug}' não encontrado`);
     }
 
     return {
@@ -518,12 +518,12 @@ export class DemoStoreService {
   getCheckoutOffer(offerId: string) {
     const course = this.courses.find((item) => item.offers.some((offer) => offer.id === offerId));
     if (!course) {
-      throw new NotFoundException(`Oferta '${offerId}' nao encontrada`);
+      throw new NotFoundException(`Oferta '${offerId}' não encontrada`);
     }
 
     const offer = course.offers.find((item) => item.id === offerId);
     if (!offer) {
-      throw new NotFoundException(`Oferta '${offerId}' nao encontrada`);
+      throw new NotFoundException(`Oferta '${offerId}' não encontrada`);
     }
 
     return {
@@ -545,7 +545,7 @@ export class DemoStoreService {
     const normalizedEmail = this.normalizeEmail(input.email);
 
     if (this.users.has(normalizedEmail)) {
-      throw new ConflictException("Ja existe uma conta com este e-mail.");
+      throw new ConflictException("Já existe uma conta com este e-mail.");
     }
 
     const user: DemoUser = {
@@ -558,7 +558,7 @@ export class DemoStoreService {
     this.users.set(normalizedEmail, user);
 
     return {
-      message: "Cadastro concluido com acesso padrao de aluno.",
+      message: "Cadastro concluído com acesso padrão de aluno.",
       user: {
         fullName: user.fullName,
         email: user.email,
@@ -573,7 +573,7 @@ export class DemoStoreService {
     const user = this.users.get(normalizedEmail);
 
     if (!user || user.password !== input.password) {
-      throw new UnauthorizedException("E-mail ou senha invalidos.");
+      throw new UnauthorizedException("E-mail ou senha inválidos.");
     }
 
     return {
@@ -592,7 +592,7 @@ export class DemoStoreService {
     const adminUser = this.users.get("admin@plataforma.local");
 
     return {
-      fullName: adminUser?.fullName ?? "Operacao Plataforma",
+      fullName: adminUser?.fullName ?? "Operação Plataforma",
       email: adminUser?.email ?? "admin@plataforma.local",
       role: adminUser?.role ?? "platform_admin",
       route: this.roleRoute.platform_admin
@@ -655,13 +655,13 @@ export class DemoStoreService {
   getStudioOverview() {
     return {
       kpis: [
-        { label: "Cursos publicados", value: "7", note: "com pagina, oferta e member area" },
-        { label: "Conversao media", value: "4.8%", note: "ofertas com checkout sandbox-first" },
+        { label: "Cursos publicados", value: "7", note: "com página, oferta e área de membros" },
+        { label: "Conversão média", value: "4.8%", note: "ofertas com checkout sandbox-first" },
         { label: "Receita projetada", value: "R$ 38.400", note: "baseado nas ofertas ativas" }
       ],
       pipeline: [
         { title: "Curso de onboarding", state: "pending_review" },
-        { title: "Workshop de operacao", state: "approved" }
+        { title: "Workshop de operação", state: "approved" }
       ]
     };
   }
@@ -672,11 +672,11 @@ export class DemoStoreService {
       kind: "producer" as const,
       displayName: input.fullName,
       state: "pending_review" as ApprovalState,
-      note: `portfolio recebido: ${input.portfolioUrl}`
+      note: `portfólio recebido: ${input.portfolioUrl}`
     };
     this.approvals.unshift(application);
     return {
-      message: "Solicitacao de produtor registrada",
+      message: "Solicitação de produtor registrada",
       application
     };
   }
@@ -697,8 +697,8 @@ export class DemoStoreService {
     return {
       kpis: [
         { label: "Cliques qualificados", value: "2.148", note: "links rastreados por campanha" },
-        { label: "Comissao pendente", value: "R$ 2.340", note: "aguardando liquidacao sandbox-first" },
-        { label: "Conversao", value: "3.2%", note: "media entre ofertas publicadas" }
+        { label: "Comissão pendente", value: "R$ 2.340", note: "aguardando liquidação sandbox-first" },
+        { label: "Conversão", value: "3.2%", note: "média entre ofertas publicadas" }
       ],
       links: [
         { slug: "camila-premium", destination: "/catalog/operacao-premium-de-cursos", status: "active" },
@@ -717,7 +717,7 @@ export class DemoStoreService {
     };
     this.approvals.unshift(application);
     return {
-      message: "Solicitacao de afiliado registrada",
+      message: "Solicitação de afiliado registrada",
       application
     };
   }
@@ -742,20 +742,20 @@ export class DemoStoreService {
       recentActivity: [
         {
           who: "Camila Freitas",
-          what: "aguarda aprovacao de perfil",
+          what: "aguarda aprovação de perfil",
           target: "produtor",
-          when: "ha 2h"
+          when: "há 2h"
         },
         {
           who: "Carlos Ventura",
-          what: "ajustou a aplicacao",
+          what: "ajustou a aplicação",
           target: "afiliado",
-          when: "ha 5h"
+          when: "há 5h"
         },
         {
           who: "Checkout sandbox",
-          what: "registrou sessao",
-          target: `${this.checkoutEvents.length} operacoes`,
+          what: "registrou sessão",
+          target: `${this.checkoutEvents.length} operações`,
           when: "hoje"
         },
         {
@@ -768,7 +768,7 @@ export class DemoStoreService {
       shortcuts: [
         { label: "Novo evento", to: "/admin/eventos" },
         { label: "Novo curso", to: "/admin/cursos" },
-        { label: "Aprovar negocios", to: "/admin/comunidade" },
+        { label: "Aprovar negócios", to: "/admin/comunidade" },
         { label: "Editar homepage", to: "/admin/paginas" }
       ]
     };
@@ -781,14 +781,14 @@ export class DemoStoreService {
   approveApplication(applicationId: string, notes?: string) {
     const approval = this.approvals.find((item) => item.id === applicationId);
     if (!approval) {
-      throw new NotFoundException(`Fila '${applicationId}' nao encontrada`);
+      throw new NotFoundException(`Fila '${applicationId}' não encontrada`);
     }
 
     approval.state = "approved";
     approval.note = notes?.trim() || "aprovado pelo painel administrativo";
 
     return {
-      message: "Aprovacao registrada",
+      message: "Aprovação registrada",
       approval
     };
   }
@@ -801,11 +801,11 @@ export class DemoStoreService {
   }) {
     const course = this.courses.find((item) => item.offers.some((offer) => offer.id === input.offerId));
     if (!course) {
-      throw new NotFoundException(`Oferta '${input.offerId}' nao encontrada`);
+      throw new NotFoundException(`Oferta '${input.offerId}' não encontrada`);
     }
     const offer = course.offers.find((item) => item.id === input.offerId);
     if (!offer) {
-      throw new NotFoundException(`Oferta '${input.offerId}' nao encontrada`);
+      throw new NotFoundException(`Oferta '${input.offerId}' não encontrada`);
     }
 
     const session = {

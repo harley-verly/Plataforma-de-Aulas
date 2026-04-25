@@ -18,7 +18,7 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
 
   return (
     <div className={["border border-gold/20 bg-gradient-ink", compact ? "p-5" : "p-6"].join(" ")}>
-      <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Condicao comercial</p>
+      <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Condição comercial</p>
       <h2 className="mt-3 font-serif text-3xl text-paper">{activeOffer.activeTier.label}</h2>
       <p className="mt-3 text-sm leading-relaxed text-paper-muted">
         A janela desta proposta fica salva neste navegador para que o cliente retome do ponto onde parou.
@@ -50,7 +50,7 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
           </p>
           <p className="mt-2 text-sm text-paper-muted">
             {activeOffer.offerExpired
-              ? "A janela promocional deste navegador terminou. A proposta segue disponivel em valor cheio."
+              ? "A janela promocional deste navegador terminou. A proposta segue disponível em valor cheio."
               : "A faixa atual troca automaticamente de acordo com o tempo desta visita."}
           </p>
         </div>
@@ -74,7 +74,7 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
                   <p className="mt-2 font-serif text-2xl text-paper">{formatCurrency(tier.priceCurrent)}</p>
                 </div>
                 <span className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">
-                  ate {tier.deadlineHours}h
+                  até {tier.deadlineHours}h
                 </span>
               </div>
               <p className="mt-3 text-sm text-paper-muted">
@@ -96,7 +96,7 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
 
       {!compact && (
         <p className="mt-4 text-xs leading-relaxed text-paper-muted">
-          Capitulo atual: <span className="text-paper">{currentChapter.title}</span>
+          Capítulo atual: <span className="text-paper">{currentChapter.title}</span>
         </p>
       )}
     </div>

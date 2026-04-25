@@ -93,14 +93,14 @@ const CommercialPresentation = () => {
   return (
     <SiteLayout>
       <section className="container-editorial py-12 md:py-16">
-        <SectionLabel number="00">Apresentacao comercial</SectionLabel>
+        <SectionLabel number="00">Apresentação comercial</SectionLabel>
 
         <div className="mt-8 max-w-4xl">
           <h1 className="font-serif text-5xl leading-[0.98] text-paper md:text-7xl">
             Uma proposta comercial viva para vender a Plataforma de Aulas com clareza.
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-paper-soft">
-            Este material funciona como walkthrough comercial da estrutura ja validada no demo
+            Este material funciona como walkthrough comercial da estrutura já validada no demo
             e da entrega contratada do projeto. O progresso e a janela de oferta ficam salvos
             neste navegador para o cliente retomar a proposta sem perder contexto.
           </p>

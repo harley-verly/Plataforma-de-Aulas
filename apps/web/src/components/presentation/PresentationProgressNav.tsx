@@ -12,7 +12,7 @@ export const PresentationProgressNav = ({ chapters, currentChapterId, onSelectCh
       <div className="border-b border-ink-line px-5 py-4">
         <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Trilha da proposta</p>
         <p className="mt-2 text-sm text-paper-muted">
-          Seu navegador guarda o capitulo atual e a janela comercial desta proposta.
+          Seu navegador guarda o capítulo atual e a janela comercial desta proposta.
         </p>
       </div>
       <div className="flex gap-3 overflow-x-auto px-4 py-4">
