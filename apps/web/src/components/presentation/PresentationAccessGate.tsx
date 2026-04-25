@@ -49,7 +49,7 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
 
   return (
     <section className="container-editorial py-12 md:py-16">
-      <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="mx-auto max-w-5xl">
         <div className="border border-ink-line bg-ink-soft p-6 md:p-8 xl:p-10">
           <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Apresentação comercial</p>
           <h1 className="mt-5 max-w-4xl font-serif text-5xl leading-[0.98] text-paper md:text-7xl">
@@ -135,32 +135,6 @@ export const PresentationAccessGate = ({ onSubmit, isSubmitting, errorMessage }:
             </button>
           </form>
         </div>
-
-        <aside className="border border-gold/20 bg-gradient-ink p-6">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-gold">Acesso protegido</p>
-          <h2 className="mt-3 font-serif text-3xl text-paper">
-            A proposta completa só aparece depois da liberação.
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed text-paper-muted">
-            Enquanto os dados do cliente não forem registrados, a apresentação não mostra preço,
-            prazo, condição comercial nem detalhes da oferta.
-          </p>
-
-          <div className="mt-6 space-y-4">
-            <OfferVisibilityCard
-              title="O que fica oculto"
-              summary="Valores, marcos de tempo, prazo de beta, prazo final e janela comercial só aparecem depois do lead entrar no CRM."
-            />
-            <OfferVisibilityCard
-              title="Quando libera"
-              summary="Assim que nome, telefone e e-mail forem enviados com sucesso, a proposta é destravada e o contador começa."
-            />
-            <OfferVisibilityCard
-              title="Como retoma depois"
-              summary="O navegador guarda o avanço da proposta para o cliente continuar do mesmo ponto já com a condição ativa."
-            />
-          </div>
-        </aside>
       </div>
     </section>
   );
@@ -200,18 +174,5 @@ const AccessMetric = ({ title, description }: { title: string; description: stri
   <div className="border border-ink-line bg-background/50 px-4 py-4">
     <p className="text-sm text-paper">{title}</p>
     <p className="mt-2 text-sm leading-relaxed text-paper-muted">{description}</p>
-  </div>
-);
-
-const OfferVisibilityCard = ({
-  title,
-  summary
-}: {
-  title: string;
-  summary: string;
-}) => (
-  <div className="border border-ink-line bg-background/60 px-4 py-4">
-    <p className="text-[10px] uppercase tracking-[0.28em] text-gold">{title}</p>
-    <p className="mt-2 text-sm leading-relaxed text-paper-muted">{summary}</p>
   </div>
 );
