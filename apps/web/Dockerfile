@@ -14,7 +14,7 @@ COPY prisma ./prisma
 COPY scripts ./scripts
 
 RUN pnpm install --no-frozen-lockfile
-RUN node scripts/run-workspace-sequence.mjs build
+RUN pnpm --dir apps/web build
 
 FROM nginx:1.29-alpine AS runtime
 
