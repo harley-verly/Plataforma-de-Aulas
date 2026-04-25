@@ -4,6 +4,7 @@ import {
   ActiveOfferState,
   PresentationAccessLead,
   PresentationChapter,
+  formatCurrency,
   formatRemainingClock
 } from "@/lib/commercial-presentation";
 
@@ -18,20 +19,30 @@ export const PresentationStickySummaryBar = ({ activeOffer, currentChapter, lead
     <div className="container-editorial py-4">
       <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_240px] xl:items-stretch">
         <div className="border border-ink-line bg-ink-soft px-5 py-5">
-          <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-center">
+          <p className="text-[10px] uppercase tracking-[0.28em] text-gold">Condição reservada</p>
+          <div className="mt-3 grid gap-4 xl:grid-cols-[minmax(0,1fr)_auto] xl:items-start">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.28em] text-gold">Ponto atual da proposta</p>
-              <p className="mt-3 text-lg leading-relaxed text-paper">
-                {currentChapter.title}
+              <h2 className="font-serif text-4xl leading-none text-paper">
+                {activeOffer.activeTier.label}
+              </h2>
+              <p className="mt-3 text-sm text-paper-muted">
+                Proposta aberta para <span className="text-paper">{lead.name}</span>
+              </p>
+              <p className="mt-4 max-w-4xl text-lg leading-relaxed text-paper-soft">
+                {formatCurrency(activeOffer.activeTier.priceCurrent)} para transformar a base atual
+                da Plataforma de Aulas em uma entrega premium, com beta em{" "}
+                {activeOffer.activeTier.betaDeliveryDays} dias, fase final em{" "}
+                {activeOffer.activeTier.finalDeliveryDays} dias e{" "}
+                {activeOffer.activeTier.supportDays} dias de acompanhamento pós-compra.
               </p>
             </div>
 
             <div className="grid gap-2 text-sm text-paper-muted xl:text-right">
               <span>
-                Contato: <span className="text-paper">{lead.email}</span>
+                Ponto atual da proposta: <span className="text-paper">{currentChapter.title}</span>
               </span>
               <span>
-                Proposta aberta para <span className="text-paper">{lead.name}</span>
+                Contato: <span className="text-paper">{lead.email}</span>
               </span>
             </div>
           </div>
@@ -48,7 +59,7 @@ export const PresentationStickySummaryBar = ({ activeOffer, currentChapter, lead
           <p className="mt-2 text-xs leading-relaxed text-paper-muted">
             {activeOffer.offerExpired
               ? "A condição promocional desta apresentação foi encerrada."
-              : activeOffer.activeTier.label}
+              : "Enquanto esta contagem estiver ativa, esta é a condição comercial reservada para este acesso."}
           </p>
         </div>
       </div>
