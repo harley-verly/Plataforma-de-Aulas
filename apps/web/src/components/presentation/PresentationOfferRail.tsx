@@ -38,10 +38,14 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className={compact ? "grid gap-3 sm:grid-cols-3" : "grid grid-cols-2 gap-3"}>
           <OfferMetric label="Versão beta" value={`${activeOffer.activeTier.betaDeliveryDays} dias`} />
           <OfferMetric label="Projeto final" value={`${activeOffer.activeTier.finalDeliveryDays} dias`} />
-          <OfferMetric label="Acompanhamento" value={`${activeOffer.activeTier.supportDays} dias`} />
+          <OfferMetric
+            label="Acompanhamento"
+            value={`${activeOffer.activeTier.supportDays} dias`}
+            className={compact ? "" : "col-span-2"}
+          />
         </div>
 
         <div className="rounded-sm border border-gold/20 bg-background/70 px-4 py-4">
@@ -79,7 +83,8 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
                 </span>
               </div>
               <p className="mt-3 text-sm text-paper-muted">
-                Beta em {tier.betaDeliveryDays} dias, fase final em {tier.finalDeliveryDays} dias e {tier.supportDays} dias de acompanhamento pós-compra.
+                Beta em {tier.betaDeliveryDays} dias, fase final em {tier.finalDeliveryDays} dias e{" "}
+                {tier.supportDays} dias de acompanhamento pós-compra.
               </p>
             </div>
           );
@@ -104,9 +109,17 @@ export const PresentationOfferRail = ({ activeOffer, currentChapter, compact = f
   );
 };
 
-const OfferMetric = ({ label, value }: { label: string; value: string }) => (
-  <div className="border border-ink-line bg-background/50 px-4 py-4">
-    <p className="text-[10px] uppercase tracking-[0.28em] text-paper-muted">{label}</p>
+const OfferMetric = ({
+  label,
+  value,
+  className = ""
+}: {
+  label: string;
+  value: string;
+  className?: string;
+}) => (
+  <div className={["border border-ink-line bg-background/50 px-4 py-4", className].join(" ").trim()}>
+    <p className="text-[10px] uppercase tracking-[0.18em] text-paper-muted">{label}</p>
     <p className="mt-2 font-serif text-2xl text-paper">{value}</p>
   </div>
 );
