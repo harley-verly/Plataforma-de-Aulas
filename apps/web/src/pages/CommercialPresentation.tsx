@@ -62,22 +62,20 @@ const CommercialPresentation = () => {
   }, [progress]);
 
   useEffect(() => {
-    if (!progress || !requestedChapterId || !isValidChapterId(PRESENTATION_CHAPTERS, requestedChapterId)) {
+    if (!requestedChapterId || !isValidChapterId(PRESENTATION_CHAPTERS, requestedChapterId)) {
       return;
     }
 
     setProgress((previous) =>
-      !previous
+      !previous || previous.lastChapter === requestedChapterId
         ? previous
-        : previous.lastChapter === requestedChapterId
-          ? previous
-          : {
-              ...previous,
-              lastChapter: requestedChapterId,
-              lastSeenAt: Date.now()
-            }
+        : {
+            ...previous,
+            lastChapter: requestedChapterId,
+            lastSeenAt: Date.now()
+          }
     );
-  }, [progress, requestedChapterId]);
+  }, [requestedChapterId]);
 
   useEffect(() => {
     if (!progress) {
