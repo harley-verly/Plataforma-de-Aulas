@@ -21,11 +21,11 @@ export const PresentationStickySummaryBar = ({ activeOffer }: Props) => (
           <h2 className="shrink-0 font-serif text-[1.15rem] leading-none text-paper xl:text-[1.35rem]">
             {activeOffer.activeTier.label}
           </h2>
-          <p className="min-w-0 truncate whitespace-nowrap text-[11px] leading-none text-paper-muted xl:text-[12px]">
-            {formatCurrency(activeOffer.activeTier.priceCurrent)} para transformar a plataforma em uma entrega
-            premium, com beta em {activeOffer.activeTier.betaDeliveryDays} dias, fase final em{" "}
-            {activeOffer.activeTier.finalDeliveryDays} dias e {activeOffer.activeTier.supportDays} dias de
-            acompanhamento.
+          <p className="min-w-0 truncate whitespace-nowrap text-[10px] leading-none text-paper-muted xl:text-[11px]">
+            {formatCurrency(activeOffer.activeTier.priceCurrent)} | beta em{" "}
+            {activeOffer.activeTier.betaDeliveryDays} dias | final em{" "}
+            {activeOffer.activeTier.finalDeliveryDays} dias | acompanhamento de{" "}
+            {activeOffer.activeTier.supportDays} dias
           </p>
         </div>
 
