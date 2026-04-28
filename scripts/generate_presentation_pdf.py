@@ -55,9 +55,9 @@ FOOTER_H = 20
 CONTENT_TOP = PAGE_HEIGHT - MARGIN_Y - HEADER_H
 CONTENT_BOTTOM = MARGIN_Y + FOOTER_H
 CONTENT_HEIGHT = CONTENT_TOP - CONTENT_BOTTOM
-FOOTER_LINE_Y = 18
-FOOTER_TEXT_Y = 8
-CTA_SAFE_Y = 64
+FOOTER_LINE_Y = 24
+FOOTER_TEXT_Y = 11
+CTA_SAFE_Y = 78
 
 BG = HexColor("#0B0B0D")
 PANEL = HexColor("#17171A")
@@ -543,14 +543,14 @@ def add_chapter_page(pdf: canvas.Canvas, chapter: Chapter, chapter_index: int, t
         draw_feature_card(pdf, feature, card_x, card_y, feature_w, feature_h)
 
     if chapter.cta_label and chapter.live_demo_url:
-        cta_y = max(CTA_SAFE_Y, feature_top - 2 * (feature_h + 12) - 14)
+        cta_y = max(CTA_SAFE_Y, feature_top - 2 * (feature_h + 12) - 6)
         pdf.setFillColor(GOLD_SOFT)
         pdf.setStrokeColor(GOLD)
         pdf.rect(left_x, cta_y - 18, 220, 30, stroke=1, fill=1)
         pdf.setFillColor(BG)
         pdf.setFont(BODY_FONT_BOLD, 9)
         pdf.drawString(left_x + 14, cta_y - 7, chapter.cta_label.upper())
-        draw_paragraph(pdf, chapter.live_demo_url, left_x + 240, cta_y - 6, 180, BODY_FONT, 8.25, TEXT_MUTED, leading=12)
+        draw_paragraph(pdf, chapter.live_demo_url, left_x + 240, cta_y - 6, 210, BODY_FONT, 8.25, TEXT_MUTED, leading=12)
 
     draw_screenshot(pdf, chapter.screenshot, screenshot_x, top_y, screenshot_w, 286)
     draw_panel(pdf, screenshot_x, top_y - 304, screenshot_w, 86, fill=PANEL_SOFT)
@@ -598,15 +598,15 @@ def add_commercial_page(pdf: canvas.Canvas, page_number: int) -> None:
         leading=18
     )
 
-    summary_y = top_y - 6
+    summary_y = top_y - 4
     summary_x = 598
-    draw_panel(pdf, summary_x, summary_y, PAGE_WIDTH - MARGIN_X - summary_x, 140, fill=PANEL_SOFT)
+    draw_panel(pdf, summary_x, summary_y, PAGE_WIDTH - MARGIN_X - summary_x, 128, fill=PANEL_SOFT)
     draw_label(pdf, "Condição executiva atual", summary_x + 18, summary_y - 24)
     draw_paragraph(
         pdf,
         OFFER_TIERS[0].label,
         summary_x + 18,
-        summary_y - 50,
+        summary_y - 48,
         PAGE_WIDTH - MARGIN_X - summary_x - 36,
         TITLE_FONT,
         16,
@@ -615,20 +615,20 @@ def add_commercial_page(pdf: canvas.Canvas, page_number: int) -> None:
     )
     pdf.setFillColor(GOLD_SOFT)
     pdf.setFont(TITLE_FONT, 21)
-    pdf.drawString(summary_x + 18, summary_y - 92, format_currency(OFFER_TIERS[0].price_current))
+    pdf.drawString(summary_x + 18, summary_y - 84, format_currency(OFFER_TIERS[0].price_current))
     pdf.setFillColor(TEXT_SOFT)
     pdf.setFont(BODY_FONT_BOLD, 9)
-    pdf.drawString(summary_x + 18, summary_y - 110, "via PIX")
+    pdf.drawString(summary_x + 18, summary_y - 100, "via PIX")
 
-    cards_y = top_y - 172
+    cards_y = top_y - 160
     total_w = PAGE_WIDTH - MARGIN_X * 2
     gap = 14
     card_w = (total_w - gap * 2) / 3
     for idx, tier in enumerate(OFFER_TIERS):
-        draw_offer_tier_card(pdf, tier, left_x + idx * (card_w + gap), cards_y, card_w, 150, idx == 0)
+        draw_offer_tier_card(pdf, tier, left_x + idx * (card_w + gap), cards_y, card_w, 132, idx == 0)
 
-    rail_y = cards_y - 182
-    draw_panel(pdf, left_x, rail_y, total_w, 156, fill=PANEL)
+    rail_y = cards_y - 146
+    draw_panel(pdf, left_x, rail_y, total_w, 122, fill=PANEL)
     draw_label(pdf, "O que o cliente recebe ao contratar", left_x + 18, rail_y - 24)
     bullets = [
         "Versão beta com prazo claro, para acelerar validação e ajustes.",
@@ -637,27 +637,27 @@ def add_commercial_page(pdf: canvas.Canvas, page_number: int) -> None:
         "Base proprietária pronta para crescer como ativo digital da operação."
     ]
     bullet_x = left_x + 18
-    bullet_y = rail_y - 54
+    bullet_y = rail_y - 46
     for bullet in bullets:
         pdf.setFillColor(GOLD)
         pdf.circle(bullet_x + 3, bullet_y + 3, 2, stroke=0, fill=1)
-        bullet_y = draw_paragraph(pdf, bullet, bullet_x + 12, bullet_y + 6, total_w - 60, BODY_FONT, 11.5, TEXT_SOFT, leading=18) - 6
+        bullet_y = draw_paragraph(pdf, bullet, bullet_x + 12, bullet_y + 6, total_w - 60, BODY_FONT, 11, TEXT_SOFT, leading=16) - 4
 
-    cta_y = rail_y - 186
-    draw_panel(pdf, left_x, cta_y, total_w, 72, fill=PANEL_SOFT)
+    cta_y = 88
+    draw_panel(pdf, left_x, cta_y, total_w, 46, fill=PANEL_SOFT)
     pdf.setFillColor(TEXT)
-    pdf.setFont(TITLE_FONT, 18)
+    pdf.setFont(TITLE_FONT, 15)
     pdf.drawString(left_x + 18, cta_y - 30, "Avanço comercial")
     draw_paragraph(
         pdf,
         "WhatsApp para negociação: +55 82 98109-3783 | Apresentação pública: aulas.abasolucoesetecnologia.com.br/apresentacao-comercial",
         left_x + 170,
-        cta_y - 28,
+        cta_y - 18,
         total_w - 188,
         BODY_FONT,
-        10.5,
+        9.5,
         TEXT_MUTED,
-        leading=15
+        leading=13
     )
 
     draw_footer(pdf, page_number)
