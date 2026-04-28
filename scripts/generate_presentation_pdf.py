@@ -55,6 +55,9 @@ FOOTER_H = 20
 CONTENT_TOP = PAGE_HEIGHT - MARGIN_Y - HEADER_H
 CONTENT_BOTTOM = MARGIN_Y + FOOTER_H
 CONTENT_HEIGHT = CONTENT_TOP - CONTENT_BOTTOM
+FOOTER_LINE_Y = 18
+FOOTER_TEXT_Y = 8
+CTA_SAFE_Y = 64
 
 BG = HexColor("#0B0B0D")
 PANEL = HexColor("#17171A")
@@ -271,11 +274,11 @@ def draw_header(pdf: canvas.Canvas, page_label: str) -> None:
     if LOGO_PATH.exists():
         pdf.drawImage(str(LOGO_PATH), MARGIN_X, y - 32, width=32, height=32, mask="auto")
     pdf.setFillColor(TEXT)
-    pdf.setFont(TITLE_FONT_BOLD, 19)
-    pdf.drawString(MARGIN_X + 42, y - 12, "ACMB")
+    pdf.setFont(TITLE_FONT_BOLD, 18)
+    pdf.drawString(MARGIN_X + 44, y - 12, "ACMB")
     pdf.setFillColor(TEXT_MUTED)
-    pdf.setFont(BODY_FONT, 8)
-    pdf.drawString(MARGIN_X + 88, y - 11, "EST. 1998")
+    pdf.setFont(BODY_FONT, 7.5)
+    pdf.drawString(MARGIN_X + 116, y - 10.5, "EST. 1998")
     pdf.setFillColor(GOLD)
     pdf.setFont(BODY_FONT_BOLD, 9)
     pdf.drawRightString(PAGE_WIDTH - MARGIN_X, y - 11, page_label.upper())
@@ -291,6 +294,24 @@ def draw_footer(pdf: canvas.Canvas, page_number: int) -> None:
     pdf.setFont(BODY_FONT, 8)
     pdf.drawString(MARGIN_X, MARGIN_Y - 2, "Plataforma de Aulas — apresentação comercial em PDF")
     pdf.drawRightString(PAGE_WIDTH - MARGIN_X, MARGIN_Y - 2, f"Página {page_number}")
+
+
+def draw_footer(pdf: canvas.Canvas, page_number: int) -> None:
+    pdf.setStrokeColor(Color(LINE.red, LINE.green, LINE.blue, alpha=0.75))
+    pdf.line(MARGIN_X, FOOTER_LINE_Y, PAGE_WIDTH - MARGIN_X, FOOTER_LINE_Y)
+    pdf.setFillColor(TEXT_MUTED)
+    pdf.setFont(BODY_FONT, 8)
+    pdf.drawString(MARGIN_X, FOOTER_TEXT_Y, "Plataforma de Aulas â€” apresentação comercial em PDF")
+    pdf.drawRightString(PAGE_WIDTH - MARGIN_X, FOOTER_TEXT_Y, f"Página {page_number}")
+
+
+def draw_footer(pdf: canvas.Canvas, page_number: int) -> None:
+    pdf.setStrokeColor(Color(LINE.red, LINE.green, LINE.blue, alpha=0.75))
+    pdf.line(MARGIN_X, FOOTER_LINE_Y, PAGE_WIDTH - MARGIN_X, FOOTER_LINE_Y)
+    pdf.setFillColor(TEXT_MUTED)
+    pdf.setFont(BODY_FONT, 8)
+    pdf.drawString(MARGIN_X, FOOTER_TEXT_Y, "Plataforma de Aulas - apresentação comercial em PDF")
+    pdf.drawRightString(PAGE_WIDTH - MARGIN_X, FOOTER_TEXT_Y, f"Página {page_number}")
 
 
 def draw_label(pdf: canvas.Canvas, text: str, x: float, y: float) -> float:
@@ -412,17 +433,27 @@ def add_cover_page(pdf: canvas.Canvas, page_number: int) -> None:
     draw_label(pdf, "Apresentação comercial", left_x, hero_y)
     hero_y -= 22
     hero_end_y = draw_title(pdf, GATE_TITLE, left_x, hero_y, 430, 24, 29)
-    draw_paragraph(pdf, GATE_SUBTITLE, left_x, hero_end_y - 10, 430, BODY_FONT_BOLD, 15, TEXT_SOFT, leading=20)
+    subtitle_end_y = draw_paragraph(
+        pdf,
+        GATE_SUBTITLE,
+        left_x,
+        hero_end_y - 12,
+        430,
+        BODY_FONT_BOLD,
+        15,
+        TEXT_SOFT,
+        leading=22
+    )
     draw_paragraph(
         pdf,
         "Este PDF consolida todo o conteúdo da proposta digital em um material comercial fechado, com a mesma linguagem visual da apresentação publicada.",
         left_x,
-        hero_end_y - 44,
+        subtitle_end_y - 8,
         430,
         BODY_FONT,
         12.5,
         TEXT_MUTED,
-        leading=18
+        leading=19
     )
 
     right_x = 520
@@ -512,14 +543,14 @@ def add_chapter_page(pdf: canvas.Canvas, chapter: Chapter, chapter_index: int, t
         draw_feature_card(pdf, feature, card_x, card_y, feature_w, feature_h)
 
     if chapter.cta_label and chapter.live_demo_url:
-        cta_y = feature_top - 2 * (feature_h + 12) - 26
+        cta_y = max(CTA_SAFE_Y, feature_top - 2 * (feature_h + 12) - 14)
         pdf.setFillColor(GOLD_SOFT)
         pdf.setStrokeColor(GOLD)
         pdf.rect(left_x, cta_y - 18, 220, 30, stroke=1, fill=1)
         pdf.setFillColor(BG)
         pdf.setFont(BODY_FONT_BOLD, 9)
         pdf.drawString(left_x + 14, cta_y - 7, chapter.cta_label.upper())
-        draw_paragraph(pdf, chapter.live_demo_url, left_x + 240, cta_y - 7, 190, BODY_FONT, 8.5, TEXT_MUTED, leading=12)
+        draw_paragraph(pdf, chapter.live_demo_url, left_x + 240, cta_y - 6, 180, BODY_FONT, 8.25, TEXT_MUTED, leading=12)
 
     draw_screenshot(pdf, chapter.screenshot, screenshot_x, top_y, screenshot_w, 286)
     draw_panel(pdf, screenshot_x, top_y - 304, screenshot_w, 86, fill=PANEL_SOFT)
