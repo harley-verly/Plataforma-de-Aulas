@@ -125,6 +125,17 @@ export type CommercialPresentationAccessResponse = {
   capturedAt: number;
 };
 
+export type PlatformLoginResponse = {
+  message: string;
+  session: {
+    token: string;
+    email: string;
+    fullName: string;
+    role: string;
+    nextRoute: string;
+  };
+};
+
 async function fetchJson<T>(path: string): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     credentials: "include",
@@ -194,4 +205,8 @@ export function captureCommercialPresentationLead(body: CommercialPresentationAc
     "/commercial/presentation/access",
     body
   );
+}
+
+export function loginWithDemoCredentials(body: { email: string; password: string }) {
+  return postJson<PlatformLoginResponse, { email: string; password: string }>("/auth/login", body);
 }
