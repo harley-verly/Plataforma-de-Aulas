@@ -84,7 +84,7 @@ services:
       API_PORT: 4000
       DATABASE_URL: ${DATABASE_URL}
       REDIS_URL: ${REDIS_URL}
-      MINIO_ENDPOINT: minio
+      MINIO_ENDPOINT: plataforma-aulas_minio
       MINIO_PORT: 9000
       MINIO_USE_SSL: "false"
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
