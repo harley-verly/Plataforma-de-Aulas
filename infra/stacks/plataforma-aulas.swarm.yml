@@ -1,0 +1,150 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - plataforma_aulas_postgres_data:/var/lib/postgresql/data
+    networks:
+      - plataforma_aulas_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+      labels:
+        com.aba.module.name: "plataforma_aulas"
+        com.aba.module.kind: "independent-project"
+        com.aba.module.owner_workspace: "E:\\Usuarios\\Documents\\New project 3"
+        com.aba.module.portal_visibility: "superadmin-only"
+        com.aba.module.backup_scope: "volumes+dumps+configs"
+        com.aba.module.restore_priority: "independent"
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - plataforma_aulas_redis_data:/data
+    networks:
+      - plataforma_aulas_internal
+    deploy:
+      replicas: 1
+      labels:
+        com.aba.module.name: "plataforma_aulas"
+        com.aba.module.kind: "independent-project"
+        com.aba.module.owner_workspace: "E:\\Usuarios\\Documents\\New project 3"
+        com.aba.module.portal_visibility: "superadmin-only"
+        com.aba.module.backup_scope: "volumes+dumps+configs"
+        com.aba.module.restore_priority: "independent"
+
+  minio:
+    image: minio/minio:RELEASE.2025-03-12T18-04-18Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - plataforma_aulas_minio_data:/data
+    networks:
+      - plataforma_aulas_internal
+    deploy:
+      replicas: 1
+      labels:
+        com.aba.module.name: "plataforma_aulas"
+        com.aba.module.kind: "independent-project"
+        com.aba.module.owner_workspace: "E:\\Usuarios\\Documents\\New project 3"
+        com.aba.module.portal_visibility: "superadmin-only"
+        com.aba.module.backup_scope: "volumes+dumps+configs"
+        com.aba.module.restore_priority: "independent"
+
+  mailpit:
+    image: axllent/mailpit:v1.24
+    networks:
+      - plataforma_aulas_internal
+    deploy:
+      replicas: 1
+      labels:
+        com.aba.module.name: "plataforma_aulas"
+        com.aba.module.kind: "independent-project"
+        com.aba.module.owner_workspace: "E:\\Usuarios\\Documents\\New project 3"
+        com.aba.module.portal_visibility: "superadmin-only"
+        com.aba.module.backup_scope: "configs"
+        com.aba.module.restore_priority: "independent"
+
+  api:
+    image: ${PLATAFORMA_AULAS_API_IMAGE}
+    environment:
+      APP_STAGE: staging
+      API_PORT: 4000
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      ASAAS_ENV: sandbox
+      ASAAS_API_KEY: ${ASAAS_API_KEY}
+      CORS_ORIGIN: https://aulas.abasolucoesetecnologia.com.br
+      PORTAL_LEADS_PRESENTATION_INTAKE_URL: ${PORTAL_LEADS_PRESENTATION_INTAKE_URL}
+      PORTAL_LEADS_SERVICE_TOKEN: ${PORTAL_LEADS_SERVICE_TOKEN}
+    networks:
+      - LaviniaNet
+      - plataforma_aulas_internal
+    deploy:
+      replicas: 1
+      labels:
+        traefik.enable: "true"
+        traefik.swarm.network: "LaviniaNet"
+        traefik.http.routers.plataforma-aulas-api.rule: "Host(`aulas.abasolucoesetecnologia.com.br`) && PathPrefix(`/api`)"
+        traefik.http.routers.plataforma-aulas-api.entrypoints: "websecure"
+        traefik.http.routers.plataforma-aulas-api.tls.certresolver: "le"
+        traefik.http.routers.plataforma-aulas-api.priority: "100"
+        traefik.http.services.plataforma-aulas-api.loadbalancer.server.port: "4000"
+        com.aba.module.name: "plataforma_aulas"
+        com.aba.module.kind: "independent-project"
+        com.aba.module.owner_workspace: "E:\\Usuarios\\Documents\\New project 3"
+        com.aba.module.portal_visibility: "superadmin-only"
+        com.aba.module.backup_scope: "volumes+dumps+configs"
+        com.aba.module.restore_priority: "independent"
+
+  web:
+    image: ${PLATAFORMA_AULAS_WEB_IMAGE}
+    networks:
+      - LaviniaNet
+      - plataforma_aulas_internal
+    deploy:
+      replicas: 1
+      labels:
+        traefik.enable: "true"
+        traefik.swarm.network: "LaviniaNet"
+        traefik.http.routers.plataforma-aulas-web.rule: "Host(`aulas.abasolucoesetecnologia.com.br`)"
+        traefik.http.routers.plataforma-aulas-web.entrypoints: "websecure"
+        traefik.http.routers.plataforma-aulas-web.tls.certresolver: "le"
+        traefik.http.services.plataforma-aulas-web.loadbalancer.server.port: "80"
+        com.aba.module.name: "plataforma_aulas"
+        com.aba.module.kind: "independent-project"
+        com.aba.module.owner_workspace: "E:\\Usuarios\\Documents\\New project 3"
+        com.aba.module.portal_visibility: "superadmin-only"
+        com.aba.module.backup_scope: "configs"
+        com.aba.module.restore_priority: "independent"
+
+networks:
+  LaviniaNet:
+    external: true
+  plataforma_aulas_internal:
+    name: plataforma_aulas_internal
+    driver: overlay
+    attachable: true
+
+volumes:
+  plataforma_aulas_postgres_data:
+  plataforma_aulas_redis_data:
+  plataforma_aulas_minio_data:
